@@ -7,7 +7,6 @@ license = "MIT"
 include = ["ni_python_styleguide/flakehell_config.toml"]
 
 [tool.poetry.dependencies]
-# This is the minimum version of Python we claim support for
 python = "^3.5"
 flake8 = "^3.8.3"
 # @TODO: This is temporary, and shouldn't go in a release.
