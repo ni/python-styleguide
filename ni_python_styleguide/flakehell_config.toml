@@ -1,0 +1,11 @@
+# (Please list things by alphabetical order)
+
+[tool.flakehell.plugins]
+# Everything is on by default
+"*" = ["+*"]
+
+# To begin we'll turn everything off
+mccabe = ['-*']
+pylint = ["-*"]
+pyflakes = ["-*"]
+pycodestyle = ["-*"]

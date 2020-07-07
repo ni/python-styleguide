@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "ni-python-styleguide"
+version = "0.1.0"
+description = "NI's internal and external Python linter rules and plugins"
+authors = ["NI <opensource@ni.com>"]
+license = "MIT"
+include = ["ni_python_styleguide/flakehell_config.toml"]
+
+[tool.poetry.dependencies]
+# This is the minimum version of Python we claim support for
+python = "^3.5"
+flake8 = "^3.8.3"
+# @TODO: This is temporary, and shouldn't go in a release.
+#   Switch to just "flakehell" when the following PRs are in:
+#     - https://github.com/life4/flakehell/pull/86
+#     - https://github.com/life4/flakehell/pull/91
+flakehell = { git = "https://github.com/thejcannon/flakehell.git", branch = "installableMaster" }
+
+# flake8 plugins should be listed here (in alphabetical order)
+
+# Rejected flake8 plugins should be listed here (in alphabetical order)
+# Also describe why it is rejected and/or add a link
+
+[tool.poetry.scripts]
+ni-python-styleguide = 'ni_python_styleguide.__main__:main'
+
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
