@@ -1,0 +1,6 @@
+__pycache__/
+dist/
+*.egg-info/
+
+# Can show up during `poetry install`
+setup.py
