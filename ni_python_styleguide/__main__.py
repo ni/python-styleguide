@@ -1,7 +1,7 @@
 import pathlib
 import sys
 
-import flakehell
+import ni_python_styleguide._vendor.flakehell as flakehell
 
 _CONFIGURABLE_COMMANDS = ["baseline", "lint", "missed", "plugins"]
 
