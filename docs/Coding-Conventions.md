@@ -186,7 +186,7 @@ spam = (0,)
 
 > 🐍 This rule stems from [PEP-8](https://www.python.org/dev/peps/pep-0008)
 
-> ℹ️ An exception is made (and **must** be followed) for situations where the colon is acting like a binary operator and other operators are present. Then it **must** be surrounded by whitespace like any other operator.
+ℹ️ An exception is made (and **must** be followed) for situations where the colon is acting like a binary operator and other operators are present. Then it **must** be surrounded by whitespace like any other operator.
 
 ```python
 # Bad
@@ -241,7 +241,7 @@ spam['bacon'] = ham[index]
 
 > 🐍 This rule stems from [PEP-8](https://www.python.org/dev/peps/pep-0008)
 
-> ℹ️ Rules [F.3.9] and [F.3.10] specify exceptions to this rule
+ℹ️ Rules [F.3.9] and [F.3.10] specify exceptions to this rule
 
 ```python
 # Bad
@@ -351,7 +351,7 @@ order = [egg, sausage, bacon,]
 
 > 🐍 This rule stems from [PEP-8](https://www.python.org/dev/peps/pep-0008)
 
-```
+```python
 # Bad
 movie = "\"Fillings of Passion\""
 grounding = '\'O\' Level Geography'
@@ -388,11 +388,11 @@ Those responsible have been sacked.
 møøse_costumes = "Siggi Churchill"
 ```
 
-## [N.1.2] ✔️ **DO** Use a trailing underscore to avoid a name clash with a reserved keyword
+### [N.1.2] ✔️ **DO** Use a trailing underscore to avoid a name clash with a reserved keyword
 
 > 🐍 This rule stems from [PEP-8](https://www.python.org/dev/peps/pep-0008)
 
-> ❗️ In most situations, a _better_ name for the identifier is the solution. This rule only applies for cases where the keyword is the best name (I.e. referencing the built-in operation/element, like [`operator.and_`](https://docs.python.org/3.4/library/operator.html#operator.and_))
+❗️ In most situations, a _better_ name for the identifier is the solution. This rule only applies for cases where the keyword is the best name (I.e. referencing the built-in operation/element, like [`operator.and_`](https://docs.python.org/3.4/library/operator.html#operator.and_))
 
 ```python
 # Acceptable
@@ -428,7 +428,7 @@ tempfile
 
 > 🐍 This rule stems from [PEP-8](https://www.python.org/dev/peps/pep-0008)
 
-> ℹ️ An exception is made for classes which are used primarily as a callable. They should use function naming conventions instead.
+ℹ️ An exception is made for classes which are used primarily as a callable. They should use function naming conventions instead.
 
 ```python
 # Bad
@@ -489,7 +489,7 @@ FlyingCircus_contra = TypeVar('FlyingCircus_contra', contravariant=True)
 
 > 🐍 This rule stems from [PEP-8](https://www.python.org/dev/peps/pep-0008)
 
-> ℹ️ This invokes Python's name mangling which does have well-known, yet unintended side-effects. See [the docs](https://docs.python.org/3.6/tutorial/classes.html#private-variables)
+ℹ️ This invokes Python's name mangling which does have well-known, yet unintended side-effects. See [the docs](https://docs.python.org/3.6/tutorial/classes.html#private-variables)
 
 ---
 
@@ -543,7 +543,7 @@ if not seq: ...
 
 > 🐍 This rule stems from [PEP-8](https://www.python.org/dev/peps/pep-0008)
 
-```
+```python
 # Bad
 respond = lambda: "is not"
 
@@ -558,7 +558,7 @@ def respond():
 
 > 🐍 This rule stems from [PEP-8](https://www.python.org/dev/peps/pep-0008)
 
-> ℹ️ An exception is made for exceptions which aren't meant to be caught, in which case `BaseException` must be derived from. This should be extremely rare.
+ℹ️ An exception is made for exceptions which aren't meant to be caught, in which case `BaseException` must be derived from. This should be extremely rare.
 
 ### [L.3.2] ✔️ **DO** Chain exceptions appropriately
 
@@ -762,7 +762,7 @@ import my_app.utils
 
 > 🐍 This rule stems from [PEP-8](https://www.python.org/dev/peps/pep-0008)
 
-> ℹ️ An exception can be made for `__init__.py` files republishing child module declarations
+ℹ️ An exception can be made for `__init__.py` files republishing child module declarations
 
 ```python
 # Bad
@@ -776,7 +776,7 @@ from my_app.relationships.sibling import rivalry
 
 > 🐍 This rule stems from [PEP-8](https://www.python.org/dev/peps/pep-0008)
 
-> ℹ️ An exception can be made if you are overwriting an internal interface and you do not know which definitions will be overwritten
+ℹ️ An exception can be made if you are overwriting an internal interface and you do not know which definitions will be overwritten
 
 ```python
 # Bad - Pollutes the namespace
@@ -833,11 +833,11 @@ import sys
 
 > 🐍 This rule stems from [PEP-8](https://www.python.org/dev/peps/pep-0008)
 
-## [C.1.2] ✔️ **DO** Capitalize the first word, unless it is an identifier that begins with a lower case letter
+### [C.1.2] ✔️ **DO** Capitalize the first word, unless it is an identifier that begins with a lower case letter
 
 > 🐍 This rule stems from [PEP-8](https://www.python.org/dev/peps/pep-0008)
 
-## [C.1.3] ✔️ **DO** Start comments with a `#` and a single space (unless otherwise stated)
+### [C.1.3] ✔️ **DO** Start comments with a `#` and a single space (unless otherwise stated)
 
 > 🐍 This rule stems from [PEP-8](https://www.python.org/dev/peps/pep-0008)
 
@@ -895,11 +895,11 @@ Bad:
 
 > 🐍 This rule stems from [PEP-8](https://www.python.org/dev/peps/pep-0008)
 
-> ℹ️ Exceptions can be made for:
->
-> - Emojis, when necessary (E.g. Strings displayed to the user)
-> - Test code which is testing non-ASCII encoded data
-> - A person's name
+ℹ️ Exceptions can be made for:
+
+- Emojis, when necessary (E.g. Strings displayed to the user)
+- Test code which is testing non-ASCII encoded data
+- A person's name
 
 ```python
 # Bad
