@@ -1,0 +1,21 @@
+name: Validate-CODEOWNERS
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - ".github/CODEOWNERS"
+
+jobs:
+  validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # https://github.com/mszostok/codeowners-validator
+      - uses: mszostok/codeowners-validator@v0.4.0
+        with:
+          checks: "files,owners,duppatterns"
+          experimental_checks: "notowned"
+          # "github_access_token" is suggested, but not required. Let's try it without.
