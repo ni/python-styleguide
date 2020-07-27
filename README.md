@@ -1,17 +1,12 @@
 # ni-python-styleguide
 
-<!-- @TODO: We should show you some stinkin' badges -->
+![logo](docs/logo.svg)
 
 ---
 
-Welcome to NI's internal and external Python conventions and linter rules/plugins/tooling.
+<!-- @TODO: We should show you some stinkin' badges -->
 
-<!-- @TODO: Put the NI + Python lockup here when it exists -->
-<p align="center">
-  <a href="https://github.com/ni/ni-python-styleguide">
-    [IMAGE]
-  </a>
-</p>
+Welcome to NI's internal and external Python conventions and linter rules/plugins/tooling.
 
 `ni-python-styleguide` serves several purposes:
 

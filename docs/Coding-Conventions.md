@@ -1,5 +1,7 @@
 NOTE: This guide is a Work In Progress!
 
+![logo](logo.svg)
+
 <!-- TOC -->
 
 # Purpose of coding conventions
