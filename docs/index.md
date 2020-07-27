@@ -34,7 +34,16 @@
     {%- if auto_id and first_token_char == "#" and code_block == false -%}
         {% comment %}Omit hyphens, as we need the whitespace to denote a header{% endcomment %}
         {% assign header_text = line | split: first_token | last %}
-        {% assign header_id = line | split: "]" | first | split: "[" | last | replace: ".","_" | downcase %}
+        {% assign header_id = line | split: "]" | first | split: "[" | last | replace: ".","-"  %}
+        {% if first_token != "###" %}
+            {%- capture header_id -%}
+                {%- comment -%}
+                    I'm reasonably sure splitting by "]" is safe, as our
+                    section/subsection headers are English words/phrases
+                {%- endcomment -%}
+                {{ header_id }}{{ header_text | split: "]" | last | replace: " ","-" | replace: "/","-" | downcase }}
+            {%- endcapture %}
+        {% endif %}
 
 {{ first_token }} [{{link_icon}}](#{{header_id}}) {{ header_text }} {#{{ header_id }}}
     {%- else -%}
