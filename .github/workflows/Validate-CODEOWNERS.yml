@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - '.github/CODEOWNERS'
+      - ".github/CODEOWNERS"
 
 jobs:
   validation:
@@ -13,6 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      # https://github.com/mszostok/codeowners-validator
       - uses: mszostok/codeowners-validator@v0.4.0
         with:
           checks: "files,owners,duppatterns"
