@@ -4,7 +4,7 @@
 
 ---
 
-Welcome to NI's internal and external Python linter rules, plugins, and tooling.
+Welcome to NI's internal and external Python conventions and linter rules/plugins/tooling.
 
 <!-- @TODO: Put the NI + Python lockup here when it exists -->
 <p align="center">
@@ -18,6 +18,13 @@ Welcome to NI's internal and external Python linter rules, plugins, and tooling.
 1. It is a `flake8` plugin that aggregates several other `flake8` plugins
 1. It houses our approved `flakehell` config: `flakehell_config.toml`
 1. When run directly, combines the above
+1. It houses our conventions: https://ni.github.io/ni-python-styleguide/
+
+## Written Conventions
+
+Our written conventions can be found at https://ni.github.io/ni-python-styleguide/.
+
+NOTE: Using the GitHub Pages link is preferable to a GitHub `/blob` link.
 
 ## Quickstart
 
