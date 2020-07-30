@@ -1,4 +1,4 @@
-# ni-python-styleguide
+# python-styleguide
 
 ![logo](docs/logo.svg)
 
@@ -13,11 +13,11 @@ Welcome to NI's internal and external Python conventions and linter rules/plugin
 1. It is a `flake8` plugin that aggregates several other `flake8` plugins
 1. It houses our approved `flakehell` config: `flakehell_config.toml`
 1. When run directly, combines the above
-1. It houses our conventions: https://ni.github.io/ni-python-styleguide/
+1. It houses our conventions: https://ni.github.io/python-styleguide/
 
 ## Written Conventions
 
-Our written conventions can be found at https://ni.github.io/ni-python-styleguide/.
+Our written conventions can be found at https://ni.github.io/python-styleguide/.
 
 NOTE: Using the GitHub Pages link is preferable to a GitHub `/blob` link.
 
