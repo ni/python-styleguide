@@ -1,4 +1,14 @@
 <!-- This is to make the GitHub Page for the repo look nice  -->
+<head>
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+</head>
+
+<script src="https://cdn.jsdelivr.net/npm/anchor-js/anchor.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(event) {
+  anchors.add("h1, h2, h3");
+});
+</script>
 
 {% capture conventions %}{% include_relative Coding-Conventions.md %}{% endcapture %}
 {% assign conventions2 = conventions | newline_to_br | split: "<br />" %}
@@ -45,10 +55,3 @@
 {:toc}
     {%- endif -%}
 {%- endfor -%}
-
-<script src="https://cdn.jsdelivr.net/npm/anchor-js/anchor.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function(event) {
-  anchors.add("h1, h2, h3");
-});
-</script>
