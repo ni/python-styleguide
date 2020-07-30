@@ -6,9 +6,9 @@ Contributions are welcome from anyone, including those outside of NI.
 
 ## 🐛 Filing a Bug Report 🐛
 
-Bugs are tracked as [GitHub Issues](https://github.com/ni/ni-python-styleguide/issues)
+Bugs are tracked as [GitHub Issues](https://github.com/ni/python-styleguide/issues)
 
-Before submitting a bug report, [perform a search](https://github.com/ni/ni-python-styleguide/issues) to see if the problem has already been reported.
+Before submitting a bug report, [perform a search](https://github.com/ni/python-styleguide/issues) to see if the problem has already been reported.
 When you are creating a bug report, please fill out the pre-populated template and include as many details as possible.
 
 ## 📝 Making a Code Contribution 📝

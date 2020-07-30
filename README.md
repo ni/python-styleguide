@@ -1,4 +1,4 @@
-# ni-python-styleguide
+# NI Python Styleguide
 
 ![logo](docs/logo.svg)
 
