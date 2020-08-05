@@ -2,5 +2,8 @@ __pycache__/
 dist/
 *.egg-info/
 
+# If the user uses poetry "in-project" venvs
+.venv/
+
 # Can show up during `poetry install`
 setup.py
