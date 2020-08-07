@@ -43,4 +43,4 @@ jobs:
       with:
         python_version: 3.5.0
         poetry_version: 1.0
-        args: run ni-python-styleguide lint 
+        args: run ni-python-styleguide lint
