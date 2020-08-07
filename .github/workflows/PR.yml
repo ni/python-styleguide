@@ -29,7 +29,11 @@ jobs:
       - name: Check for lock changes
         run: |
           pyenv latest local 3.5.8
-          python -c "from poetry.factory import Factory; l = Factory().create_poetry('.').locker; exit(0) if l.is_locked() and l.is_fresh() else exit(1)" && echo 'OK'
+          python -c " \
+            from poetry.factory import Factory; \
+            locker = Factory().create_poetry('.').locker; \
+            exit(0) if locker.is_locked() and locker.is_fresh() else exit(1) \
+          " && echo 'OK'
 
       - name: Install the Package
         uses: abatilo/actions-poetry@v1.5.0
