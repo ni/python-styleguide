@@ -18,3 +18,4 @@ The following PRs are required:
 
 - https://github.com/life4/flakehell/pull/86
 - https://github.com/life4/flakehell/pull/91
+- https://github.com/life4/flakehell/pull/92

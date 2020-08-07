@@ -1,0 +1,46 @@
+name: PR
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - ni_python_styleguide
+      - poetry.lock
+      - pyproject.toml
+
+jobs:
+  pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+    - name: Check Poetry Metadata
+      uses: abatilo/actions-poetry@v1.5.0
+      with:
+        python_version: 3.5.0
+        poetry_version: 1.0
+        args: check
+
+    # @TODO: This is a workaround for there not being a way to check the lock file
+    #   See: https://github.com/python-poetry/poetry/issues/453
+    #   NOTE: We're taking advantage of the fact that "abatilo/actions-poetry"
+    #     has been run, installs poetry globally, and uses pyenv
+    - name: Check for lock changes
+      run: |
+        pyenv latest local 3.5.0
+        python -c "from poetry.factory import Factory; l = Factory().create_poetry('.').locker; exit(0) if l.is_locked() and l.is_fresh() else exit(1)" && echo 'OK'
+
+    - name: Install the Package
+      uses: abatilo/actions-poetry@v1.5.0
+      with:
+        python_version: 3.5.0
+        poetry_version: 1.0
+        args: install
+
+    - name: Lint the Code
+      uses: abatilo/actions-poetry@v1.5.0
+      with:
+        python_version: 3.5.0
+        poetry_version: 1.0
+        args: run ni-python-styleguide lint 
