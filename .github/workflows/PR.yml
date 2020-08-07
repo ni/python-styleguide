@@ -15,35 +15,24 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Check Poetry Metadata
-        uses: abatilo/actions-poetry@v1.5.0
+      - uses: actions/setup-python@v1
         with:
-          python_version: 3.5.8
-          poetry_version: 1.0
-          args: check
+          python-version: 3.5
+      - uses: Gr1N/setup-poetry@v2
+        with:
+          poetry-version: 1.0.0
 
       # @TODO: This is a workaround for there not being a way to check the lock file
       #   See: https://github.com/python-poetry/poetry/issues/453
-      #   NOTE: This isn't ideal as it using the system Python and dirtying the system
-      #     Python libraries.
       - name: Check for lock changes
         run: |
-          pip install poetry==1.0
           python -c "from poetry.factory import Factory; \
             locker = Factory().create_poetry('.').locker; \
             exit(0) if locker.is_locked() and locker.is_fresh() else exit(1)" \
             && echo 'OK'
 
       - name: Install the Package
-        uses: abatilo/actions-poetry@v1.5.0
-        with:
-          python_version: 3.5.8
-          poetry_version: 1.0
-          args: install
+        run: poetry install
 
       - name: Lint the Code
-        uses: abatilo/actions-poetry@v1.5.0
-        with:
-          python_version: 3.5.8
-          poetry_version: 1.0
-          args: run ni-python-styleguide lint
+        run: poetry run ni-python-styleguide lint
