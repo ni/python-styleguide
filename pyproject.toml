@@ -7,7 +7,7 @@ license = "MIT"
 include = ["ni_python_styleguide/flakehell_config.toml"]
 
 [tool.poetry.dependencies]
-python = "^3.5"
+python = "^3.6"
 flake8 = "^3.8.3"
 
 # @TODO: flakehell's dependencies.
