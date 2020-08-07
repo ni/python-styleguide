@@ -24,11 +24,9 @@ jobs:
 
       # @TODO: This is a workaround for there not being a way to check the lock file
       #   See: https://github.com/python-poetry/poetry/issues/453
-      #   NOTE: We're taking advantage of the fact that "abatilo/actions-poetry"
-      #     has been run, installs poetry globally, and uses pyenv
       - name: Check for lock changes
         run: |
-          pyenv latest local 3.5.8
+          pip install poetry==1.0
           python -c " \
             from poetry.factory import Factory; \
             locker = Factory().create_poetry('.').locker; \
