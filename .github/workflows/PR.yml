@@ -1,0 +1,42 @@
+name: PR
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - ni_python_styleguide
+      - poetry.lock
+      - pyproject.toml
+
+jobs:
+  pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.6
+
+      - uses: Gr1N/setup-poetry@v2
+        with:
+          poetry-version: 1.0.0
+
+      # @TODO: This is a workaround for there not being a way to check the lock file
+      #   See: https://github.com/python-poetry/poetry/issues/453
+      #   NOTE: This isn't ideal as it using the system Python and dirtying the system
+      #     Python libraries.
+      - name: Check for lock changes
+        run: |
+          pip install poetry==1.0
+          python -c "from poetry.factory import Factory; \
+            locker = Factory().create_poetry('.').locker; \
+            exit(0) if locker.is_locked() and locker.is_fresh() else exit(1)" \
+            && echo 'OK'
+
+      - name: Install the Package
+        run: poetry install
+
+      - name: Lint the Code
+        run: poetry run ni-python-styleguide lint
