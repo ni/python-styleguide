@@ -1,3 +1,5 @@
+"""Tests for the convention sections"""
+
 import re
 
 import pytest

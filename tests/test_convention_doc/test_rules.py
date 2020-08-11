@@ -1,3 +1,5 @@
+"""Tests for the convention rules"""
+
 import re
 
 import pytest

@@ -1,4 +1,4 @@
-"""Useful abstraction(s) on top of the convention doc"""
+"""Useful abstractions on top of the convention doc"""
 
 import itertools
 import pathlib
