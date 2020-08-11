@@ -2,8 +2,6 @@
 
 import re
 
-import pytest
-
 
 def test_subsection_identifier_valid(subsection):
     assert re.match(r"[A-Z]+\.[1-9][0-9]*", subsection.identifier)

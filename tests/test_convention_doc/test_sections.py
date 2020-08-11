@@ -2,8 +2,6 @@
 
 import re
 
-import pytest
-
 
 def test_section_identifier_valid(section):
     assert re.match(r"[A-Z]+", section.identifier)

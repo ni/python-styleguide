@@ -2,8 +2,6 @@
 
 import re
 
-import pytest
-
 
 def test_rule_identifier_valid(rule):
     assert re.match(r"[A-Z]+\.[1-9][0-9]*\.[1-9][0-9]*", rule.identifier)
