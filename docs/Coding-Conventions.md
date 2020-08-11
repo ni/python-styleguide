@@ -139,7 +139,7 @@ def visit_argument_room(duration):
         self._argue_about("purchasing", duration=new_duration)
 ```
 
-### [F.2.4] ❌ **DO NOT** Put multiple statements on one line
+### [F.2.5] ❌ **DO NOT** Put multiple statements on one line
 
 > 🐍 This rule stems from [PEP-8](https://www.python.org/dev/peps/pep-0008)
 
@@ -702,7 +702,7 @@ if title.endswith("s"): ...
 
 ## [O.1] Imports
 
-### [O.1.2] ✔️ **DO** Put module imports on separate lines
+### [O.1.1] ✔️ **DO** Put module imports on separate lines
 
 > 🐍 This rule stems from [PEP-8](https://www.python.org/dev/peps/pep-0008)
 

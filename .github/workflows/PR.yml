@@ -8,6 +8,7 @@ on:
       - ni_python_styleguide
       - poetry.lock
       - pyproject.toml
+      - docs/Coding-Conventions.md
 
 jobs:
   pr:
@@ -40,3 +41,6 @@ jobs:
 
       - name: Lint the Code
         run: poetry run ni-python-styleguide lint
+
+      - name: Run tests
+        run: poetry run pytest
