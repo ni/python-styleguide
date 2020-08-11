@@ -2,15 +2,31 @@
 
 import re
 
+import pytest
+
+from tests.test_convention_doc import doctypes
+
+
+@pytest.fixture(
+    scope="module",
+    params=[
+        pytest.param((index, rule), id=rule.identifier)
+        for subsection in doctypes.SUBSECTIONS
+        for index, rule in enumerate(subsection.rules)
+    ],
+)
+def enumerated_rule(request):
+    return request.param
+
 
 def test_rule_identifier_valid(rule):
     assert re.match(r"[A-Z]+\.[1-9][0-9]*\.[1-9][0-9]*", rule.identifier)
     assert rule.identifier.startswith(rule.parent.identifier)
 
 
-def test_rule_identifiers_strictly_increasing(subsection):
-    for index, rule in enumerate(subsection.rules):
-        assert rule.identifier.split(".")[-1] == str(index + 1)
+def test_rule_identifiers_strictly_increasing(enumerated_rule):
+    index, rule = enumerated_rule
+    assert rule.identifier.split(".")[-1] == str(index + 1)
 
 
 def test_rule_identifier_follows_convention(rule):

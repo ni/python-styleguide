@@ -1,5 +1,6 @@
 """Tests for the convention sections"""
 
+import collections
 import re
 
 
@@ -8,7 +9,8 @@ def test_section_identifier_valid(section):
 
 
 def test_section_identifiers_unique(sections):
-    section_identifiers = set()
+    section_identifier_counts = collections.defaultdict(int)
     for section in sections:
-        assert section.identifier not in section_identifiers
-        section_identifiers.add(section.identifier)
+        section_identifier_counts[section.identifier] += 1
+
+    assert all(count == 1 for count in section_identifier_counts.values())
