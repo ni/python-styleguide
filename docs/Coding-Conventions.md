@@ -696,6 +696,24 @@ if title.startswith("King"): ...
 if title.endswith("s"): ...
 ```
 
+## [L.7] Modules
+
+### [L.7.1] ✔️ **DO** Document a module's public API with `__all__`
+
+> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
+
+This includes setting `__all__` to the empty list if your module has no public API.
+
+```python
+__all__ = ["spam", "ham", "eggs"]
+```
+
+### [L.7.2] ✔️ **DO** Prefix internal interfaces with a single leading underscore
+
+> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
+
+This includes packages, modules, classes, functions, attributes or other names.
+
 ---
 
 # [O] Code Organization
@@ -790,6 +808,16 @@ from ministry import silly_walk
 # Best - Doesn't pollute and usage won't confuse
 import ministry
 ```
+
+### [O.1.6] ❌ **DO NOT** Rely on a module's imported names
+
+> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
+
+ℹ️ Exceptions are made for:
+
+- Explcitly documented cases (E.g. `os.path`)
+- Names in a module's `__init__.py`
+
 
 ## [O.2] Declarations
 
