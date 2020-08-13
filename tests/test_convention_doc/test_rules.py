@@ -29,13 +29,18 @@ def test_rule_identifiers_strictly_increasing(enumerated_rule):
     assert rule.identifier.split(".")[-1] == str(index + 1)
 
 
-def test_rule_identifier_follows_convention(rule):
+def test_rule_identifier_follows_prefix_convention(rule):
     assert (
         rule.header_text.startswith(" ✔️ **DO**")
         or rule.header_text.startswith(" ✔️ **CONSIDER**")
         or rule.header_text.startswith(" ❌ **AVOID**")
         or rule.header_text.startswith(" ❌ **DO NOT**")
     )
+
+
+def test_rule_identifier_follows_case_convention(rule):
+    rule_title = ("**".join(rule.header_text.split("**")[2:])).strip()
+    assert rule_title[0] == rule_title[0].upper()
 
 
 def test_rule_has_at_most_one_codeblock(rule):
