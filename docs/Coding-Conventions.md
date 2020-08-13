@@ -42,6 +42,7 @@ In all cases where a convention comes from a PEP, it will be marked as such.
 ## Guides considered
 
 - [PEP 8 -- Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/)
+- [PEP 257 -- Docstring Conventions](https://www.python.org/dev/peps/pep-0257/)
 
 ---
 
