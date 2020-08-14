@@ -139,7 +139,7 @@ def visit_argument_room(duration):
         self._argue_about("purchasing", duration=new_duration)
 ```
 
-### [F.2.4] ❌ **DO NOT** Put multiple statements on one line
+### [F.2.5] ❌ **DO NOT** Put multiple statements on one line
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -645,7 +645,7 @@ with connection.begin_transaction():
 
 ## [L.5] Return Statements
 
-### [L.5.1] ❌ **DO NOT** rely on the implicit `return None` if a function is expected to return a value
+### [L.5.1] ❌ **DO NOT** Rely on the implicit `return None` if a function is expected to return a value
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -662,7 +662,7 @@ def get_stock(cheese_kind):
     return None
 ```
 
-### [L.5.2] ❌ **DO NOT** rely on the implicit `return` implictly returning `None` if a function is expected to return a value
+### [L.5.2] ❌ **DO NOT** Rely on the implicit `return` implictly returning `None` if a function is expected to return a value
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -682,7 +682,7 @@ def get_stock(cheese_kind):
 
 ## [L.6] Strings
 
-### [L.6.1] ✔️ **DO** use `startswith` and `endswith` instead of slicing or indexing a string
+### [L.6.1] ✔️ **DO** Use `startswith` and `endswith` instead of slicing or indexing a string
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -702,7 +702,7 @@ if title.endswith("s"): ...
 
 ## [O.1] Imports
 
-### [O.1.2] ✔️ **DO** Put module imports on separate lines
+### [O.1.1] ✔️ **DO** Put module imports on separate lines
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
