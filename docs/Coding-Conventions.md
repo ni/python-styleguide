@@ -840,6 +840,32 @@ import sys
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008) and [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
+```python
+# Bad
+class ArgumentClinic(object):
+    """An argument clinic which offers several courses.
+
+    Courses can be purchased in 5-minute or full half-hour intervals."""
+
+    def argue(self):
+        """Argue for the purchased amount of time.
+
+        This function will throw an OutOfTimeException when the time has elapsed."""
+
+# Good
+class ArgumentClinic(object):
+    """An argument clinic which offers several courses.
+
+    Courses can be purchased in 5-minute or full half-hour intervals.
+    """
+
+    def argue(self):
+        """Argue for the purchased amount of time.
+
+        This function will throw an OutOfTimeException when the time has elapsed.
+        """
+```
+
 ### [D.1.5] ✔️ **DO** Align multiline docstring indentation with their quotes
 
 ```python
