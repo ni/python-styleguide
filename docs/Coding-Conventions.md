@@ -712,7 +712,7 @@ __all__ = ["spam", "ham", "eggs"]
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-This includes packages, modules, classes, functions, attributes or other names.
+This includes packages, modules, classes, functions, attributes and other names.
 
 ---
 
