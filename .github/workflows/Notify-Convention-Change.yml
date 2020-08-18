@@ -1,0 +1,16 @@
+name: Notify Members of Convention Change
+
+on: pull_request
+  paths:
+    - docs/Coding-Conventions.md
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: harupy/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          filename: Notify-Convention-Change.md
