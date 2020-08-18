@@ -18,5 +18,5 @@ jobs:
         with:
           checks: "files,owners,duppatterns"
           experimental_checks: "notowned"
-          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          owner_checker_repository: ni/python-styleguide
 
