@@ -818,6 +818,14 @@ import ministry
 - Explcitly documented cases (E.g. `os.path`)
 - Names in a module's `__init__.py`
 
+```python
+# Bad
+# cheese_shop.py - Imports module `brie`
+import brie
+
+# customer.py - Relying on the fact that `cheese_shop` imported module `brie`
+import cheese_shop.brie
+```
 
 ## [O.2] Declarations
 
