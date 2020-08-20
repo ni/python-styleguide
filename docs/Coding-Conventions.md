@@ -815,7 +815,7 @@ import ministry
 
 ℹ️ Exceptions are made for:
 
-- Explcitly documented cases (E.g. `os.path`)
+- Explicitly documented cases (E.g. `os.path`)
 - Names in a module's `__init__.py`
 
 ```python
