@@ -842,27 +842,27 @@ import sys
 
 ```python
 # Bad
-class ArgumentClinic(object):
-    """An argument clinic which offers several courses.
+class CheeseShop(object):
+    """Finest cheese shop in the district, offering a wide variety of cheeses.
 
-    Courses can be purchased in 5-minute or full half-hour intervals."""
+    Cheeses are sold first-come-first-served, and can run out of stock rather quickly."""
 
-    def argue(self):
-        """Argue for the purchased amount of time.
+    def sell(self, type_):
+        """Sell the specified type of cheese.
 
-        This function will throw an OutOfTimeException when the time has elapsed."""
+        Will throw an OutOfStockException if the specified type of cheese is out of stock."""
 
 # Good
-class ArgumentClinic(object):
-    """An argument clinic which offers several courses.
+class CheeseShop(object):
+    """Finest cheese shop in the district, offering a wide variety of cheeses.
 
-    Courses can be purchased in 5-minute or full half-hour intervals.
+    Cheeses are sold first-come-first-served, and can run out of stock rather quickly.
     """
 
-    def argue(self):
-        """Argue for the purchased amount of time.
+    def sell(self, type_):
+        """Sell the specified type of cheese.
 
-        This function will throw an OutOfTimeException when the time has elapsed.
+        Will throw an OutOfStockException if the specified type of cheese is out of stock.
         """
 ```
 
@@ -870,31 +870,31 @@ class ArgumentClinic(object):
 
 ```python
 # Bad
-class ArgumentClinic(object):
-    """An argument clinic which offers several courses.
+class CheeseShop(object):
+    """Finest cheese shop in the district, offering a wide variety of cheeses.
 
-        Courses can be purchased in 5-minute or full half-hour intervals.
+        Cheeses are sold first-come-first-served, and can run out of stock rather quickly.
     """
 
-    def argue(self):
+    def sell(self, type_):
         """
-            Argue for the purchased amount of time.
+            Sell the specified type of cheese.
 
-            This function will throw an OutOfTimeException when the time has elapsed.
+            Will throw an OutOfStockException if the specified type of cheese is out of stock.
         """
 
 # Good
-class ArgumentClinic(object):
-    """An argument clinic which offers several courses.
+class CheeseShop(object):
+    """Finest cheese shop in the district, offering a wide variety of cheeses.
 
-    Courses can be purchased in 5-minute or full half-hour intervals.
+    Cheeses are sold first-come-first-served, and can run out of stock rather quickly.
     """
 
-    def argue(self):
+    def sell(self, type_):
         """
-        Argue for the purchased amount of time.
+        Sell the specified type of cheese.
 
-        This function will throw an OutOfTimeException when the time has elapsed.
+        Will throw an OutOfStockException if the specified type of cheese is out of stock.
         """
 ```
 
@@ -906,20 +906,20 @@ class ArgumentClinic(object):
 
 ```python
 # Bad
-class ArgumentClinic(object):
+class CheeseShop(object):
 
-    """An argument clinic which offers several courses."""
+    """Finest cheese shop in the district, offering a wide variety of cheeses."""
 
-    def argue(self):
+    def sell(self, type_):
 
-        """Argue for the purchased amount of time."""
+        """Sell the specified type of cheese."""
 
 # Good
-class ArgumentClinic(object):
-    """An argument clinic which offers several courses."""
+class CheeseShop(object):
+    """Finest cheese shop in the district, offering a wide variety of cheeses."""
 
-    def argue(self):
-        """Argue for the purchased amount of time."""
+    def sell(self, type_):
+        """Sell the specified type of cheese."""
 ```
 
 ### [D.1.7] ❌ **DO NOT** Put a blank line after a one line function docstring
@@ -928,15 +928,15 @@ class ArgumentClinic(object):
 
 ```python
 # Bad
-def argue(minutes):
-    """Argue for the specified amount of time in minutes."""
+def sell(type_):
+    """Sell the specified type of cheese."""
 
-    _do_argument(minutes)
+    _do_transaction(type_)
 
 # Good
-def argue(minutes):
-    """Argue for the specified amount of time in minutes."""
-    _do_argument(minutes)
+def sell(type_):
+    """Sell the specified type of cheese."""
+    _do_transaction(type_)
 ```
 
 ### [D.1.8] ✔️ **DO** Put a blank line after a class docstring
@@ -945,20 +945,20 @@ def argue(minutes):
 
 ```python
 # Bad
-class ArgumentClinic(object):
-    """An argument clinic which offers several courses."""
-    def argue(self):
+class CheeseShop(object):
+    """Finest cheese shop in the district, offering a wide variety of cheeses."""
+    def sell(self, type_):
         pass
 
 # Good
-class ArgumentClinic(object):
-    """An argument clinic which offers several courses."""
+class CheeseShop(object):
+    """Finest cheese shop in the district, offering a wide variety of cheeses."""
 
-    def argue(self):
+    def sell(self, type_):
         pass
 ```
 
-### [D.1.9] ✔️ **DO** End your docstrings with a period
+### [D.1.9] ✔️ **DO** Use complete, grammatically correct sentences, ended with a period
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
@@ -976,23 +976,16 @@ The summary line may be on the same line as the opening quotes or on the next li
 
 ```python
 # Bad
-def argue(minutes):
-    """Argue for the purchased amount of time.
-    This function will throw an OutOfTimeException when the time has elapsed.
+def sell(type_):
+    """Sell the specified type of cheese.
+    Will throw an OutOfStockException if the specified type of cheese is out of stock.
     """
 
 # Good
-def argue1(minutes):
-    """Argue for the purchased amount of time.
+def sell(type_):
+    """Sell the specified type of cheese.
 
-    This function will throw an OutOfTimeException when the time has elapsed.
-    """
-
-def argue2(minutes):
-    """
-    Argue for the purchased amount of time.
-
-    This function will throw an OutOfTimeException when the time has elapsed.
+    Will throw an OutOfStockException if the specified type of cheese is out of stock.
     """
 ```
 
@@ -1000,7 +993,7 @@ def argue2(minutes):
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
-The docstring should be printed when the script is invoked with incorrect or missing arguments (or perhaps with a "-h" option, for "help").
+The docstring should be printed when the script is invoked with incorrect or missing arguments (or perhaps with a `-h` option, for `help`).
 It should document the script's function and command line syntax, environment variables, and files.
 The docstring can be fairly elaborate (several screens full) and should be sufficient for a new user to use the command properly,
 as well as a complete quick reference to all options and arguments for the sophisticated user.
@@ -1035,11 +1028,10 @@ This includes (if applicable) the class's:
 
 - overall behavior
 - public methods
-- instance variables
+- public instance variables
 - additional info for subclasses
 
 It should not include the specific documentation for the constructor or methods.
-
 
 ### [D.1.17] ✔️ **DO** Fully document a class's constructor and public methods
 
