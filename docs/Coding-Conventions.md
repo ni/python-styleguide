@@ -989,26 +989,17 @@ def sell(type_):
     """
 ```
 
-### [D.1.12] ✔️ **DO** Format a script's docstring as its "usage" message
+### [D.1.12] ✔️ **DO** List exported modules and subpackages in a package's docstring
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
-The docstring should be printed when the script is invoked with incorrect or missing arguments (or perhaps with a `-h` option, for `help`).
-It should document the script's function and command line syntax, environment variables, and files.
-The docstring can be fairly elaborate (several screens full) and should be sufficient for a new user to use the command properly,
-as well as a complete quick reference to all options and arguments for the sophisticated user.
-
-### [D.1.13] ✔️ **DO** List exported modules and subpackages in a package's docstring
-
-> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
-
-### [D.1.14] ✔️ **DO** List exported objects (classes, functions, exceptions, etc...) in a module's docstring
+### [D.1.13] ✔️ **DO** List relevant exported objects (classes, functions, exceptions, etc...) in a module's docstring
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
 Each documented object should have a one-line summary (with less detail than the summary line of the objects' docstring)
 
-### [D.1.15] ✔️ **DO** Fully document a function in its docstring
+### [D.1.14] ✔️ **DO** Fully document a function in its docstring
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
@@ -1020,7 +1011,7 @@ This includes (if applicable) the function's:
 - possible exceptions raised
 - restrictions on usage
 
-### [D.1.16] ✔️ **DO** Fully document a class in its docstring
+### [D.1.15] ✔️ **DO** Fully document a class in its docstring
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
@@ -1033,7 +1024,7 @@ This includes (if applicable) the class's:
 
 It should not include the specific documentation for the constructor or methods.
 
-### [D.1.17] ✔️ **DO** Fully document a class's constructor and public methods
+### [D.1.16] ✔️ **DO** Fully document a class's constructor and public methods
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
@@ -1042,7 +1033,7 @@ These should follow the guidance on function docstrings.
 Note that the class's constructor doesn't need to document the instance variables, as that should be
 covered by the class's docstring.
 
-### [D.1.18] ✔️ **DO** Document a subclass (even if its behavior is mostly inherited)
+### [D.1.17] ✔️ **DO** Document a subclass (even if its behavior is mostly inherited)
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
