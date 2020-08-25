@@ -828,6 +828,8 @@ import sys
 # Bad
 '''Lumberjack: Cuts down trees, among other things.'''
 
+"Lumberjack: Cuts down trees, among other things."
+
 # Good
 """Lumberjack: Cuts down trees, among other things."""
 ```
