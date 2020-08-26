@@ -43,6 +43,8 @@ def test_rule_identifier_follows_case_convention(rule):
     assert rule_title[0] == rule_title[0].upper()
 
 
-def test_rule_has_at_most_one_codeblock(rule):
-    assert len(rule.codeblocks) <= 1
-
+def test_rule_documents_enforcement_codes(rule):
+    if rule.is_automatically_enforced:
+        assert rule.error_codes is not None
+    else:
+        assert rule.error_codes is None

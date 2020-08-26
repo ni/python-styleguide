@@ -50,9 +50,42 @@ In all cases where a convention comes from a PEP, it will be marked as such.
 
 # [F] Formatting
 
-## [F.1] Indents
+## [F.1] Indentation and Line Length
 
-### [F.1.1] ✔️ **DO** Use 4 spaces per indentation level (never tabs)
+### [F.1.1] ✔️ **DO** Limit your lines to a maximum length of 100 characters
+
+There is no one-size-fits-all when it comes to a maximum line length. Too short and
+developers start contorting their code to fit the restriction. Too long and lines exceed
+what is visible in most common tools (code editors, diff visualizers, etc...). Additionally,
+automatic formatting can reduce the burden of maintaining a maximum line length, but can
+also be eager in enforcing it. In the end, choosing a maximum line length isn't about
+optimization, but is rather about finding a middle-ground that developers can agree on.
+
+We have chosen 100 characters because to some developers 80/88 characters is too limiting,
+and to others 110/120 is too long.
+
+```python
+# Bad
+directors = (
+    specially_trained_ecuradorian_mountain_llamas + venezuelan_red_llamas + mexican_whooping_llamas + north_chilean_guanacos
+    + reg_llama_of_brixton + battery_llamas + (terry_gilliam & terry_jones)
+)
+```
+
+```python
+# Good
+directors = (
+    specially_trained_ecuradorian_mountain_llamas
+    + venezuelan_red_llamas
+    + mexican_whooping_llamas
+    + north_chilean_guanacos
+    + reg_llama_of_brixton
+    + battery_llamas
+    + (terry_gilliam & terry_jones)
+)
+```
+
+### [F.1.2] ✔️ **DO** Use 4 spaces per indentation level (never tabs)
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -75,7 +108,9 @@ directors = (
     battery_llamas +
     (terry_gilliam & terry_jones)
 )
+```
 
+```python
 # Good
 directors = (
     specially_trained_ecuradorian_mountain_llamas
@@ -113,7 +148,9 @@ def visit_argument_room(duration):
     new_start = datetime.now()
     while (datetime.now() - new_start) < new_duration:
         self.argue_about_paying()
+```
 
+```python
 # Good - use blank lines to separate code into logically-related sections
 def visit_argument_room(duration):
     start = datetime.now()
@@ -130,7 +167,9 @@ def visit_argument_room(duration):
 
     while (datetime.now() - new_start) < new_duration:
         self.argue_about_paying()
+```
 
+```python
 # Best - extract logic into well-named methods
 def visit_argument_room(duration):
     exit_reason = self._argue_about("answer", duration=duration)
@@ -149,7 +188,9 @@ def visit_argument_room(duration):
 if answer == "no it isn't": accuse_contradiction()
 
 define_argument(); pay_for_more_time(); argue_about_paying()
+```
 
+```python
 # Good
 if answer == "no it isn't":
     accuse_contradiction()
@@ -168,7 +209,9 @@ argue_about_paying()
 ```python
 # Bad
 spam( ham[ 1 ], { eggs: 2 } )
+```
 
+```python
 # Good
 spam(ham[1], {eggs: 2})
 ```
@@ -180,7 +223,9 @@ spam(ham[1], {eggs: 2})
 ```python
 # Bad
 spam = (0, )
+```
 
+```python
 # Good
 spam = (0,)
 ```
@@ -200,7 +245,9 @@ ham[lower + offset:upper + offset]
 ham[1: 9], ham[1 :9], ham[1:9 :3]
 ham[lower : : upper]
 ham[ : upper]
+```
 
+```python
 # Good
 if x == 4:
     print x, y
@@ -219,7 +266,9 @@ ham[:upper]
 ```python
 # Bad
 spam (1)
+```
 
+```python
 # Good
 spam(1)
 ```
@@ -231,7 +280,9 @@ spam(1)
 ```python
 # Bad
 spam ['bacon'] = ham [index]
+```
 
+```python
 # Good
 spam['bacon'] = ham[index]
 ```
@@ -250,7 +301,9 @@ spam['bacon'] = ham[index]
 # Bad
 order =       egg&bacon
 other_order = egg&bacon&spam
+```
 
+```python
 # Good
 order = egg & bacon
 other_order = egg & bacon & spam
@@ -264,7 +317,9 @@ other_order = egg & bacon & spam
 # Bad
 order = (spam+bacon) & (sausage+spam)
 order = spam + bacon & sausage + spam
+```
 
+```python
 # Good
 order = (spam + bacon) & (sausage + spam)
 ```
@@ -277,7 +332,9 @@ order = (spam + bacon) & (sausage + spam)
 # Bad
 def argue(room, minutes = 5):
     return impl(r = room, m = minutes)
+```
 
+```python
 # Good
 def argue(room, minutes=5):
     return impl(r=room, m=minutes)
@@ -290,7 +347,9 @@ def argue(room, minutes=5):
 ```python
 # Bad
 def argue(duration: datetime.timedelta=5): ...
+```
 
+```python
 # Good
 def argue(duration: datetime.timedelta = 5): ...
 ```
@@ -304,7 +363,9 @@ def argue(duration: datetime.timedelta = 5): ...
 ```python
 # Bad
 ingredients = spam,
+```
 
+```python
 # Good
 ingredients = (spam,)
 ```
@@ -316,6 +377,7 @@ ingredients = (spam,)
 This can be helpful for minimizing diffs when future additions are made.
 
 ```python
+# Good
 feast = [
     lambs,
     sloths,
@@ -331,6 +393,7 @@ count(
     "Two!",
     "Five!",
 )
+
 
 def count(
     first_number,
@@ -358,11 +421,12 @@ order = [egg, sausage, bacon,]
 # Bad
 movie = "\"Fillings of Passion\""
 grounding = '\'O\' Level Geography'
+```
 
+```python
 # Good
 movie = '"Fillings of Passion"'
 grounding = "'O' Level Geography"
-
 ```
 
 ### [F.5.2] ✔️ **DO** Use double quotes characters for triple-quoted strings
@@ -370,6 +434,7 @@ grounding = "'O' Level Geography"
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008) as well as [PEP-257](https://www.python.org/dev/peps/pep-0257)
 
 ```python
+# Good
 notice = """We apologise for the fault in the subtitles.
 
 Those responsible have been sacked.
@@ -397,14 +462,13 @@ møøse_costumes = "Siggi Churchill"
 
 ❗️ In most situations, a _better_ name for the identifier is the solution. This rule only applies for cases where the keyword is the best name (I.e. referencing the built-in operation/element, like [`operator.and_`](https://docs.python.org/3.4/library/operator.html#operator.and_))
 
-```python
-# Acceptable
-in_
-for_
-class_
-input_
-file_
-```
+Examples:
+
+- in\_
+- for\_
+- class\_
+- input\_
+- file\_
 
 ## [N.2] Casing
 
@@ -415,10 +479,14 @@ file_
 ```python
 # Bad
 temporary_file
+```
 
-# Better
+```python
+# Good
 temp_file
+```
 
+```python
 # Best
 tempfile
 ```
@@ -437,7 +505,9 @@ tempfile
 # Bad
 class cheese_shop:
     pass
+```
 
+```python
 # Good
 class CheeseShop:
     pass
@@ -448,12 +518,16 @@ class CheeseShop:
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
 ```python
+# Bad
 from typing import TypeVar
 
-# Bad
 flying_circus = TypeVar("flying_circus")
+```
 
+```python
 # Good
+from typing import TypeVar
+
 FlyingCircus = TypeVar("FlyingCircus")
 ```
 
@@ -462,6 +536,7 @@ FlyingCircus = TypeVar("FlyingCircus")
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
 ```python
+# Good
 from typing import TypeVar
 
 FlyingCircus_co = TypeVar('FlyingCircus_co', covariant=True)
@@ -507,7 +582,9 @@ FlyingCircus_contra = TypeVar('FlyingCircus_contra', contravariant=True)
 ```python
 # Bad
 if cheese == None: ...
+```
 
+```python
 # Good
 if cheese is None: ...
 ```
@@ -519,7 +596,9 @@ if cheese is None: ...
 ```python
 # Bad
 if type(cheese) is type(that_cheese): ...
+```
 
+```python
 # Good
 if isinstance(cheese, Gorgonzola): ...
 ```
@@ -534,7 +613,9 @@ if isinstance(cheese, Gorgonzola): ...
 # Bad
 if len(seq): ...
 if not len(seq): ...
+```
 
+```python
 # Good
 if seq: ...
 if not seq: ...
@@ -549,7 +630,9 @@ if not seq: ...
 ```python
 # Bad
 respond = lambda: "is not"
+```
 
+```python
 # Good
 def respond():
    return "is not"
@@ -582,10 +665,14 @@ Additionally, be as specific as possible.
 ```python
 # Bad
 except: ...
+```
 
-# Better
+```python
+# Good
 except Exception: ...
+```
 
+```python
 # Best
 except ImportError: ...
 ```
@@ -602,7 +689,9 @@ try:
 except KeyError:
     # Will also catch KeyError raised by eat()
     return key_not_found(key)
+```
 
+```python
 # Good
 try:
     value = spam[key]
@@ -638,7 +727,9 @@ def foo():
 # Doesn't signify anything other than opening/closing is happening
 with connection:
     do_stuff_in_transaction(connection)
+```
 
+```python
 # Good
 with connection.begin_transaction():
     do_stuff_in_transaction(connection)
@@ -655,7 +746,9 @@ with connection.begin_transaction():
 def get_stock(cheese_kind):
     if in_stock(cheese_kind):
         return get_quantity(cheese_kind)
+```
 
+```python
 # Good
 def get_stock(cheese_kind):
     if in_stock(cheese_kind):
@@ -673,7 +766,9 @@ def get_stock(cheese_kind):
     if not in_stock(cheese_kind):
         return
     return get_quantity(cheese_kind)
+```
 
+```python
 # Good
 def get_stock(cheese_kind):
     if not in_stock(cheese_kind):
@@ -691,7 +786,9 @@ def get_stock(cheese_kind):
 # Bad
 if title[:4] == "King": ...
 if title[-1] == "s": ...
+```
 
+```python
 # Good
 if title.startswith("King"): ...
 if title.endswith("s"): ...
@@ -706,6 +803,7 @@ if title.endswith("s"): ...
 This includes setting `__all__` to the empty list if your module has no public API.
 
 ```python
+# Good
 __all__ = ["spam", "ham", "eggs"]
 ```
 
@@ -728,7 +826,9 @@ This includes packages, modules, classes, functions, attributes and other names.
 ```python
 # Bad
 import sys, os
+```
 
+```python
 # Good
 import os
 import sys
@@ -740,18 +840,16 @@ import sys
 
 Imports come _after_ module comments and docstrings and _before_ module globals and constants.
 
-Bad:
-
 ```python
+# Bad
 """Module Docstring."""
 URL = "http://python.org"
 
 import ministry
 ```
 
-Good:
-
 ```python
+# Good
 """Module Docstring."""
 
 import ministry
@@ -770,7 +868,9 @@ Additionally, you should put a blank line between each group of imports.
 import my_app.utils
 import os
 import ministry
+```
 
+```python
 # Good
 import os
 
@@ -788,7 +888,9 @@ import my_app.utils
 ```python
 # Bad
 from .sibling import rivalry
+```
 
+```python
 # Good
 from my_app.relationships.sibling import rivalry
 ```
@@ -802,10 +904,14 @@ from my_app.relationships.sibling import rivalry
 ```python
 # Bad - Pollutes the namespace
 from ministry import *
+```
 
+```python
 # Good - Doesn't pollute, but usage might still be confusing
 from ministry import silly_walk
+```
 
+```python
 # Best - Doesn't pollute and usage won't confuse
 import ministry
 ```
@@ -835,6 +941,7 @@ import cheese_shop.brie
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
 ```python
+# Good
 """Lumberjack: Cuts down trees, among other things."""
 
 __all__ = ["cut_down_trees", "eat_lunch", "go_shopping"]
@@ -865,7 +972,9 @@ import sys
 '''Lumberjack: Cuts down trees, among other things.'''
 
 "Lumberjack: Cuts down trees, among other things."
+```
 
+```python
 # Good
 """Lumberjack: Cuts down trees, among other things."""
 ```
@@ -889,7 +998,9 @@ class CheeseShop(object):
         """Sell the specified type of cheese.
 
         Will throw an OutOfStockException if the specified type of cheese is out of stock."""
+```
 
+```python
 # Good
 class CheeseShop(object):
     """Finest cheese shop in the district, offering a wide variety of cheeses.
@@ -920,7 +1031,9 @@ class CheeseShop(object):
 
             Will throw an OutOfStockException if the specified type of cheese is out of stock.
         """
+```
 
+```python
 # Good
 class CheeseShop(object):
     """Finest cheese shop in the district, offering a wide variety of cheeses.
@@ -951,7 +1064,9 @@ class CheeseShop(object):
     def sell(self, type_):
 
         """Sell the specified type of cheese."""
+```
 
+```python
 # Good
 class CheeseShop(object):
     """Finest cheese shop in the district, offering a wide variety of cheeses."""
@@ -970,7 +1085,9 @@ def sell(type_):
     """Sell the specified type of cheese."""
 
     _do_transaction(type_)
+```
 
+```python
 # Good
 def sell(type_):
     """Sell the specified type of cheese."""
@@ -987,7 +1104,9 @@ class CheeseShop(object):
     """Finest cheese shop in the district, offering a wide variety of cheeses."""
     def sell(self, type_):
         pass
+```
 
+```python
 # Good
 class CheeseShop(object):
     """Finest cheese shop in the district, offering a wide variety of cheeses."""
@@ -1018,7 +1137,9 @@ def sell(type_):
     """Sell the specified type of cheese.
     Will throw an OutOfStockException if the specified type of cheese is out of stock.
     """
+```
 
+```python
 # Good
 def sell(type_):
     """Sell the specified type of cheese.
@@ -1123,6 +1244,7 @@ When documenting a subclass, mention the differences from superclass beahvior. A
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
 ```python
+# Good
 order = [egg, sausage, bacon]  # The client doesn't want any spam
 ```
 
@@ -1140,9 +1262,8 @@ order = [egg, sausage, bacon]  # The client doesn't want any spam
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-Bad:
-
 ```python
+# Bad
 # -*- coding: utf-8 -*-
 
 ...

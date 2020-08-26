@@ -11,7 +11,7 @@ class _RuleHeader(object):
         header_marker = f"\\n{'#'* header_depth} \\["
 
         return list(
-            cls(text, parent=parent)
+            cls(text.strip(), parent=parent)
             for text in re.findall(
                 r"(" + header_marker + r".*?)(?:(?=" + header_marker + r")|$)",
                 text.strip(),
@@ -23,7 +23,7 @@ class _RuleHeader(object):
         if parent:
             self.parent = parent
         self.identifier = text[text.find("[") + 1 : text.find("]")]
-        self.header_text = text[text.find("]") + 1 :]
+        self.header_text = text[text.find("]") + 1 : text.find("\n")]
         self.body_text = text[text.find("\n") + 1 :]
 
 
@@ -43,9 +43,34 @@ class Rule(_RuleHeader):
     def __init__(self, text, **kwargs):
         super().__init__(text, **kwargs)
 
-        self.is_automatically_enforced = self.header_text.endswith("🖥️")
+        self.is_automatically_enforced = self.header_text.endswith("💻")
         self.is_automatically_fixed = self.header_text.endswith("✨")
-        self.codeblocks = re.findall(r"```(.*?)```", self.body_text)
+        self.codeblocks = [
+            Codeblock(self, match["language"], match["description"], match["body"],)
+            for match in re.finditer(
+                r"```(?P<language>[a-z]+\n)?(# (?P<description>.*?)\n)?(?P<body>.*?)```",
+                self.body_text,
+                flags=re.DOTALL,
+            )
+        ]
+
+    @property
+    def error_codes(self):
+        """Return the error codes this rule is enforced by if any, None otherwise."""
+        match = re.search(
+            r"\n> 💻 This rule is enforced by codes? (.*?)\n", self.body_text,
+        )
+        if match:
+            return [code.strip("` ") for code in match[1].split(",")]
+        return None
+
+
+class Codeblock(object):
+    def __init__(self, rule, language, description, contents):
+        self.rule = rule
+        self.language = language.rstrip() if language else language
+        self.descriptor = description.split()[0] if description else description
+        self.contents = contents
 
 
 def _get_sections():

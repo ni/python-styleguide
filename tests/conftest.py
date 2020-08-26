@@ -21,13 +21,9 @@ def styleguide(request):
     """
 
     def runner(*args):
-        if args[0] == "lint":
-            # Use default formatting instead of the colored formatting
-            args = [
-                *args,
-                "--format",
-                "default",
-            ]
+        if args[0] == "lint" and "--format" not in args:
+            # Use the default formatter instead of the colored one
+            args = [*args, "--format", "default"]
 
         with pytest.raises(SystemExit) as exc_info:
             styleguide_main(["ni_python_styleguide", *map(str, args)])
