@@ -1,7 +1,7 @@
 name: Notify Members of Convention Change
 
 on:
-  pull_request_target:
+  pull_request:
     paths:
       - docs/Coding-Conventions.md
 
@@ -10,22 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: mshick/add-pr-comment@v1
+      - uses: harupy/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          message: |
-            Since this changes the Coding Conventions, I'll @-mention the appropriate NI engineers.
-
-            @alejandro5042
-            @alexweav
-            @DavidCurtiss
-            @irwand
-            @jryckman
-            @kcuzner
-            @mshafer-NI
-            @neilvana
-            @rick-morrow
-            @rtzoeller
-            @sbethur
-            @stick152
-            @thejcannon
+          filename: Notify-Convention-Change.md
