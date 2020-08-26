@@ -61,8 +61,8 @@ automatic formatting can reduce the burden of maintaining a maximum line length,
 also be eager in enforcing it. In the end, choosing a maximum line length isn't about
 optimization, but is rather about finding a middle-ground that developers can agree on.
 
-We have chosen 100 characters because to some developers 80/88 characters is too limiting,
-and to others 110/120 is too long.
+100 characters was chosen because to some developers 80/88 characters is too limiting,
+and to others 110/120 is too long. 100 is something all are OK with.
 
 ```python
 # Bad
