@@ -1,6 +1,6 @@
 name: Notify Members of Convention Change
 
-on: pull_request
+on: pull_request_target
   paths:
     - docs/Coding-Conventions.md
 
