@@ -9,8 +9,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: harupy/comment-on-pr@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: mshick/add-pr-comment@v1
         with:
-          filename: Notify-Convention-Change.md
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          message: |
+            Since this changes the Coding Conventions, I'll @-mention the appropriate NI engineers.
+
+            @alejandro5042
+            @alexweav
+            @DavidCurtiss
+            @irwand
+            @jryckman
+            @kcuzner
+            @mshafer-NI
+            @neilvana
+            @rick-morrow
+            @rtzoeller
+            @sbethur
+            @stick152
+            @thejcannon
