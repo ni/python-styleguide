@@ -1,8 +1,9 @@
 name: Notify Members of Convention Change
 
-on: pull_request
-  paths:
-    - docs/Coding-Conventions.md
+on:
+  pull_request:
+    paths:
+      - docs/Coding-Conventions.md
 
 jobs:
   notify:
