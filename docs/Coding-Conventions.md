@@ -54,6 +54,16 @@ In all cases where a convention comes from a PEP, it will be marked as such.
 
 ### [F.1.1] ✔️ **DO** Limit your lines to a maximum length of 100 characters
 
+There is no one-size-fits-all when it comes to a maximum line length. Too short and
+developers start contorting their code to fit the restriction. Too long and lines exceed
+what is visible in most common tools (code editors, diff visualizers, etc...). Additionally,
+automatic formatting can reduce the burden of maintaining a maximum line length, but can
+also be eager in enforcing it. In the end, choosing a maximum line length isn't about
+optimization, but is rather about finding a middle-ground that developers can agree on.
+
+We have chosen 100 characters because to some developers 80/88 charcters is too limiting,
+and to others 110/120 is too long.
+
 ```python
 # Bad
 directors = (
