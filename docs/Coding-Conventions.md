@@ -42,6 +42,7 @@ In all cases where a convention comes from a PEP, it will be marked as such.
 ## Guides considered
 
 - [PEP 8 -- Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/)
+- [PEP 257 -- Docstring Conventions](https://www.python.org/dev/peps/pep-0257/)
 
 ---
 
@@ -724,7 +725,7 @@ Imports come _after_ module comments and docstrings and _before_ module globals 
 Bad:
 
 ```python
-"""Module Docstring"""
+"""Module Docstring."""
 URL = "http://python.org"
 
 import ministry
@@ -733,7 +734,7 @@ import ministry
 Good:
 
 ```python
-"""Module Docstring"""
+"""Module Docstring."""
 
 import ministry
 
@@ -798,7 +799,7 @@ import ministry
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
 ```python
-"""Lumberjack: Cuts down trees, among other things"""
+"""Lumberjack: Cuts down trees, among other things."""
 
 __all__ = ["cut_down_trees", "eat_lunch", "go_shopping"]
 __version__ = "0.1"
@@ -813,17 +814,235 @@ import sys
 
 ## [D.1] Docstrings
 
-### [D.1.1] ✔️ **DO** Write docstrings for all public modules, functions, classes, and methods
+### [D.1.1] ✔️ **DO** Write docstrings for all public packages, modules, functions, classes, and methods
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008) and [PEP 257](https://www.python.org/dev/peps/pep-0257/#what-is-a-docstring)
 
-### [D.1.2] ✔️ **DO** Put closing `"""` on the same line for one line docstrings
+ℹ️ You can document a package by documenting the module docstring of the package directory's `__init__.py`
+
+### [D.1.2] ✔️ **DO** Use triple double quotes for docstrings
+
+> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#one-line-docstrings)
+
+```python
+# Bad
+'''Lumberjack: Cuts down trees, among other things.'''
+
+"Lumberjack: Cuts down trees, among other things."
+
+# Good
+"""Lumberjack: Cuts down trees, among other things."""
+```
+
+### [D.1.3] ✔️ **DO** Put closing `"""` on the same line for one line docstrings
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008) and [PEP 257](https://www.python.org/dev/peps/pep-0257/#one-line-docstrings)
 
-### [D.1.3] ✔️ **DO** Put closing `"""` on its own line for multiline docstrings
+### [D.1.4] ✔️ **DO** Put closing `"""` on its own line for multiline docstrings
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008) and [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
+
+```python
+# Bad
+class CheeseShop(object):
+    """Finest cheese shop in the district, offering a wide variety of cheeses.
+
+    Cheeses are sold first-come-first-served, and can run out of stock rather quickly."""
+
+    def sell(self, type_):
+        """Sell the specified type of cheese.
+
+        Will throw an OutOfStockException if the specified type of cheese is out of stock."""
+
+# Good
+class CheeseShop(object):
+    """Finest cheese shop in the district, offering a wide variety of cheeses.
+
+    Cheeses are sold first-come-first-served, and can run out of stock rather quickly.
+    """
+
+    def sell(self, type_):
+        """Sell the specified type of cheese.
+
+        Will throw an OutOfStockException if the specified type of cheese is out of stock.
+        """
+```
+
+### [D.1.5] ✔️ **DO** Align multiline docstring indentation with their quotes
+
+```python
+# Bad
+class CheeseShop(object):
+    """Finest cheese shop in the district, offering a wide variety of cheeses.
+
+        Cheeses are sold first-come-first-served, and can run out of stock rather quickly.
+    """
+
+    def sell(self, type_):
+        """
+            Sell the specified type of cheese.
+
+            Will throw an OutOfStockException if the specified type of cheese is out of stock.
+        """
+
+# Good
+class CheeseShop(object):
+    """Finest cheese shop in the district, offering a wide variety of cheeses.
+
+    Cheeses are sold first-come-first-served, and can run out of stock rather quickly.
+    """
+
+    def sell(self, type_):
+        """
+        Sell the specified type of cheese.
+
+        Will throw an OutOfStockException if the specified type of cheese is out of stock.
+        """
+```
+
+> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
+
+### [D.1.6] ❌ **DO NOT** Put a blank line before a docstring
+
+> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
+
+```python
+# Bad
+class CheeseShop(object):
+
+    """Finest cheese shop in the district, offering a wide variety of cheeses."""
+
+    def sell(self, type_):
+
+        """Sell the specified type of cheese."""
+
+# Good
+class CheeseShop(object):
+    """Finest cheese shop in the district, offering a wide variety of cheeses."""
+
+    def sell(self, type_):
+        """Sell the specified type of cheese."""
+```
+
+### [D.1.7] ❌ **DO NOT** Put a blank line after a one line function docstring
+
+> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
+
+```python
+# Bad
+def sell(type_):
+    """Sell the specified type of cheese."""
+
+    _do_transaction(type_)
+
+# Good
+def sell(type_):
+    """Sell the specified type of cheese."""
+    _do_transaction(type_)
+```
+
+### [D.1.8] ✔️ **DO** Put a blank line after a class docstring
+
+> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
+
+```python
+# Bad
+class CheeseShop(object):
+    """Finest cheese shop in the district, offering a wide variety of cheeses."""
+    def sell(self, type_):
+        pass
+
+# Good
+class CheeseShop(object):
+    """Finest cheese shop in the district, offering a wide variety of cheeses."""
+
+    def sell(self, type_):
+        pass
+```
+
+### [D.1.9] ✔️ **DO** Use complete, grammatically correct sentences, ended with a period
+
+> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
+
+### [D.1.10] ✔️ **DO** Write your docstrings as a command
+
+> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
+
+E.g. "Do this", "Return that" instead of "Returns the ...".
+
+### [D.1.11] ✔️ **DO** Start multiline docstrings with a one-line summary followed by a blank line
+
+> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
+
+The summary line may be on the same line as the opening quotes or on the next line.
+
+```python
+# Bad
+def sell(type_):
+    """Sell the specified type of cheese.
+    Will throw an OutOfStockException if the specified type of cheese is out of stock.
+    """
+
+# Good
+def sell(type_):
+    """Sell the specified type of cheese.
+
+    Will throw an OutOfStockException if the specified type of cheese is out of stock.
+    """
+```
+
+### [D.1.12] ✔️ **DO** List exported modules and subpackages in a package's docstring
+
+> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
+
+### [D.1.13] ✔️ **DO** List relevant exported objects (classes, functions, exceptions, etc...) in a module's docstring
+
+> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
+
+Each documented object should have a one-line summary (with less detail than the summary line of the objects' docstring)
+
+### [D.1.14] ✔️ **DO** Fully document a function in its docstring
+
+> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
+
+This includes (if applicable) the function's:
+
+- arguments (including optional arguments, and keyword arguments)
+- return value
+- side effects
+- possible exceptions raised
+- restrictions on usage
+
+### [D.1.15] ✔️ **DO** Fully document a class in its docstring
+
+> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
+
+This includes (if applicable) the class's:
+
+- overall behavior
+- public methods
+- public instance variables
+- additional info for subclasses
+
+It should not include the specific documentation for the constructor or methods.
+
+### [D.1.16] ✔️ **DO** Fully document a class's constructor and public methods
+
+> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
+
+These should follow the guidance on function docstrings.
+
+Note that the class's constructor doesn't need to document the instance variables, as that should be
+covered by the class's docstring.
+
+### [D.1.17] ✔️ **DO** Document a subclass (even if its behavior is mostly inherited)
+
+> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
+
+When documenting a subclass, mention the differences from superclass beahvior. Additionally:
+
+- Use the verb "override" to indicate that a subclass method replaces a superclass method and does not call the superclass method.
+- Use the verb "extend" to indicate that a subclass method calls the superclass method (in addition to its own behavior)
 
 ---
 
