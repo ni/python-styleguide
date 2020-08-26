@@ -52,7 +52,28 @@ In all cases where a convention comes from a PEP, it will be marked as such.
 
 ## [F.1] Indents
 
-### [F.1.1] ✔️ **DO** Use 4 spaces per indentation level (never tabs)
+### [F.1.1] ✔️ **DO** Limit your lines to a maximum length of 100 characters
+
+```python
+# Bad
+directors = (
+    specially_trained_ecuradorian_mountain_llamas + venezuelan_red_llamas + mexican_whooping_llamas + north_chilean_guanacos
+    + reg_llama_of_brixton + battery_llamas + (terry_gilliam & terry_jones)
+)
+
+# Good
+directors = (
+    specially_trained_ecuradorian_mountain_llamas
+    + venezuelan_red_llamas
+    + mexican_whooping_llamas
+    + north_chilean_guanacos
+    + reg_llama_of_brixton
+    + battery_llamas
+    + (terry_gilliam & terry_jones)
+)
+```
+
+### [F.1.2] ✔️ **DO** Use 4 spaces per indentation level (never tabs)
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
