@@ -17,4 +17,5 @@ def test_section_identifiers_unique(sections):
 
 
 def test_section_identifier_follows_case_convention(section):
-    assert section.header_text[0] == section.header_text[0].upper()
+    header_text = section.header_text.lstrip()
+    assert header_text[0].isupper(), "header should start with an upper-case letter"

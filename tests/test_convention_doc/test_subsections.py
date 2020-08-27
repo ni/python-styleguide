@@ -39,4 +39,5 @@ def test_subsection_isnt_rule(subsection):
 
 
 def test_subsection_identifier_follows_case_convention(subsection):
-    assert subsection.header_text[0] == subsection.header_text[0].upper()
+    header_text = subsection.header_text.lstrip()
+    assert header_text[0].isupper(), "header should start with an upper-case letter"

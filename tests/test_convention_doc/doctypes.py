@@ -58,10 +58,10 @@ class Rule(_RuleHeader):
     def error_codes(self):
         """Return the error codes this rule is enforced by if any, None otherwise."""
         match = re.search(
-            r"\n> 💻 This rule is enforced by codes? (.*?)\n", self.body_text,
+            r"\n> 💻 This rule is enforced by error codes? (.*?)\n", self.body_text,
         )
         if match:
-            return [code.strip("` ") for code in match[1].split(",")]
+            return [error_code.strip("` ") for error_code in match[1].split(",")]
         return None
 
 
