@@ -43,4 +43,4 @@ jobs:
         run: poetry run ni-python-styleguide lint
 
       - name: Run tests
-        run: poetry run pytest
+        run: poetry run pytest -v
