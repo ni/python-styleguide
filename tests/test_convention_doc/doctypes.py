@@ -46,13 +46,36 @@ class Rule(_RuleHeader):
         self.is_automatically_enforced = self.header_text.endswith("💻")
         self.is_automatically_fixed = self.header_text.endswith("✨")
         self.codeblocks = [
-            Codeblock(self, match["language"], match["description"], match["body"],)
-            for match in re.finditer(
-                r"```(?P<language>[a-z]+\n)?(# (?P<description>.*?)\n)?(?P<body>.*?)```",
-                self.body_text,
-                flags=re.DOTALL,
-            )
+            Codeblock(self, match["language"], match["description"], match["body"])
+            for match in Rule._find_codeblocks(self.body_text)
         ]
+
+    @staticmethod
+    def _find_codeblocks(text):
+        r"""Find codeblocks in given text, yielding match objects.
+
+        >>> [match.groupdict() for match in Rule._find_codeblocks('```x=5```')]
+        [{'language': None, 'description': None, 'body': 'x=5'}]
+
+        >>> [match.groupdict() for match in Rule._find_codeblocks('```python\nx=5```')]
+        [{'language': 'python', 'description': None, 'body': 'x=5'}]
+
+        >>> [
+        ...     match.groupdict()
+        ...     for match in
+        ...     Rule._find_codeblocks('```python\n# Bad\nx=5```')
+        ... ]
+        [{'language': 'python', 'description': 'Bad', 'body': 'x=5'}]
+
+        >>> [match.groupdict() for match in Rule._find_codeblocks('```\n# Bad\nx=5```')]
+        [{'language': None, 'description': 'Bad', 'body': 'x=5'}]
+
+        """
+        yield from re.finditer(
+            r"```((?P<language>[a-z]+)\n)?(\n?# (?P<description>.*?)\n)?(?P<body>.*?)```",
+            text,
+            flags=re.DOTALL,
+        )
 
     @property
     def error_codes(self):
@@ -68,7 +91,7 @@ class Rule(_RuleHeader):
 class Codeblock(object):
     def __init__(self, rule, language, description, contents):
         self.rule = rule
-        self.language = language.rstrip() if language else language
+        self.language = language
         self.descriptor = description.split()[0] if description else description
         self.contents = contents
 
