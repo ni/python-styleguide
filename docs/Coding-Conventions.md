@@ -52,7 +52,38 @@ In all cases where a convention comes from a PEP, it will be marked as such.
 
 ## [F.1] Indents
 
-### [F.1.1] ✔️ **DO** Use 4 spaces per indentation level (never tabs)
+### [F.1.1] ✔️ **DO** Limit your lines to a maximum length of 100 characters
+
+There is no one-size-fits-all when it comes to a maximum line length. Too short and
+developers start contorting their code to fit the restriction. Too long and lines exceed
+what is visible in most common tools (code editors, diff visualizers, etc...). Additionally,
+automatic formatting can reduce the burden of maintaining a maximum line length, but can
+also be eager in enforcing it. In the end, choosing a maximum line length isn't about
+optimization, but is rather about finding a middle-ground that developers can agree on.
+
+We have chosen 100 characters because to some developers 80/88 characters is too limiting,
+and to others 110/120 is too long.
+
+```python
+# Bad
+directors = (
+    specially_trained_ecuradorian_mountain_llamas + venezuelan_red_llamas + mexican_whooping_llamas + north_chilean_guanacos
+    + reg_llama_of_brixton + battery_llamas + (terry_gilliam & terry_jones)
+)
+
+# Good
+directors = (
+    specially_trained_ecuradorian_mountain_llamas
+    + venezuelan_red_llamas
+    + mexican_whooping_llamas
+    + north_chilean_guanacos
+    + reg_llama_of_brixton
+    + battery_llamas
+    + (terry_gilliam & terry_jones)
+)
+```
+
+### [F.1.2] ✔️ **DO** Use 4 spaces per indentation level (never tabs)
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
