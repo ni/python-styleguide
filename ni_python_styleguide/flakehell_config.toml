@@ -1,4 +1,6 @@
 # (Please list things by alphabetical order)
+[tool.flakehell]
+max_line_length = 100
 
 [tool.flakehell.plugins]
 # Everything is on by default
