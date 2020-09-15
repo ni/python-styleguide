@@ -1,4 +1,11 @@
 # (Please list things by alphabetical order)
+
+[tool.black]
+# Projects are encouraged to configure black in their pyproject.toml, so that black can be run
+# to format the file (either directly or by editors). However, the linter will enforce that code
+# adheres to black's style with a line length of 100.
+line-length = 100
+
 [tool.flakehell]
 max_line_length = 100
 

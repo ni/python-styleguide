@@ -15,6 +15,14 @@ def main(argv=sys.argv):
                 str(pathlib.Path(__file__).parent / "flakehell_config.toml"),
             ]
         )
+
+    if args and args[0] == "lint":
+        args.extend(
+            [
+                "--black-config",
+                str(pathlib.Path(__file__).parent / "flakehell_config.toml"),
+            ]
+        )
     flakehell.entrypoint(args)
 
 

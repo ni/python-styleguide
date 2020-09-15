@@ -80,9 +80,7 @@ class Rule(_RuleHeader):
     @property
     def error_codes(self):
         """Return the error codes this rule is enforced by if any, None otherwise."""
-        match = re.search(
-            r"\n> 💻 This rule is enforced by error codes? (.*?)\n", self.body_text,
-        )
+        match = re.search(r"\n> 💻 This rule is enforced by error codes? (.*?)\n", self.body_text)
         if match:
             return [error_code.strip("` ") for error_code in match[1].split(",")]
         return None
@@ -98,22 +96,14 @@ class Codeblock(object):
 
 def _get_sections():
     conventions_text = (
-        pathlib.Path(__file__).absolute().parent.parent.parent
-        / "docs"
-        / "Coding-Conventions.md"
+        pathlib.Path(__file__).absolute().parent.parent.parent / "docs" / "Coding-Conventions.md"
     ).read_text(encoding="utf-8")
 
-    convention_rules_text = conventions_text[
-        conventions_text.find("<!-- Begin Auto-ID -->") :
-    ]
+    convention_rules_text = conventions_text[conventions_text.find("<!-- Begin Auto-ID -->") :]
 
     return Section.from_text(convention_rules_text)
 
 
 SECTIONS = _get_sections()
-SUBSECTIONS = list(
-    itertools.chain.from_iterable(section.subsections for section in SECTIONS)
-)
-RULES = list(
-    itertools.chain.from_iterable(subsection.rules for subsection in SUBSECTIONS)
-)
+SUBSECTIONS = list(itertools.chain.from_iterable(section.subsections for section in SECTIONS))
+RULES = list(itertools.chain.from_iterable(subsection.rules for subsection in SUBSECTIONS))

@@ -28,7 +28,7 @@ def test_bad_codeblocks_document_lint_errors(lint_codeblock, bad_codeblock, caps
         ), 'Expected automatically enforced "bad" codeblock to cause lint error'
 
         error_codes = set(
-            json.loads(lint_error)['code'] for lint_error in capsys.readouterr().out.splitlines()
+            json.loads(lint_error)["code"] for lint_error in capsys.readouterr().out.splitlines()
         )
 
         assert error_codes.issubset(

@@ -70,7 +70,9 @@ A formatter, enforced across all of our code, ensures that a person working on p
 - It is under the umbrella of the [Python Software Foundation](https://www.python.org/psf/), which is a good endorsement from the community
 - It does not modify the AST of the program :tada:
 
-### [F.1.2] ✔️ **DO** Limit your lines to a maximum length of 100 characters
+### [F.1.2] ✔️ **DO** Limit your lines to a maximum length of 100 characters 💻
+
+> 💻 This rule is enforced by error code BLK100
 
 ℹ️ This is easily managed by `black` by setting `line-length = 100` in your `pyproject.toml` under `[tool.black]` section
 
@@ -83,6 +85,16 @@ optimization, but is rather about finding a middle-ground that developers can ag
 
 We have chosen 100 characters because to some developers 80/88 characters is too limiting,
 and to others 110/120 is too long.
+
+```python
+# Bad
+line_with_101_chars = "spaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaam"
+```
+
+```python
+# Good
+line_with_99_chars = "spaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaam"
+```
 
 ## [F.2] Line Spacing
 
