@@ -4,9 +4,11 @@
 # Projects are encouraged to configure black in their pyproject.toml, so that black can be run
 # to format the file (either directly or by editors). However, the linter will enforce that code
 # adheres to black's style with a line length of 100.
+# See also: https://ni.github.io/python-styleguide/#F-1-2
 line-length = 100
 
 [tool.flakehell]
+# See https://ni.github.io/python-styleguide/#F-1-2
 max_line_length = 100
 
 [tool.flakehell.plugins]
