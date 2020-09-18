@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 
@@ -22,12 +24,11 @@ def test_rule_codeblocks_documents_bad_good_best(codeblock):
 def test_bad_codeblocks_document_lint_errors(lint_codeblock, bad_codeblock, capsys):
     if bad_codeblock.rule.is_automatically_enforced:
         assert not lint_codeblock(
-            bad_codeblock, "--format", "'%(code)s'"
+            bad_codeblock, "--format", "json"
         ), 'Expected automatically enforced "bad" codeblock to cause lint error'
 
-        captured = capsys.readouterr()
         error_codes = set(
-            error_code.strip("'") for error_code in captured.out.strip().split("\n")
+            json.loads(lint_error)["code"] for lint_error in capsys.readouterr().out.splitlines()
         )
 
         assert error_codes.issubset(

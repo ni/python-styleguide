@@ -35,8 +35,6 @@ Additionally rules might be suffixed with one of the below:
 
 This document serves as the single source of truth when it comes to Python coding conventions for NI code. Therefore other guides (such as the Google Python styleguide or various PEP-guides) are superseded by this one.
 
-We have consciously decided to extract conventions from existing guides, instead of simply linking to them to minimize the scattering of conventions, to mirror other language conventions, as well as to allow us to tweak the conventions where necessary.
-
 In all cases where a convention comes from a PEP, it will be marked as such.
 
 ## Guides considered
@@ -50,9 +48,33 @@ In all cases where a convention comes from a PEP, it will be marked as such.
 
 # [F] Formatting
 
-## [F.1] Indentation and Line Length
+## [F.1] General
 
-### [F.1.1] ✔️ **DO** Limit your lines to a maximum length of 100 characters
+### [F.1.1] ✔️ **DO** Use `black` to format your code 💻
+
+> 💻 This rule is enforced by error code BLK100
+
+`black`'s style is well-documented and can be found [here](https://black.readthedocs.io/en/stable/the_black_code_style.html).
+
+#### Why do we need a formatter?
+
+Honestly, there's no mechanical reason to need one. Some argue that as long as linters catch issues (bugs or style violations) then the humans can make sure the code looks readable.
+This might be true for a single project, but when you consider dozens of projects with dozens of contributors, **consistency matters**.
+A formatter, enforced across all of our code, ensures that a person working on project A can work on Project B without needing to spend time familiarizing himself/herself with different style.
+
+#### Why `black`?
+
+- `black` has virtually no configuration support:
+  - If we have to choose a formatter, choosing one with virtually no configuration is generally well received, as no one gets to argue about style
+  - Choosing a formatter with virtually no configuration means formatted code from one location looks the same as another location, without having to share/duplicate a config
+- It is under the umbrella of the [Python Software Foundation](https://www.python.org/psf/), which is a good endorsement from the community
+- It does not modify the AST of the program :tada:
+
+### [F.1.2] ✔️ **DO** Limit your lines to a maximum length of 100 characters 💻
+
+> 💻 This rule is enforced by error code BLK100
+
+ℹ️ This is easily managed by `black` by setting `line-length = 100` in your `pyproject.toml` under `[tool.black]` section
 
 There is no one-size-fits-all when it comes to a maximum line length. Too short and
 developers start contorting their code to fit the restriction. Too long and lines exceed
@@ -66,72 +88,17 @@ and to others 110/120 is too long.
 
 ```python
 # Bad
-directors = (
-    specially_trained_ecuradorian_mountain_llamas + venezuelan_red_llamas + mexican_whooping_llamas + north_chilean_guanacos
-    + reg_llama_of_brixton + battery_llamas + (terry_gilliam & terry_jones)
-)
+line_with_101_chars = "spaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaam"
 ```
 
 ```python
 # Good
-directors = (
-    specially_trained_ecuradorian_mountain_llamas
-    + venezuelan_red_llamas
-    + mexican_whooping_llamas
-    + north_chilean_guanacos
-    + reg_llama_of_brixton
-    + battery_llamas
-    + (terry_gilliam & terry_jones)
-)
+line_with_99_chars = "spaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaam"
 ```
-
-### [F.1.2] ✔️ **DO** Use 4 spaces per indentation level (never tabs)
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
 ## [F.2] Line Spacing
 
-### [F.2.1] ✔️ **DO** Use a line break before a binary operator
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-This not only matches mathematical publications, but also results in more readable code:
-
-```python
-# Bad
-directors = (
-    specially_trained_ecuradorian_mountain_llamas +
-    venezuelan_red_llamas +
-    mexican_whooping_llamas +
-    north_chilean_guanacos +
-    reg_llama_of_brixton +
-    battery_llamas +
-    (terry_gilliam & terry_jones)
-)
-```
-
-```python
-# Good
-directors = (
-    specially_trained_ecuradorian_mountain_llamas
-    + venezuelan_red_llamas
-    + mexican_whooping_llamas
-    + north_chilean_guanacos
-    + reg_llama_of_brixton
-    + battery_llamas
-    + (terry_gilliam & terry_jones)
-)
-```
-
-### [F.2.2] ✔️ **DO** Surround top-level function and class definitions with two blank lines
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-### [F.2.3] ✔️ **DO** Surround method definitions inside a class by a single blank line
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-### [F.2.4] ✔️ **DO** Use blank lines in functions, sparingly, to indicate logical sections.
+### [F.2.1] ✔️ **DO** Use blank lines in functions, sparingly, to indicate logical sections.
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -177,268 +144,6 @@ def visit_argument_room(duration):
     if exit_reason == "timeout":
         new_duration = self._purchase_more_time()
         self._argue_about("purchasing", duration=new_duration)
-```
-
-### [F.2.5] ❌ **DO NOT** Put multiple statements on one line
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-```python
-# Bad
-if answer == "no it isn't": accuse_contradiction()
-
-define_argument(); pay_for_more_time(); argue_about_paying()
-```
-
-```python
-# Good
-if answer == "no it isn't":
-    accuse_contradiction()
-
-define_argument()
-pay_for_more_time()
-argue_about_paying()
-```
-
-## [F.3] Character Spacing
-
-### [F.3.1] ❌ **DO NOT** Use whitespace immediately inside parentheses, brackets or braces
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-```python
-# Bad
-spam( ham[ 1 ], { eggs: 2 } )
-```
-
-```python
-# Good
-spam(ham[1], {eggs: 2})
-```
-
-### [F.3.2] ❌ **DO NOT** Use whitespace between a trailing comma and a following close parenthesis
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-```python
-# Bad
-spam = (0, )
-```
-
-```python
-# Good
-spam = (0,)
-```
-
-### [F.3.3] ❌ **DO NOT** Use whitespace immediately before a comma, semicolon, or colon
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-ℹ️ An exception is made (and **must** be followed) for situations where the colon is acting like a binary operator and other operators are present. Then it **must** be surrounded by whitespace like any other operator.
-
-```python
-# Bad
-if x == 4 :
-    print x , y
-    x , y = y , x
-ham[lower + offset:upper + offset]
-ham[1: 9], ham[1 :9], ham[1:9 :3]
-ham[lower : : upper]
-ham[ : upper]
-```
-
-```python
-# Good
-if x == 4:
-    print x, y
-    x, y = y, x
-
-ham[lower + offset : upper + offset]
-ham[1:9], ham[1:9], ham[1:9:3]
-ham[lower::upper]
-ham[:upper]
-```
-
-### [F.3.4] ❌ **DO NOT** Use whitespace immediately before the open parenthesis that starts the argument list of a function call
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-```python
-# Bad
-spam (1)
-```
-
-```python
-# Good
-spam(1)
-```
-
-### [F.3.5] ❌ **DO NOT** Use whitespace immediately before the open parenthesis that starts an indexing or slicing
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-```python
-# Bad
-spam ['bacon'] = ham [index]
-```
-
-```python
-# Good
-spam['bacon'] = ham[index]
-```
-
-### [F.3.6] ❌ **DO NOT** Use trailing whitespace anywhere
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-### [F.3.7] ✔️ **DO** Surround binary operators with exactly one space on either side (unless otherwise stated)
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-ℹ️ Rules [F.3.9] and [F.3.10] specify exceptions to this rule
-
-```python
-# Bad
-order =       egg&bacon
-other_order = egg&bacon&spam
-```
-
-```python
-# Good
-order = egg & bacon
-other_order = egg & bacon & spam
-```
-
-### [F.3.8] ✔️ **CONSIDER** Surrounding expressions with parenthesis when different operators are used
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-```python
-# Bad
-order = (spam+bacon) & (sausage+spam)
-order = spam + bacon & sausage + spam
-```
-
-```python
-# Good
-order = (spam + bacon) & (sausage + spam)
-```
-
-### [F.3.9] ❌ **DO NOT** Surround the "`=`" with spaces when used to indicate a keyword argument, or when used to indicate a default value for an _unannotated_ function parameter
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-```python
-# Bad
-def argue(room, minutes = 5):
-    return impl(r = room, m = minutes)
-```
-
-```python
-# Good
-def argue(room, minutes=5):
-    return impl(r=room, m=minutes)
-```
-
-### [F.3.10] ✔️ **DO** Surround the "`=`" with spaces when used to indicate a default value for an _annotated_ function parameter
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-```python
-# Bad
-def argue(duration: datetime.timedelta=5): ...
-```
-
-```python
-# Good
-def argue(duration: datetime.timedelta = 5): ...
-```
-
-## [F.4] Trailing Commas
-
-### [F.4.1] ✔️ **DO** Parenthesize one-element tuples
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-```python
-# Bad
-ingredients = spam,
-```
-
-```python
-# Good
-ingredients = (spam,)
-```
-
-### [F.4.2] ✔️ **CONSIDER** Using redundant trailing commas in collection element and argument lists
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-This can be helpful for minimizing diffs when future additions are made.
-
-```python
-# Good
-feast = [
-    lambs,
-    sloths,
-    carp,
-    anchovies,
-    orangutans,
-    breakfast_cereals,
-    fruit_bats,
-]
-
-count(
-    "One!",
-    "Two!",
-    "Five!",
-)
-
-
-def count(
-    first_number,
-    second_number,
-    third_number,
-)
-```
-
-### [F.4.3] ❌ **DO NOT** Use a redundant trailing comma on the same line as a closing delimiter
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-```python
-# Bad
-order = [egg, sausage, bacon,]
-```
-
-## [F.5] Strings
-
-### [F.5.1] ✔️ **DO** Use single or double quotes characters when a string contains the other character
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-```python
-# Bad
-movie = "\"Fillings of Passion\""
-grounding = '\'O\' Level Geography'
-```
-
-```python
-# Good
-movie = '"Fillings of Passion"'
-grounding = "'O' Level Geography"
-```
-
-### [F.5.2] ✔️ **DO** Use double quotes characters for triple-quoted strings
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008) as well as [PEP-257](https://www.python.org/dev/peps/pep-0257)
-
-```python
-# Good
-notice = """We apologise for the fault in the subtitles.
-
-Those responsible have been sacked.
-"""
 ```
 
 ---
@@ -539,8 +244,8 @@ FlyingCircus = TypeVar("FlyingCircus")
 # Good
 from typing import TypeVar
 
-FlyingCircus_co = TypeVar('FlyingCircus_co', covariant=True)
-FlyingCircus_contra = TypeVar('FlyingCircus_contra', contravariant=True)
+FlyingCircus_co = TypeVar("FlyingCircus_co", covariant=True)
+FlyingCircus_contra = TypeVar("FlyingCircus_contra", contravariant=True)
 ```
 
 ### [N.2.6] ✔️ **DO** Suffix error exceptions with "Error"
@@ -581,12 +286,14 @@ FlyingCircus_contra = TypeVar('FlyingCircus_contra', contravariant=True)
 
 ```python
 # Bad
-if cheese == None: ...
+if cheese == None:
+    pass
 ```
 
 ```python
 # Good
-if cheese is None: ...
+if cheese is None:
+    pass
 ```
 
 ### [L.1.2] ✔️ **DO** Use `isinstance` instead of comparing types directly
@@ -595,12 +302,14 @@ if cheese is None: ...
 
 ```python
 # Bad
-if type(cheese) is type(that_cheese): ...
+if type(cheese) is type(that_cheese):
+    pass
 ```
 
 ```python
 # Good
-if isinstance(cheese, Gorgonzola): ...
+if isinstance(cheese, Gorgonzola):
+    pass
 ```
 
 ### [L.1.3] ✔️ **DO** Use the conversion to boolean to check for empty sequences
@@ -611,14 +320,18 @@ if isinstance(cheese, Gorgonzola): ...
 
 ```python
 # Bad
-if len(seq): ...
-if not len(seq): ...
+if len(seq):
+    pass
+if not len(seq):
+    pass
 ```
 
 ```python
 # Good
-if seq: ...
-if not seq: ...
+if seq:
+    pass
+if not seq:
+    pass
 ```
 
 ## [L.2] Lambdas
@@ -635,7 +348,7 @@ respond = lambda: "is not"
 ```python
 # Good
 def respond():
-   return "is not"
+    return "is not"
 ```
 
 ## [L.3] Exceptions
@@ -664,17 +377,26 @@ Additionally, be as specific as possible.
 
 ```python
 # Bad
-except: ...
+try:
+    pass
+except:
+    pass
 ```
 
 ```python
 # Good
-except Exception: ...
+try:
+    pass
+except Exception:
+    pass
 ```
 
 ```python
 # Best
-except ImportError: ...
+try:
+    pass
+except ImportError:
+    pass
 ```
 
 ### [L.3.4] ✔️ **DO** Limit the body of the try block to the absolute minimum amount of code necessary to cause the possible exception
@@ -784,14 +506,18 @@ def get_stock(cheese_kind):
 
 ```python
 # Bad
-if title[:4] == "King": ...
-if title[-1] == "s": ...
+if title[:4] == "King":
+    pass
+if title[-1] == "s":
+    pass
 ```
 
 ```python
 # Good
-if title.startswith("King"): ...
-if title.endswith("s"): ...
+if title.startswith("King"):
+    pass
+if title.endswith("s"):
+    pass
 ```
 
 ## [L.7] Modules
@@ -963,27 +689,11 @@ import sys
 
 ℹ️ You can document a package by documenting the module docstring of the package directory's `__init__.py`
 
-### [D.1.2] ✔️ **DO** Use triple double quotes for docstrings
-
-> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#one-line-docstrings)
-
-```python
-# Bad
-'''Lumberjack: Cuts down trees, among other things.'''
-
-"Lumberjack: Cuts down trees, among other things."
-```
-
-```python
-# Good
-"""Lumberjack: Cuts down trees, among other things."""
-```
-
-### [D.1.3] ✔️ **DO** Put closing `"""` on the same line for one line docstrings
+### [D.1.2] ✔️ **DO** Put closing `"""` on the same line for one line docstrings
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008) and [PEP 257](https://www.python.org/dev/peps/pep-0257/#one-line-docstrings)
 
-### [D.1.4] ✔️ **DO** Put closing `"""` on its own line for multiline docstrings
+### [D.1.3] ✔️ **DO** Put closing `"""` on its own line for multiline docstrings
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008) and [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
@@ -1015,43 +725,9 @@ class CheeseShop(object):
         """
 ```
 
-### [D.1.5] ✔️ **DO** Align multiline docstring indentation with their quotes
-
-```python
-# Bad
-class CheeseShop(object):
-    """Finest cheese shop in the district, offering a wide variety of cheeses.
-
-        Cheeses are sold first-come-first-served, and can run out of stock rather quickly.
-    """
-
-    def sell(self, type_):
-        """
-            Sell the specified type of cheese.
-
-            Will throw an OutOfStockException if the specified type of cheese is out of stock.
-        """
-```
-
-```python
-# Good
-class CheeseShop(object):
-    """Finest cheese shop in the district, offering a wide variety of cheeses.
-
-    Cheeses are sold first-come-first-served, and can run out of stock rather quickly.
-    """
-
-    def sell(self, type_):
-        """
-        Sell the specified type of cheese.
-
-        Will throw an OutOfStockException if the specified type of cheese is out of stock.
-        """
-```
-
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
-### [D.1.6] ❌ **DO NOT** Put a blank line before a docstring
+### [D.1.4] ❌ **DO NOT** Put a blank line before a docstring
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
@@ -1075,7 +751,7 @@ class CheeseShop(object):
         """Sell the specified type of cheese."""
 ```
 
-### [D.1.7] ❌ **DO NOT** Put a blank line after a one line function docstring
+### [D.1.5] ❌ **DO NOT** Put a blank line after a one line function docstring
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
@@ -1094,38 +770,17 @@ def sell(type_):
     _do_transaction(type_)
 ```
 
-### [D.1.8] ✔️ **DO** Put a blank line after a class docstring
+### [D.1.6] ✔️ **DO** Use complete, grammatically correct sentences, ended with a period
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
-```python
-# Bad
-class CheeseShop(object):
-    """Finest cheese shop in the district, offering a wide variety of cheeses."""
-    def sell(self, type_):
-        pass
-```
-
-```python
-# Good
-class CheeseShop(object):
-    """Finest cheese shop in the district, offering a wide variety of cheeses."""
-
-    def sell(self, type_):
-        pass
-```
-
-### [D.1.9] ✔️ **DO** Use complete, grammatically correct sentences, ended with a period
-
-> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
-
-### [D.1.10] ✔️ **DO** Write your docstrings as a command
+### [D.1.7] ✔️ **DO** Write your docstrings as a command
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
 E.g. "Do this", "Return that" instead of "Returns the ...".
 
-### [D.1.11] ✔️ **DO** Start multiline docstrings with a one-line summary followed by a blank line
+### [D.1.8] ✔️ **DO** Start multiline docstrings with a one-line summary followed by a blank line
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
@@ -1148,17 +803,17 @@ def sell(type_):
     """
 ```
 
-### [D.1.12] ✔️ **DO** List exported modules and subpackages in a package's docstring
+### [D.1.9] ✔️ **DO** List exported modules and subpackages in a package's docstring
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
-### [D.1.13] ✔️ **DO** List relevant exported objects (classes, functions, exceptions, etc...) in a module's docstring
+### [D.1.10] ✔️ **DO** List relevant exported objects (classes, functions, exceptions, etc...) in a module's docstring
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
 Each documented object should have a one-line summary (with less detail than the summary line of the objects' docstring)
 
-### [D.1.14] ✔️ **DO** Fully document a function in its docstring
+### [D.1.11] ✔️ **DO** Fully document a function in its docstring
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
@@ -1170,7 +825,7 @@ This includes (if applicable) the function's:
 - possible exceptions raised
 - restrictions on usage
 
-### [D.1.15] ✔️ **DO** Fully document a class in its docstring
+### [D.1.12] ✔️ **DO** Fully document a class in its docstring
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
@@ -1183,7 +838,7 @@ This includes (if applicable) the class's:
 
 It should not include the specific documentation for the constructor or methods.
 
-### [D.1.16] ✔️ **DO** Fully document a class's constructor and public methods
+### [D.1.13] ✔️ **DO** Fully document a class's constructor and public methods
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
@@ -1192,7 +847,7 @@ These should follow the guidance on function docstrings.
 Note that the class's constructor doesn't need to document the instance variables, as that should be
 covered by the class's docstring.
 
-### [D.1.17] ✔️ **DO** Document a subclass (even if its behavior is mostly inherited)
+### [D.1.14] ✔️ **DO** Document a subclass (even if its behavior is mostly inherited)
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 

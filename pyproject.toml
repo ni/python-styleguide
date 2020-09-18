@@ -10,6 +10,8 @@ include = ["ni_python_styleguide/flakehell_config.toml"]
 python = "^3.6"
 flake8 = "^3.8.3"
 
+black = "^20.8b1"  # Needed by flake8-black
+
 # @TODO: flakehell's dependencies.
 # Since we're vendoring flakehell, these are required here.
 pygments = "*"
@@ -19,6 +21,7 @@ toml = "*"
 urllib3 = "*"
 
 # flake8 plugins should be listed here (in alphabetical order)
+flake8-black = "^0.2.1"
 
 # Rejected flake8 plugins should be listed here (in alphabetical order)
 # Also describe why it is rejected and/or add a link
@@ -42,9 +45,13 @@ grouped = "ni_python_styleguide._vendor.flakehell.formatters:GroupedFormatter"
 json = "ni_python_styleguide._vendor.flakehell.formatters:JSONFormatter"
 stat = "ni_python_styleguide._vendor.flakehell.formatters:StatFormatter"
 
+[tool.black]
+line-length = 100
+force-exclude = '/ni_python_styleguide/_vendor|.venv/'
+
 [tool.flakehell]
 exclude = ["ni_python_styleguide/_vendor", ".venv", "docs"]
-show_source = true
+show_source = false
 
 [tool.pytest.ini_options]
 addopts = "--doctest-modules --ignore-glob='ni_python_styleguide/**'"

@@ -20,9 +20,7 @@ def rules():
 
 @pytest.fixture(
     scope="module",
-    params=[
-        pytest.param(section, id=section.identifier) for section in doctypes.SECTIONS
-    ],
+    params=[pytest.param(section, id=section.identifier) for section in doctypes.SECTIONS],
 )
 def section(request):
     return request.param
@@ -31,8 +29,7 @@ def section(request):
 @pytest.fixture(
     scope="module",
     params=[
-        pytest.param(subsection, id=subsection.identifier)
-        for subsection in doctypes.SUBSECTIONS
+        pytest.param(subsection, id=subsection.identifier) for subsection in doctypes.SUBSECTIONS
     ],
 )
 def subsection(request):
