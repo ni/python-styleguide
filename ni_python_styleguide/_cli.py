@@ -107,7 +107,6 @@ def lint(obj, file_or_dir):
                 # Ignore all configuration files
                 "--isolated",
                 _qs_or_vs(obj["VERBOSITY"]),
-                # @TODO: pass our config options
                 f"--max-line-length={_LINE_LENGTH}",
                 f"--exclude={obj['EXCLUDE']}" if obj["EXCLUDE"] else "",
                 # Flake8 includes pyflakes, mccabe, and pep8 by default.
