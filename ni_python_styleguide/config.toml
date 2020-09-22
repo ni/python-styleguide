@@ -1,0 +1,4 @@
+# This file exists because some plugin (like flake8-black) only read settings from a config file.
+
+[tool.black]
+line-length = 100
