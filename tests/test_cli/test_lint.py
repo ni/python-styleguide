@@ -74,7 +74,7 @@ def styleguide_lint_with_options(request, styleguide_lint, config_write, tmp_pat
 def test_lint__help_arg_prints_help(styleguide):
     result = styleguide("lint", "--help")
 
-    assert result, result.stderr
+    assert result, result.output
     assert result.output.startswith("Usage:")
 
 
@@ -103,7 +103,7 @@ def test_lint__with_one_file_arg(styleguide_lint, tmp_path):
     (tmp_path / "spam.py").write_text(TOO_LONG_LINE)
     result = styleguide_lint(base_args=[tmp_path / "spam.py"])
 
-    assert not result, result.stderr
+    assert not result, result.output
 
 
 def test_lint__with_one_multiple_file_args(styleguide_lint, tmp_path):
@@ -112,7 +112,7 @@ def test_lint__with_one_multiple_file_args(styleguide_lint, tmp_path):
     (tmp_path / "spam2.py").write_text(TOO_LONG_LINE)
     result = styleguide_lint(base_args=[tmp_path / "spam1.py", tmp_path / "spam2.py"])
 
-    assert not result, result.stderr
+    assert not result, result.output
 
 
 def test_lint__specifying_file_only_lints_file(styleguide_lint, tmp_path):
@@ -121,7 +121,7 @@ def test_lint__specifying_file_only_lints_file(styleguide_lint, tmp_path):
     (tmp_path / "spam2.py").write_text("")  # empty
     result = styleguide_lint(base_args=[tmp_path / "spam2.py"])
 
-    assert not result, result.stderr
+    assert not result, result.output
 
 
 def test_lint__no_args_lints_dir(styleguide_lint, tmp_path):
