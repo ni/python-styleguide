@@ -98,7 +98,7 @@ def main(ctx, verbose, quiet, config, exclude, extend_exclude):
 # @TODO: When we're ready to encourage editor integration, add --diff flag
 @click.argument("file_or_dir", nargs=-1)
 @click.pass_obj
-def lint(obj, diff, file_or_dir):
+def lint(obj, file_or_dir):
     app = flake8.main.application.Application()
     filtered_list = lambda iter: list(filter(bool, iter))
     app.run(
