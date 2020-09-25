@@ -24,11 +24,9 @@ def test_rule_codeblocks_documents_bad_good_best(codeblock):
 def test_bad_codeblocks_document_lint_errors(lint_codeblock, bad_codeblock):
     if bad_codeblock.rule.is_automatically_enforced:
         result = lint_codeblock(bad_codeblock, "--format='%(code)s'")
-
         assert not result, result.output
 
         error_codes = set(code.strip("'") for code in result.output.splitlines())
-
         assert error_codes
         assert error_codes.issubset(
             set(bad_codeblock.rule.error_codes)
