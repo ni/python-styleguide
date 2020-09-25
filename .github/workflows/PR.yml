@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - ni_python_styleguide
+      - ni_python_styleguide/**
       - poetry.lock
       - pyproject.toml
       - docs/Coding-Conventions.md
