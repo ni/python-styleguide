@@ -96,9 +96,10 @@ def main(ctx, verbose, quiet, config, exclude, extend_exclude):
 
 @main.command()
 # @TODO: When we're ready to encourage editor integration, add --diff flag
+@click.option("--format", type=str, help="Format errors according to the chosen formatter.")
 @click.argument("file_or_dir", nargs=-1)
 @click.pass_obj
-def lint(obj, file_or_dir):
+def lint(obj, format, file_or_dir):
     app = flake8.main.application.Application()
     filtered_list = lambda iter: list(filter(bool, iter))
     app.run(
@@ -109,6 +110,7 @@ def lint(obj, file_or_dir):
                 _qs_or_vs(obj["VERBOSITY"]),
                 f"--max-line-length={_LINE_LENGTH}",
                 f"--exclude={obj['EXCLUDE']}" if obj["EXCLUDE"] else "",
+                f"--format={format}" if format else "",
                 # Flake8 includes pyflakes, mccabe, and pep8 by default.
                 # We have yet to evaluate these, so ignore their errors for now
                 "--extend-ignore=C90,F,E,W",
