@@ -6,27 +6,27 @@
 
 <!-- @TODO: We should show you some stinkin' badges -->
 
-Welcome to NI's internal and external Python conventions and linter rules/plugins/tooling.
-
-`ni-python-styleguide` serves several purposes:
-
-1. It is a `flake8` plugin that aggregates several other `flake8` plugins
-1. It houses our approved `flakehell` config: `flakehell_config.toml`
-1. When run directly, combines the above
+Welcome to NI's internal and external Python conventions and enforcement tooling.
 
 ## Written Conventions
 
 Our written conventions can be found at https://ni.github.io/python-styleguide/.
 
+Their source is in [docs/Coding-Conventions.md](docs/Coding-Conventions.md).
+
 NOTE: Using the GitHub Pages link is preferable to a GitHub `/blob` link.
 
-## Quickstart
+## Enforcement tooling
+
+As a tool, `ni-python-styleguide` is installed like any other script:
 
 ```bash
 pip install ni-python-styleguide
 ```
 
-## Running
+### Linting
+
+To lint, just run the `lint` subcommand:
 
 ```bash
 ni-python-styleguide lint
@@ -36,6 +36,12 @@ ni-python-styleguide lint ./dir/
 ni-python-styleguide lint module.py
 ```
 
-`ni-python-styleguide` is just a wrapper around `flakehell`, adding our config to the base configs.
+The rules enforced are all rules documented in the written convention, which are marked as enforced.
 
-Additional commands/options can be found in the [`flakehell documentation`](https://flakehell.readthedocs.io/index.html)
+### Formatting
+
+(This section to come!)
+
+### Editor Integration
+
+(This section to come!)
