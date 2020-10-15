@@ -338,22 +338,22 @@ if cheese is None:
     pass
 ```
 
-### [L.1.2] ✔️ **DO** Use `is` or `is not` when comparing against a singleton (like `None`) 💻
+### [L.1.2] ✔️ **DO** Use `isinstance` instead of comparing types directly 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-> 💻 This rule is enforced by error codes E711, E712
+> 💻 This rule is enforced by error code E721
 
 ```python
 # Bad
-if cheese == None:
-    pass
+if type(num_cheeses) is type(1):
+    buy(num_cheeses)
 ```
 
 ```python
 # Good
-if cheese is None:
-    pass
+if isinstance(num_cheeses, int):
+    buy(num_cheeses)
 ```
 
 ### [L.1.3] ✔️ **DO** Use the conversion to boolean to check for empty sequences
@@ -408,22 +408,6 @@ if not cheese is None:
 # Good
 if cheese is not None:
     buy(cheese)
-```
-
-### [L.1.6] ✔️ **DO** Use `isinstance` to check a class's type 💻
-
-> 💻 This rule is enforced by error code E721
-
-```python
-# Bad
-if type(num_cheeses) is type(1):
-    buy(num_cheeses)
-```
-
-```python
-# Good
-if isinstance(num_cheeses, int):
-    buy(num_cheeses)
 ```
 
 ## [L.2] Lambdas
