@@ -453,7 +453,7 @@ When deliberately replacing an inner exception (`raise X from None`), ensure tha
 
 > 💻 This rule is enforced by error code E722
 
-Additionally, be as specific as possible.E741
+Additionally, be as specific as possible.
 
 ```python
 # Bad
