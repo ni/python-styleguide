@@ -619,10 +619,6 @@ __all__ = ["spam", "ham", "eggs"]
 
 This includes packages, modules, classes, functions, attributes and other names.
 
-## [L.8] Deprecated Features
-
-### [L.8.1] ❌ **DO NOT**
-
 ---
 
 # [O] Code Organization
