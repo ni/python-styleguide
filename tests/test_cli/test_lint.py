@@ -90,7 +90,8 @@ def test_lint__ignores_local_flake8_config(styleguide_lint, tmp_path):
         max_line_length = 80
         """
     )
-    written_line = f'a_really_long_order = ["{", ".join(itertools.repeat("spam", 9))}]"\n'
+    a_bunch_of_spam = ", ".join(itertools.repeat('"spam"', 9))
+    written_line = f"a_really_long_order = [{a_bunch_of_spam}]\n"
     (tmp_path / "spam.py").write_text(written_line)
 
     result = styleguide_lint()

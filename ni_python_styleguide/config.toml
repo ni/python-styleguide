@@ -1,4 +1,6 @@
-# This file exists because some plugins (like flake8-black) only read settings from a config file.
+# This file exists for us to configure the various tools we execute through config files.
+# Some tools (like flake8-black) can only be configured through a config.
+# Other tools, we leverage the config since it allows us to comment on the values.
 
 [tool.black]
 line-length = 100
