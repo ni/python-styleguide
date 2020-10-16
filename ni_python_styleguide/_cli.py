@@ -98,20 +98,16 @@ def main(ctx, verbose, quiet, config, exclude, extend_exclude):
 @click.pass_obj
 def lint(obj, format, file_or_dir):
     app = flake8.main.application.Application()
-    filtered_list = lambda iter: list(filter(bool, iter))
-    app.run(
-        filtered_list(
-            [
-                _qs_or_vs(obj["VERBOSITY"]),
-                f"--config={str((pathlib.Path(__file__).parent / 'config.ini').resolve())}",
-                f"--exclude={obj['EXCLUDE']}" if obj["EXCLUDE"] else "",
-                f"--format={format}" if format else "",
-                # The only way to configure flake8-black's line length is through a pyproject.toml's
-                # [tool.black] setting (which makes sense if you think about it)
-                # So we need to give it one
-                f"--black-config={str((pathlib.Path(__file__).parent / 'config.toml').resolve())}",
-                *file_or_dir,
-            ],
-        )
-    )
+    args = [
+        _qs_or_vs(obj["VERBOSITY"]),
+        f"--config={str((pathlib.Path(__file__).parent / 'config.ini').resolve())}",
+        f"--exclude={obj['EXCLUDE']}" if obj["EXCLUDE"] else "",
+        f"--format={format}" if format else "",
+        # The only way to configure flake8-black's line length is through a pyproject.toml's
+        # [tool.black] setting (which makes sense if you think about it)
+        # So we need to give it one
+        f"--black-config={str((pathlib.Path(__file__).parent / 'config.toml').resolve())}",
+        *file_or_dir,
+    ]
+    app.run(list(filter(bool, args)))
     app.exit()
