@@ -91,8 +91,12 @@ We have chosen 100 characters because to some developers 80/88 characters is too
 and to others 110/120 is too long.
 
 ```python
-# Bad
+# Bad - will produce BLK100
 line_with_101_chars = "spaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaam"
+```
+
+```python
+# Bad - will produce W505
 # Also applies to looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong comments
 ```
 
