@@ -650,9 +650,9 @@ import sys
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-Imports come _after_ module comments and docstrings and _before_ module globals and constants.
-
 > 💻 This rule is enforced by error code E402
+
+Imports come _after_ module comments and docstrings and _before_ module globals and constants.
 
 ```python
 # Bad
