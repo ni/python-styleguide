@@ -42,6 +42,10 @@ In all cases where a convention comes from a PEP, it will be marked as such.
 - [PEP 8 -- Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/)
 - [PEP 257 -- Docstring Conventions](https://www.python.org/dev/peps/pep-0257/)
 
+# Python versions
+
+This document is applicable to all Python versions which are not end-of-life.
+
 ---
 
 <!-- Begin Auto-ID -->
@@ -72,7 +76,7 @@ A formatter, enforced across all of our code, ensures that a person working on p
 
 ### [F.1.2] ✔️ **DO** Limit your lines to a maximum length of 100 characters 💻
 
-> 💻 This rule is enforced by error code BLK100
+> 💻 This rule is enforced by error code BLK100, W505
 
 ℹ️ This is easily managed by `black` by setting `line-length = 100` in your `pyproject.toml` under `[tool.black]` section
 
@@ -87,13 +91,19 @@ We have chosen 100 characters because to some developers 80/88 characters is too
 and to others 110/120 is too long.
 
 ```python
-# Bad
+# Bad - will produce BLK100
 line_with_101_chars = "spaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaam"
+```
+
+```python
+# Bad - will produce W505
+# Also applies to looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong comments
 ```
 
 ```python
 # Good
 line_with_99_chars = "spaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaam"
+# Also applies to loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong comments
 ```
 
 ## [F.2] Line Spacing
@@ -174,6 +184,40 @@ Examples:
 - class\_
 - input\_
 - file\_
+
+### [N.1.3] ❌ **DO NOT** Use the characters 'l' (lowercase letter el), 'O' (uppercase letter oh), or 'I' (uppercase letter eye) as single character variable names 💻
+
+> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
+
+> 💻 This rule is enforced by error codes E741, E742, E743
+
+```python
+# Bad
+for l in lines:
+    print(l)
+
+
+class I:
+    pass
+
+
+class O:
+    pass
+```
+
+```python
+# Good
+for line in lines:
+    print(line)
+
+
+class Inputs:
+    pass
+
+
+class Outputs:
+    pass
+```
 
 ## [N.2] Casing
 
@@ -280,9 +324,11 @@ FlyingCircus_contra = TypeVar("FlyingCircus_contra", contravariant=True)
 
 ## [L.1] Comparisons
 
-### [L.1.1] ✔️ **DO** Use `is` or `is not` when comparing against a singleton (like `None`)
+### [L.1.1] ✔️ **DO** Use `is` or `is not` when comparing against a singleton (like `None`) 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
+
+> 💻 This rule is enforced by error code E711
 
 ```python
 # Bad
@@ -296,20 +342,22 @@ if cheese is None:
     pass
 ```
 
-### [L.1.2] ✔️ **DO** Use `isinstance` instead of comparing types directly
+### [L.1.2] ✔️ **DO** Use `isinstance` instead of comparing types directly 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
+> 💻 This rule is enforced by error code E721
+
 ```python
 # Bad
-if type(cheese) is type(that_cheese):
-    pass
+if type(num_cheeses) is type(1):
+    buy(num_cheeses)
 ```
 
 ```python
 # Good
-if isinstance(cheese, Gorgonzola):
-    pass
+if isinstance(num_cheeses, int):
+    buy(num_cheeses)
 ```
 
 ### [L.1.3] ✔️ **DO** Use the conversion to boolean to check for empty sequences
@@ -334,11 +382,45 @@ if not seq:
     pass
 ```
 
+### [L.1.4] ✔️ **DO** Use the `not in` expression to test for membership 💻
+
+> 💻 This rule is enforced by error code E713
+
+```python
+# Bad
+if not cheese in cheese_list:
+    complain()
+```
+
+```python
+# Good
+if cheese not in cheese_list:
+    complain()
+```
+
+### [L.1.5] ✔️ **DO** Use the `is not` expression to test for identity 💻
+
+> 💻 This rule is enforced by error code E714
+
+```python
+# Bad
+if not cheese is None:
+    buy(cheese)
+```
+
+```python
+# Good
+if cheese is not None:
+    buy(cheese)
+```
+
 ## [L.2] Lambdas
 
-### [L.2.1] ❌ **DO NOT** Assign a lambda expression directly to an identifier
+### [L.2.1] ❌ **DO NOT** Assign a lambda expression directly to an identifier 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
+
+> 💻 This rule is enforced by error code E731
 
 ```python
 # Bad
@@ -369,9 +451,11 @@ When raising a new exception from an exception block, prefer `raise X from Y` (a
 
 When deliberately replacing an inner exception (`raise X from None`), ensure that relevant details are transferred to the new exception.
 
-### [L.3.3] ✔️ **DO** Provide an exception type when catching exceptions
+### [L.3.3] ✔️ **DO** Provide an exception type when catching exceptions 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
+
+> 💻 This rule is enforced by error code E722
 
 Additionally, be as specific as possible.
 
@@ -545,9 +629,11 @@ This includes packages, modules, classes, functions, attributes and other names.
 
 ## [O.1] Imports
 
-### [O.1.1] ✔️ **DO** Put module imports on separate lines
+### [O.1.1] ✔️ **DO** Put module imports on separate lines 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
+
+> 💻 This rule is enforced by error code E401
 
 ```python
 # Bad
@@ -560,9 +646,11 @@ import os
 import sys
 ```
 
-### [O.1.2] ✔️ **DO** Put imports at the top of the file
+### [O.1.2] ✔️ **DO** Put imports at the top of the file 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
+
+> 💻 This rule is enforced by error code E402
 
 Imports come _after_ module comments and docstrings and _before_ module globals and constants.
 

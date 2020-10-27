@@ -7,9 +7,6 @@ import flake8.main.application
 import toml
 
 
-_LINE_LENGTH = 100
-
-
 def _qs_or_vs(verbosity):
     if verbosity != 0:
         return f"-{'v' * verbosity if verbosity > 0 else 'q' * abs(verbosity)}"
@@ -101,25 +98,16 @@ def main(ctx, verbose, quiet, config, exclude, extend_exclude):
 @click.pass_obj
 def lint(obj, format, file_or_dir):
     app = flake8.main.application.Application()
-    filtered_list = lambda iter: list(filter(bool, iter))
-    app.run(
-        filtered_list(
-            [
-                # Ignore all configuration files
-                "--isolated",
-                _qs_or_vs(obj["VERBOSITY"]),
-                f"--max-line-length={_LINE_LENGTH}",
-                f"--exclude={obj['EXCLUDE']}" if obj["EXCLUDE"] else "",
-                f"--format={format}" if format else "",
-                # Flake8 includes pyflakes, mccabe, and pep8 by default.
-                # We have yet to evaluate these, so ignore their errors for now
-                "--extend-ignore=C90,F,E,W",
-                # The only way to configure flake8-black's line length is through a pyproject.toml's
-                # [tool.black] setting (which makes sense if you think about it)
-                # So we need to give it one
-                f"--black-config={str((pathlib.Path(__file__).parent / 'config.toml').resolve())}",
-                *file_or_dir,
-            ],
-        )
-    )
+    args = [
+        _qs_or_vs(obj["VERBOSITY"]),
+        f"--config={(pathlib.Path(__file__).parent / 'config.ini').resolve()}",
+        f"--exclude={obj['EXCLUDE']}" if obj["EXCLUDE"] else "",
+        f"--format={format}" if format else "",
+        # The only way to configure flake8-black's line length is through a pyproject.toml's
+        # [tool.black] setting (which makes sense if you think about it)
+        # So we need to give it one
+        f"--black-config={(pathlib.Path(__file__).parent / 'config.toml').resolve()}",
+        *file_or_dir,
+    ]
+    app.run(list(filter(bool, args)))
     app.exit()
