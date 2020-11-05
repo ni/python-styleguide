@@ -41,9 +41,7 @@ def test_bad_codeblocks_document_lint_errors(lint_codeblock, bad_codeblock):
         result = lint_codeblock(
             bad_codeblock,
             "--format='%(code)s'",
-            ignore_unused_imports=(
-                "Import definitions that are not used" not in bad_codeblock.rule.header_text
-            ),
+            ignore_unused_imports=("F401" not in bad_codeblock.rule.error_codes),
         )
         assert not result, result.output
 
