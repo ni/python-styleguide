@@ -94,15 +94,21 @@ def main(ctx, verbose, quiet, config, exclude, extend_exclude):
 @main.command()
 # @TODO: When we're ready to encourage editor integration, add --diff flag
 @click.option("--format", type=str, help="Format errors according to the chosen formatter.")
+@click.option(
+    "--extend-ignore",
+    type=str,
+    help="Comma-separated list of errors and warnings to ignore (or skip)",
+)
 @click.argument("file_or_dir", nargs=-1)
 @click.pass_obj
-def lint(obj, format, file_or_dir):
+def lint(obj, format, extend_ignore, file_or_dir):
     app = flake8.main.application.Application()
     args = [
         _qs_or_vs(obj["VERBOSITY"]),
         f"--config={(pathlib.Path(__file__).parent / 'config.ini').resolve()}",
         f"--exclude={obj['EXCLUDE']}" if obj["EXCLUDE"] else "",
         f"--format={format}" if format else "",
+        f"--extend-ignore={extend_ignore}" if extend_ignore else "",
         # The only way to configure flake8-black's line length is through a pyproject.toml's
         # [tool.black] setting (which makes sense if you think about it)
         # So we need to give it one

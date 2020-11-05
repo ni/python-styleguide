@@ -5,7 +5,24 @@ import pytest
 
 @pytest.fixture
 def lint_codeblock(styleguide, tmp_path):
-    def run_linter(codeblock, *styleguide_args):
+    def run_linter(
+        codeblock,
+        *styleguide_args,
+        # We ignore unused import warnings as most of the codeblocks which produce this warning
+        # are just demonstrations of bad/good imports. Adding usage of the imports would add
+        # code to trivial examples, detracting from the interesting lines.
+        ignore_unused_imports=True,
+    ):
+
+        extend_ignore = [
+            # Undefined named. Defining all the names in each example would detract from the
+            # interesting lines.
+            "F821",
+        ]
+        if ignore_unused_imports:
+            extend_ignore.append("F401")
+        styleguide_args += ("--extend-ignore", ",".join(extend_ignore))
+
         test_file = tmp_path / "test.py"
         test_file.write_text(codeblock.contents, encoding="utf-8")
         return styleguide("lint", *styleguide_args, test_file)
@@ -23,7 +40,13 @@ def test_rule_codeblocks_documents_bad_good_best(codeblock):
 
 def test_bad_codeblocks_document_lint_errors(lint_codeblock, bad_codeblock):
     if bad_codeblock.rule.is_automatically_enforced:
-        result = lint_codeblock(bad_codeblock, "--format='%(code)s'")
+        result = lint_codeblock(
+            bad_codeblock,
+            "--format='%(code)s'",
+            ignore_unused_imports=(
+                "Import definitions that are not used" not in bad_codeblock.rule.header_text
+            ),
+        )
         assert not result, result.output
 
         error_codes = set(code.strip("'") for code in result.output.splitlines())

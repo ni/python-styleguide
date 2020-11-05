@@ -27,15 +27,20 @@ This is a living document that represents our coding conventions. Rules that are
 
 Additionally rules might be suffixed with one of the below:
 
-> 💻 - The convention is automatically enforced through tooling (I.e lint error)
+> 💻 - The convention is automatically enforced by `ni-python-styleguide` (By running `ni-python-styleguide lint ...`)
 >
-> ✨ - The convention is automatically fixed through tooling
+> ✨ - The convention is automatically fixed by `ni-python-stylgeuide` (`ni-python-styleguide` command doesn't exist yet)
 
 # This vs. other guides (like PEPs)
 
 This document serves as the single source of truth when it comes to Python coding conventions for NI code. Therefore other guides (such as the Google Python styleguide or various PEP-guides) are superseded by this one.
 
 In all cases where a convention comes from a PEP, it will be marked as such.
+
+# This vs. `ni-python-styleguide`
+
+Ideally, the conventions in this document would completely match the things `ni-python-styleguide` enforces.
+However, some checks we enforce don't correspond to conventions here as they either represent specific syntax issues or logic errors, both of which we assume the Python file is free from for the purposes of this document.
 
 ## Guides considered
 
@@ -114,7 +119,7 @@ line_with_99_chars = "spaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
 ```python
 # Bad - no spaces to form logical breaks in code
-def visit_argument_room(duration):
+def visit_argument_room(self, duration):
     start = datetime.now()
     while (datetime.now() - start) < duration:
         reply = self.argue_about_answer()
@@ -129,7 +134,7 @@ def visit_argument_room(duration):
 
 ```python
 # Good - use blank lines to separate code into logically-related sections
-def visit_argument_room(duration):
+def visit_argument_room(self, duration):
     start = datetime.now()
 
     while (datetime.now() - start) < duration:
@@ -148,7 +153,7 @@ def visit_argument_room(duration):
 
 ```python
 # Best - extract logic into well-named methods
-def visit_argument_room(duration):
+def visit_argument_room(self, duration):
     exit_reason = self._argue_about("answer", duration=duration)
 
     if exit_reason == "timeout":
@@ -225,20 +230,7 @@ class Outputs:
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-```python
-# Bad
-temporary_file
-```
-
-```python
-# Good
-temp_file
-```
-
-```python
-# Best
-tempfile
-```
+E.g. `tempfile` is preferred over `temp_file` or `temporary_file`
 
 ### [N.2.2] ✔️ **DO** Use `snake_case` for function, variable, and parameter names
 
@@ -489,22 +481,24 @@ except ImportError:
 
 ```python
 # Bad
-try:
-    # Too broad!
-    return eat(spam[key])
-except KeyError:
-    # Will also catch KeyError raised by eat()
-    return key_not_found(key)
+def lunchtime():
+    try:
+        # Too broad!
+        return eat(spam[key])
+    except KeyError:
+        # Will also catch KeyError raised by eat()
+        return key_not_found(key)
 ```
 
 ```python
 # Good
-try:
-    value = spam[key]
-except KeyError:
-    return key_not_found(key)
-else:
-    return eat(value)
+def lunchtime():
+    try:
+        value = spam[key]
+    except KeyError:
+        return key_not_found(key)
+    else:
+        return eat(value)
 ```
 
 ### [L.3.5] ❌ **DO NOT** Use flow control statements (`return`/`break`/`continue`) within the `finally` suite of a `try...finally`, where control flow would jump outside the `finally` suite
@@ -615,6 +609,23 @@ This includes setting `__all__` to the empty list if your module has no public A
 ```python
 # Good
 __all__ = ["spam", "ham", "eggs"]
+
+
+def spam():
+    pass
+
+
+def ham():
+    pass
+
+
+def eggs():
+    pass
+```
+
+```python
+# Good
+__all__ = []
 ```
 
 ### [L.7.2] ✔️ **DO** Prefix internal interfaces with a single leading underscore
@@ -709,9 +720,11 @@ from .sibling import rivalry
 from my_app.relationships.sibling import rivalry
 ```
 
-### [O.1.5] ❌ **DO NOT** Use wildcard imports
+### [O.1.5] ❌ **DO NOT** Use wildcard imports 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
+
+> 💻 This rule is enforced by error code F403
 
 ℹ️ An exception can be made if you are overwriting an internal interface and you do not know which definitions will be overwritten
 
@@ -748,9 +761,66 @@ import brie
 import cheese_shop.brie
 ```
 
+### [O.1.7] ❌ **DO NOT** Import definitions that are not used 💻
+
+> 💻 This rule is enforced by error code F401
+
+```python
+# Bad
+import os  # Assuming os is never used
+```
+
 ## [O.2] Declarations
 
-### [O.2.1] ✔️ **DO** Put module level dunder names after module docstring and before import statements
+### [O.2.1] ❌ **DO NOT** Redefine or "shadow" declarations 💻
+
+> 💻 This rule is enforced by error codes F402, F811
+
+```python
+# Bad - Will produce F402
+import cheese
+
+for cheese in ["Caithness", "Sage Derby", "Gorgonzola"]:
+    pass
+```
+
+```python
+# Bad - Will produce F811
+def eat_lunch():
+    pass
+
+
+def eat_lunch():
+    pass
+```
+
+### [O.2.2] ❌ **DO NOT** Declare unused variables 💻
+
+> 💻 This rule is enforced by error codes F841
+
+If a variable must exist but won't be used it is permissible to name the variable a single underscore `_`.
+
+```python
+# Bad
+def purchase_cheese():
+    cheese = "Gorgonzola"
+```
+
+```python
+# Bad
+def feast_upon():
+    first, *skip_a_bit, last = ["lambs", "sloths", "breakfast cereals", "fruit bats"]
+    return [first, last]
+```
+
+```python
+# Good
+def feast_upon():
+    first, *_, last = ["lambs", "sloths", "breakfast cereals", "fruit bats"]
+    return [first, last]
+```
+
+### [O.2.3] ✔️ **DO** Put module level dunder names after module docstring and before import statements
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -763,6 +833,18 @@ __version__ = "0.1"
 
 import os
 import sys
+
+
+def cut_down_trees():
+    pass
+
+
+def eat_lunch():
+    pass
+
+
+def go_shopping():
+    pass
 ```
 
 ---
@@ -845,17 +927,17 @@ class CheeseShop(object):
 
 ```python
 # Bad
-def sell(type_):
+def sell(self, type_):
     """Sell the specified type of cheese."""
 
-    _do_transaction(type_)
+    self._do_transaction(type_)
 ```
 
 ```python
 # Good
-def sell(type_):
+def sell(self, type_):
     """Sell the specified type of cheese."""
-    _do_transaction(type_)
+    self._do_transaction(type_)
 ```
 
 ### [D.1.6] ✔️ **DO** Use complete, grammatically correct sentences, ended with a period
@@ -988,7 +1070,7 @@ When documenting a subclass, mention the differences from superclass beahvior. A
 
 ```python
 # Good
-order = [egg, sausage, bacon]  # The client doesn't want any spam
+order = ["egg", "sausage", "bacon"]  # The client doesn't want any spam
 ```
 
 ---
