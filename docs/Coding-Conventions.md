@@ -40,7 +40,7 @@ In all cases where a convention comes from a PEP, it will be marked as such.
 # This vs. `ni-python-styleguide`
 
 Ideally, the conventions in this document would completely match the things `ni-python-styleguide` enforces.
-However, some checks we enforce don't correspond to conventions here as they either represent specific syntax issues or logic errors, both of which we assume the Python file is free from for the purposes of this document.
+However, some checks we enforce don't correspond to conventions here as they either represent specific syntax issues or logic errors. We assume the Python file is free from both for the purposes of this document.
 
 ## Guides considered
 
