@@ -1,5 +1,3 @@
-import sys
-
 from ni_python_styleguide._cli import main
 
 
