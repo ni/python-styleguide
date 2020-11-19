@@ -13,7 +13,7 @@ def lint_codeblock(styleguide, tmp_path):
     ):
 
         extend_ignore = [
-            # Undefined named. Defining all the names in each example would detract from the
+            # Undefined name. Defining all the names in each example would detract from the
             # interesting lines.
             "F821",
             # Missing docstring in XYZ.
