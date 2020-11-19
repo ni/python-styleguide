@@ -887,8 +887,6 @@ This includes (if applicable) the function's:
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
-ℹ️ See the [Google docstring conventions for classes](https://google.github.io/styleguide/pyguide.html#384-classes)
-
 This includes (if applicable) the class's:
 
 - overall behavior
