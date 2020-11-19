@@ -40,7 +40,7 @@ jobs:
       - name: Build Python package and publish to PyPI
         if: ${{ github.event.release.target_commitish == 'master' }}
         run: |
-          poetry build
+          poetry publish --build --username __token__ --password ${{ secrets.PYPI_TOKEN}}
 
       - name: Bump poetry version to next alpha version
         run: |
