@@ -92,7 +92,7 @@ def test_lint__ignores_local_flake8_config(styleguide_lint, tmp_path):
     )
     a_bunch_of_spam = ", ".join(itertools.repeat('"spam"', 9))
     written_line = f"a_really_long_order = [{a_bunch_of_spam}]\n"
-    (tmp_path / "spam.py").write_text(written_line)
+    (tmp_path / "_spam.py").write_text(written_line)
 
     result = styleguide_lint()
 
@@ -120,8 +120,8 @@ def test_lint__with_one_multiple_file_args(styleguide_lint, tmp_path):
 def test_lint__specifying_file_only_lints_file(styleguide_lint, tmp_path):
     """Test that when we specify file(s) on the cmd line other files are not linted"""
     (tmp_path / "spam1.py").write_text(TOO_LONG_LINE)
-    (tmp_path / "spam2.py").write_text("")  # empty
-    result = styleguide_lint(lint_args=[tmp_path / "spam2.py"])
+    (tmp_path / "_spam2.py").write_text("")  # empty
+    result = styleguide_lint(lint_args=[tmp_path / "_spam2.py"])
 
     assert result, result.output
 

@@ -13,9 +13,11 @@ def lint_codeblock(styleguide, tmp_path):
     ):
 
         extend_ignore = [
-            # Undefined name. Defining all the names in each example would detract from the
+            # Undefined named. Defining all the names in each example would detract from the
             # interesting lines.
             "F821",
+            # Missing docstring in XYZ.
+            "D1",
         ]
         if ignore_unused_imports:
             extend_ignore.append("F401")
