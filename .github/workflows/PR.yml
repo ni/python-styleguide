@@ -9,6 +9,7 @@ on:
       - poetry.lock
       - pyproject.toml
       - docs/Coding-Conventions.md
+      - .github/workflows/PR.yml
 
 jobs:
   pr:
@@ -20,7 +21,7 @@ jobs:
         with:
           python-version: 3.6
 
-      - uses: Gr1N/setup-poetry@v2
+      - uses: Gr1N/setup-poetry@v4
         with:
           poetry-version: 1.0.0
 
