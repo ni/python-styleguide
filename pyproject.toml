@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ni-python-styleguide"
-version = "0.1.0"
+version = "0.1.0-alpha.0"
 description = "NI's internal and external Python linter rules and plugins"
 authors = ["NI <opensource@ni.com>"]
 license = "MIT"

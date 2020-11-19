@@ -1,0 +1,62 @@
+name: Publish Package
+
+on:
+  release:
+    types: [released]
+
+jobs:
+  publish_package:
+    name: Publish Package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.release.target_commitish }} # This is the branch the release was created from. Normally main/master, but can be a dev branch
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.6
+
+      - name: Set up Poetry cache for Python dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pypoetry
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: ${{ runner.os }}-poetry-
+
+      - name: Install Poetry
+        run: |
+          curl -fsS -o get-poetry.py https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py
+          python get-poetry.py -y
+          echo "$HOME/.poetry/bin" >> $GITHUB_PATH
+
+      # If the version is 0.1.0-alpha.0, this will set the version to 0.1.0
+      - name: Promote package version to release
+        run: |
+          poetry version patch
+
+      - name: Build Python package and publish to PyPI
+        if: ${{ github.event.release.target_commitish == 'master' }}
+        run: |
+          poetry build
+
+      - name: Bump poetry version to next alpha version
+        run: |
+          poetry version prepatch
+
+      - name: Commit files
+        if: ${{ github.event.release.target_commitish == 'master' }}
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git pull --tags -f
+          git commit -m "Bump package version" -a
+
+      - name: Push changes
+        if: ${{ github.event.release.target_commitish == 'master' }}
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.event.release.target_commitish }}
