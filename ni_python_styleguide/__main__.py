@@ -1,3 +1,5 @@
+"""Execute ni-python-styleguide as a script."""
+
 from ni_python_styleguide._cli import main
 
 

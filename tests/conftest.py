@@ -1,3 +1,5 @@
+"""Useful plugins/fixtures which can (and should) be used in any test."""
+
 import os
 
 import click.testing
@@ -8,13 +10,14 @@ from ni_python_styleguide.__main__ import main as styleguide_main
 
 
 def pytest_collection_modifyitems(items):
+    """Ignore deprecation warnings in all tests."""
     for item in items:
         item.add_marker(pytest.mark.filterwarnings("ignore::DeprecationWarning"))
 
 
 @pytest.fixture
 def styleguide(monkeypatch, cli_runner):
-    """A fixture which when executed, runs the styleguide.
+    """Fixture which runs the styleguide when executed.
 
     Args passed to the function are equivalent to CLI args,
     and are automatically stringified.
@@ -24,7 +27,6 @@ def styleguide(monkeypatch, cli_runner):
 
     E.g. `styleguide("lint", ".")`
     """
-
     # Add a __bool__ method so clients can assert the result
     monkeypatch.setattr(
         click.testing.Result, "__bool__", lambda s: s.exception is None, raising=False
@@ -38,6 +40,7 @@ def styleguide(monkeypatch, cli_runner):
 
 @pytest.fixture
 def chdir():
+    """Fixture which changes the current working directory when executed."""
     cwd = os.getcwd()
     yield os.chdir
     os.chdir(cwd)
