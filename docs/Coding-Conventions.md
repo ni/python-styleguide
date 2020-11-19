@@ -875,8 +875,6 @@ Each documented object should have a one-line summary (with less detail than the
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
-ℹ️ See the [Google docstring conventions for functions](https://google.github.io/styleguide/pyguide.html#383-functions-and-methods)
-
 This includes (if applicable) the function's:
 
 - arguments (including optional arguments, and keyword arguments)
