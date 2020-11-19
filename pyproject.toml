@@ -1,5 +1,8 @@
 [tool.poetry]
 name = "ni-python-styleguide"
+# The -alpha.0 here denotes a source based version
+# This is removed when released through the Publish-Package.yml GitHub action
+# Official PyPI releases follow Major.Minor.Patch
 version = "0.1.0-alpha.0"
 description = "NI's internal and external Python linter rules and plugins"
 authors = ["NI <opensource@ni.com>"]
