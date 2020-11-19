@@ -26,11 +26,9 @@ jobs:
           key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
           restore-keys: ${{ runner.os }}-poetry-
 
-      - name: Install Poetry
-        run: |
-          curl -fsS -o get-poetry.py https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py
-          python get-poetry.py -y
-          echo "$HOME/.poetry/bin" >> $GITHUB_PATH
+      - uses: Gr1N/setup-poetry@v4
+        with:
+          poetry-version: 1.0.0
 
       # If the version is 0.1.0-alpha.0, this will set the version to 0.1.0
       - name: Promote package version to release
