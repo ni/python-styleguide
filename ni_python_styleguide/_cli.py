@@ -1,10 +1,9 @@
-import pathlib
-
 import click
-
 import flake8.main.application
-
+import pathlib
 import toml
+
+from . import acknowledge_existing_errors
 
 
 def _qs_or_vs(verbosity):
@@ -135,5 +134,4 @@ def lint(obj, format, extend_ignore, file_or_dir):
 @click.argument("file_or_dir", nargs=-1)
 @click.pass_obj
 def acknowledge_existing_violations(obj, violations, format, extend_ignore, file_or_dir):
-    from . import acknowledge_existing_errors
     acknowledge_existing_errors.acknowledge_lint_errors(violations)
