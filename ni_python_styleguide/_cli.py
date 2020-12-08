@@ -1,4 +1,5 @@
 import pathlib
+import subprocess
 
 import click
 
@@ -121,3 +122,19 @@ def lint(obj, format, extend_ignore, file_or_dir):
     ]
     app.run(list(filter(bool, args)))
     app.exit()
+
+
+@main.command()
+# @TODO: When we're ready to encourage editor integration, add --diff flag
+@click.option("--format", type=str, help="Format errors according to the chosen formatter.")
+@click.option("--violations", required=True, type=str, help="Violations file to use")
+@click.option(
+    "--extend-ignore",
+    type=str,
+    help="Comma-separated list of errors and warnings to ignore (or skip)",
+)
+@click.argument("file_or_dir", nargs=-1)
+@click.pass_obj
+def acknowledge_existing_violations(obj, violations, format, extend_ignore, file_or_dir):
+    from . import acknowledge_existing_errors
+    acknowledge_existing_errors.acknowledge_lint_errors(violations)
