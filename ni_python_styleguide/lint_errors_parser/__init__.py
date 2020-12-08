@@ -17,7 +17,7 @@ def parse(line):
 
     >>> parse(r"source\rpmfile\__init__.py:13:1: F401 'functools.wraps' imported but unused")
     LintError(file='source\\rpmfile\\__init__.py', line=13, column=1, code='F401', explanation="'functools.wraps' imported but unused")
-    """
+    """  # NOQA W505: doc line too long (115 > 100 characters) - This suppression was auto-generated to allow focus on handling new errors
     p = Parser()
     return p.parse(line)
 
