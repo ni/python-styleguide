@@ -2,7 +2,7 @@ import ni_python_styleguide.lint_errors_parser
 
 def _filter_to_handled_errors(lint_errors):
     not_handled_errors = {'BLK100'}
-    return filter(lambda o: o not in not_handled_errors, lint_errors)
+    return filter(lambda o: o.code not in not_handled_errors, lint_errors)
 
 def _in_multiline_string(error_data: ni_python_styleguide.lint_errors_parser.LintError):
     with open(error_data.file) as in_file:
@@ -18,7 +18,7 @@ def acknowledge_lint_errors(lint_errors_file):
         for line in errors_input:
             lint_error = ni_python_styleguide.lint_errors_parser.parse(line)
             lint_errors.append(lint_error)
-    lint_errors_to_process = _filter_to_handled_errors(lint_errors)
+    lint_errors_to_process = list(_filter_to_handled_errors(lint_errors))
     for error in lint_errors_to_process:
         if _in_multiline_string(error):
             continue # TODO: handle this case by adding the marker at the end of the multiline
