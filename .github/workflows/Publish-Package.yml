@@ -77,5 +77,5 @@ jobs:
         if: ${{ github.event.release.target_commitish == 'master' }}
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.ADMIN_PAT }}
           branch: ${{ github.event.release.target_commitish }}
