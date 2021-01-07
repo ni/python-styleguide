@@ -67,7 +67,6 @@ jobs:
           poetry version prepatch
 
       - name: Commit files
-        if: ${{ github.event.release.target_commitish == 'master' }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -75,7 +74,6 @@ jobs:
           git commit -m "Bump package version" -a
 
       - name: Push changes
-        if: ${{ github.event.release.target_commitish == 'master' }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.ADMIN_PAT }}
