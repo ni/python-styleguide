@@ -17,7 +17,7 @@ example_file_lines = [
 
 
 @pytest.mark.parametrize(
-    "input_lines,lineno,expected_in_mutiline",
+    "input_lines,lineno,expected_in_multiline",
     (
         (example_file_lines, 1, False),
         (example_file_lines, 2, True),
@@ -31,8 +31,8 @@ example_file_lines = [
         (example_file_lines, 10, False),
     ),
 )
-def test_can_acurately_detect_if_in_mutliline_string(
-    input_lines, lineno, expected_in_mutiline, tmp_path
+def test_can_acurately_detect_if_in_multiline_string(
+    input_lines, lineno, expected_in_multiline, tmp_path
 ):
     offending_file = tmp_path / "python_file.py"
     offending_file.write_text("\n".join(input_lines))
@@ -42,4 +42,4 @@ def test_can_acurately_detect_if_in_mutliline_string(
         lineno=lineno,
     )
 
-    assert result == expected_in_mutiline
+    assert result == expected_in_multiline
