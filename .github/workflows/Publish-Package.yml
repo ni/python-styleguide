@@ -49,7 +49,6 @@ jobs:
         run: poetry run ni-python-styleguide lint
 
       - name: Run tests
-
         run: poetry run pytest -v
 
       # If the version is 0.1.0-alpha.0, this will set the version to 0.1.0
