@@ -37,9 +37,9 @@ def _add_noqa_to_line(lineno, filepath, error_code, explanation):
 
 
 def acknowledge_lint_errors(lint_errors):
-    parsed_eorrors = [ni_python_styleguide.lint_errors_parser.parse(error) for error in lint_errors]
+    parsed_errors = [ni_python_styleguide.lint_errors_parser.parse(error) for error in lint_errors]
 
-    lint_errors_to_process = _filter_to_handled_errors(parsed_eorrors)
+    lint_errors_to_process = _filter_to_handled_errors(parsed_errors)
     # to avoid double marking a line with the same code, keep track of lines and codes
     handled_lines = defaultdict(list)
     for error in lint_errors_to_process:
