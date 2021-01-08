@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     {%- endif -%}
 
     {%- assign first_token_char = first_token | slice: 0 -%}
-    {%- if auto_id and first_token_char == "#" and code_block == false -%}
+    {%- if auto_id and first_token_char == "#" and code_block == false and first_token != "####" -%}
         {% comment %}Omit hyphens, as we need the whitespace to denote a header{% endcomment %}
         {% assign header_text = line | split: first_token | last %}
         {% assign header_id = line | split: "]" | first | split: "[" | last | replace: ".","-"  %}
