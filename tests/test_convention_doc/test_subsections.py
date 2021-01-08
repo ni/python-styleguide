@@ -1,4 +1,4 @@
-"""Tests for the convention subsections"""
+"""Tests for the convention subsections."""
 
 import re
 
@@ -16,20 +16,24 @@ from tests.test_convention_doc import doctypes
     ],
 )
 def enumerated_subsections(request):
+    """Parametrized fixture of each subsection along with its index in the parent section."""
     return request.param
 
 
 def test_subsection_identifier_valid(subsection):
+    """Test that the section's identifier is a valid section identifier and matches expectations."""
     assert re.match(r"[A-Z]+\.[1-9][0-9]*", subsection.identifier)
     assert subsection.identifier.startswith(subsection.parent.identifier)
 
 
 def test_subsection_identifiers_strictly_increasing(enumerated_subsections):
+    """Test that the subsections in a section use strictly incrementing identifiers."""
     index, subsection = enumerated_subsections
     assert subsection.identifier.split(".")[-1] == str(index + 1)
 
 
 def test_subsection_isnt_rule(subsection):
+    """Test that we don't use subsections for rules."""
     assert not (
         subsection.header_text.startswith(" ✔️ **DO**")
         or subsection.header_text.startswith(" ✔️ **CONSIDER**")
@@ -39,5 +43,6 @@ def test_subsection_isnt_rule(subsection):
 
 
 def test_subsection_identifier_follows_case_convention(subsection):
+    """Test that the subsection header starts with an uppercase letter."""
     header_text = subsection.header_text.lstrip()
-    assert header_text[0].isupper(), "header should start with an upper-case letter"
+    assert header_text[0].isupper(), "header should start with an uppercase letter"
