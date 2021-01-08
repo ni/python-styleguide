@@ -77,7 +77,8 @@ class SubSection(_Region):
 class Rule(_Region):
     """A rule in the convention document.
 
-    Rules are the specific conventions within a subsection and are identified in the text by heading level 3.
+    Rules are the specific conventions within a subsection and are identified in the text by
+    heading level 3.
 
     Each rule's identifier is the subsection's identifier followed by a period and the identifying
     rule number (E.g. "D.1.1").
