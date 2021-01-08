@@ -861,6 +861,13 @@ def go_shopping():
 
 ℹ️ You can document a package by documenting the module docstring of the package directory's `__init__.py`
 
+### Which docstring format should I follow?
+
+We recommend (and use internally) using the [Sphinx docstring format](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html#the-sphinx-docstring-format)
+but you can choose any format so long as you are consistent.
+
+(We chose the Sphinx docstring format because we're using `spinx`, allowing us to use docstrings to autogenerate rich documentation)
+
 ### [D.1.2] ✔️ **DO** List exported modules and subpackages in a package's docstring
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
