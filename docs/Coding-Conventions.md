@@ -866,7 +866,7 @@ def go_shopping():
 We recommend (and use internally) using the [Sphinx docstring format](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html#the-sphinx-docstring-format)
 but you can choose any format so long as you are consistent.
 
-(We chose the Sphinx docstring format because we're using `spinx`, allowing us to use docstrings to autogenerate rich documentation)
+(We chose the Sphinx docstring format because we're using `sphinx`, allowing us to use docstrings to autogenerate rich documentation)
 
 ### [D.1.2] ✔️ **DO** List exported modules and subpackages in a package's docstring
 
