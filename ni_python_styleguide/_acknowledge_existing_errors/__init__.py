@@ -1,7 +1,7 @@
 from collections import defaultdict
 import logging
 
-import ni_python_styleguide.lint_errors_parser
+import ni_python_styleguide._lint_errors_parser
 
 
 def _filter_to_handled_errors(lint_errors):
@@ -37,6 +37,11 @@ def _add_noqa_to_line(lineno, filepath, error_code, explanation):
 
 
 def acknowledge_lint_errors(lint_errors):
+    """Add a "noqa" comment for each of existing errors (unless excluded).
+
+    Excluded error (reason):
+    BLK100 - run black
+    """
     parsed_errors = [ni_python_styleguide.lint_errors_parser.parse(error) for error in lint_errors]
 
     lint_errors_to_process = _filter_to_handled_errors(parsed_errors)

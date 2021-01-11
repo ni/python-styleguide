@@ -1,12 +1,12 @@
 import click
+import contextlib
 import flake8.main.application
 import logging
 import pathlib
-import sys
 import toml
 from io import StringIO
 
-from . import acknowledge_existing_errors
+from . import _acknowledge_existing_errors
 
 
 def _qs_or_vs(verbosity):
@@ -129,25 +129,6 @@ def lint(obj, format, extend_ignore, file_or_dir):
     _lint(obj=obj, format=format, extend_ignore=extend_ignore, file_or_dir=file_or_dir)
 
 
-class _Capturing(list):
-    """
-    context manager that captures stdout and presents as a list of the output
-
-    from: https://stackoverflow.com/a/16571630
-    """
-
-    def __enter__(self):
-        self._stdout = sys.stdout
-        self._stringio = StringIO()
-        sys.stdout = self._stringio
-        return self
-
-    def __exit__(self, *args):
-        self.extend(self._stringio.getvalue().splitlines())
-        del self._stringio  # free up some memory
-        sys.stdout = self._stdout
-
-
 @main.command()
 @click.option(
     "--extend-ignore",
@@ -157,11 +138,16 @@ class _Capturing(list):
 @click.argument("file_or_dir", nargs=-1)
 @click.pass_obj
 def acknowledge_existing_violations(obj, extend_ignore, file_or_dir):
+    """Lint existing error and suppress.
+
+    Use this command to acknowledge violations in existing code to allow for enforcing new code.
+    """
     logging.info("linting code")
-    with _Capturing() as capture:
+    capture = StringIO()
+    with contextlib.redirect_stdout(capture):
         try:
             _lint(obj=obj, format=None, extend_ignore=extend_ignore, file_or_dir=file_or_dir)
         except SystemExit:
             pass  # the flake8 app wants to always SystemExit :(
 
-    acknowledge_existing_errors.acknowledge_lint_errors(capture)
+    _acknowledge_existing_errors.acknowledge_lint_errors(capture)
