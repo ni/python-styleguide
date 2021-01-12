@@ -67,3 +67,6 @@ norecursedirs = "*__snapshots"
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
+
+[tool.ni-python-styleguide]
+exclude = "*__snapshots/*/bad_input.py"
