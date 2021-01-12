@@ -1,5 +1,6 @@
 from collections import defaultdict
 import logging
+import re
 
 import ni_python_styleguide._lint_errors_parser
 
@@ -25,10 +26,17 @@ def _add_noqa_to_line(lineno, filepath, error_code, explanation):
 
     line = code[lineno]
     line = line.rstrip("\n")
-    line += (
-        f"  # noqa {error_code}: {explanation} - This suppression was "
-        "auto-generated to allow focus on handling new errors\n"
-    )
+
+    existing_suppression = re.search(r"noqa (?P<existing_suppresions>[\w\d]+\: [\w\W]+?) -", line)
+    if existing_suppression:
+        before = existing_suppression.groupdict()['existing_suppresions']
+        if error_code not in before:
+            line = line.replace(before, before + f', {error_code}: {explanation}')
+    else:
+        line += (
+            f"  # noqa {error_code}: {explanation} - This suppression was "
+            "auto-generated to allow focus on handling new errors\n"
+        )
     code[lineno] = line
 
     with open(filepath, mode="w") as out_file:
