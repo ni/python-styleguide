@@ -150,4 +150,5 @@ def acknowledge_existing_violations(obj, extend_ignore, file_or_dir):
         except SystemExit:
             pass  # the flake8 app wants to always SystemExit :(
 
-    _acknowledge_existing_errors.acknowledge_lint_errors(capture)
+    lines = capture.getvalue().splitlines()
+    _acknowledge_existing_errors.acknowledge_lint_errors(lines)
