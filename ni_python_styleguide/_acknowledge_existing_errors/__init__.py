@@ -58,7 +58,7 @@ def acknowledge_lint_errors(lint_errors):
         cached_key = f"{error.file}:{error.line + skip}"
         if error.code in handled_lines.get(cached_key, []):
             logging.warning(
-                "Multiple %s codes were logged for %s:%s, only suprressing first",
+                "Multiple occurances of error %s code were logged for %s:%s, only suprressing first",
                 error.code,
                 error.file,
                 error.line + skip,
