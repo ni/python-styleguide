@@ -1,3 +1,5 @@
+"""Tests for the lint_errors_parser sub-module."""
+
 import ni_python_styleguide._lint_errors_parser
 
 import pytest
@@ -25,6 +27,7 @@ EXAMPLE_LINT_ERROR_LINES = [  # noqa W505
 
 @pytest.mark.parametrize("input_line", EXAMPLE_LINT_ERROR_LINES)
 def test_lint_errors_parser_handles_example_line_without_error(input_line):
+    """Test parser yields expected metadata."""
     assert ni_python_styleguide._lint_errors_parser.parse(
         input_line
     ), "should parse without error and return object"

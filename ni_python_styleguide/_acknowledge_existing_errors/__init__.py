@@ -29,9 +29,9 @@ def _add_noqa_to_line(lineno, filepath, error_code, explanation):
 
     existing_suppression = re.search(r"noqa (?P<existing_suppresions>[\w\d]+\: [\w\W]+?) -", line)
     if existing_suppression:
-        before = existing_suppression.groupdict()['existing_suppresions']
+        before = existing_suppression.groupdict()["existing_suppresions"]
         if error_code not in before:
-            line = line.replace(before, before + f', {error_code}: {explanation}')
+            line = line.replace(before, before + f", {error_code}: {explanation}")
     else:
         line += (
             f"  # noqa {error_code}: {explanation} - This suppression was "
