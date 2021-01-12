@@ -26,7 +26,7 @@ def _add_noqa_to_line(lineno, filepath, error_code, explanation):
     line = code[lineno]
     line = line.rstrip("\n")
     line += (
-        f"  # NOQA {error_code}: {explanation} - This suppression was "
+        f"  # noqa {error_code}: {explanation} - This suppression was "
         "auto-generated to allow focus on handling new errors\n"
     )
     code[lineno] = line
