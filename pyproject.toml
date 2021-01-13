@@ -3,7 +3,7 @@ name = "ni-python-styleguide"
 # The -alpha.0 here denotes a source based version
 # This is removed when released through the Publish-Package.yml GitHub action
 # Official PyPI releases follow Major.Minor.Patch
-version = "0.1.1-alpha.0"
+version = "0.1.3-alpha.0"
 description = "NI's internal and external Python linter rules and plugins"
 authors = ["NI <opensource@ni.com>"]
 license = "MIT"
@@ -23,6 +23,7 @@ toml = "^0.10.1"
 
 # flake8 plugins should be listed here (in alphabetical order)
 flake8-black = "^0.2.1"
+flake8-docstrings = "^1.5.0"
 
 # Rejected flake8 plugins should be listed here (in alphabetical order)
 # Also describe why it is rejected and/or add a link
