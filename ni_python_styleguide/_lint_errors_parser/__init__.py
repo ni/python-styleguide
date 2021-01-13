@@ -13,7 +13,10 @@ def parse(line):
 
     >>> parse(r"source\rpmfile\__init__.py:13:1: F401 'functools.wraps' imported but unused")
     LintError(file='source\\rpmfile\\__init__.py', line=13, column=1, code='F401', explanation="'functools.wraps' imported but unused")
-    """  # NOQA W505: doc line too long (115 > 100 characters) - This suppression was auto-generated to allow focus on handling new errors
+
+    >>> parse(r"expected_output.py:77:6: N802 function name 'method_withBadName_with_bad_params_on_multiple_lines_1' should be lowercase")
+    LintError(file='expected_output.py', line=77, column=6, code='N802', explanation="function name 'method_withBadName_with_bad_params_on_multiple_lines_1' should be lowercase")
+    """  # NOQA W505: doc line too long (115 > 100 characters)
     p = Parser()
     return p.parse(line)
 

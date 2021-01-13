@@ -25,18 +25,21 @@ def _add_noqa_to_line(lineno, filepath, error_code, explanation):
         code = cache_file.readlines()
 
     line = code[lineno]
+    line_had_newline = line.endswith("\n")
     line = line.rstrip("\n")
 
     existing_suppression = re.search(r"noqa (?P<existing_suppresions>[\w\d]+\: [\w\W]+?) -", line)
     if existing_suppression:
         before = existing_suppression.groupdict()["existing_suppresions"]
         if error_code not in before:
-            line = line.replace(before, before + f", {error_code}: {explanation}")
+            line = line.replace(before, before + f", {error_code}: {explanation}") + "\n"
     else:
         line += (
             f"  # noqa {error_code}: {explanation} - This suppression was "
             "auto-generated to allow focus on handling new errors\n"
         )
+    if not line_had_newline:
+        line.rstrip("\n")
     code[lineno] = line
 
     with open(filepath, mode="w") as out_file:
