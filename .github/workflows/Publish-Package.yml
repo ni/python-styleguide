@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: ${{ github.event.release.target_commitish }} # This is the branch the release was created from. Normally main/master, but can be a dev branch
+          ref: ${{ github.event.release.target_commitish }} # This is the branch the release was created from. Normally main, but can be a dev branch
           persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
@@ -57,7 +57,7 @@ jobs:
           poetry version patch
 
       - name: Build Python package and publish to PyPI
-        if: ${{ github.event.release.target_commitish == 'master' }}
+        if: ${{ github.event.release.target_commitish == 'main' }}
         run: |
           poetry publish --build --username __token__ --password ${{ secrets.PYPI_TOKEN}}
 
@@ -66,7 +66,7 @@ jobs:
           poetry version prepatch
 
       - name: Commit files
-        if: ${{ github.event.release.target_commitish == 'master' }}
+        if: ${{ github.event.release.target_commitish == 'main' }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -74,7 +74,7 @@ jobs:
           git commit -m "Bump package version" -a
 
       - name: Push changes
-        if: ${{ github.event.release.target_commitish == 'master' }}
+        if: ${{ github.event.release.target_commitish == 'main' }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.ADMIN_PAT }}
