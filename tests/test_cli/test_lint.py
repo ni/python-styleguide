@@ -10,19 +10,17 @@ TOO_LONG_LINE = "a_really_long_order = [" + ", ".join(itertools.repeat('"spam"',
 
 
 @pytest.fixture
-def styleguide_lint(styleguide, tmp_path, chdir):
+def styleguide_lint(styleguide_command):
     """Fixture which will run the styleguide with the "lint" subcommand.
 
     Both `base_args` and `lint_args` must be iterables which will be transformed into strings
     and passed on the cmd line in the following order: `<cmd> <base_args> lint <lint_args>.
 
-    The fixture also ensures we run the linter from within the tmp_path directory.
+    The base fixture also ensures we run the linter from within the tmp_path directory.
     """
 
     def runner(base_args=[], lint_args=[]):
-        return styleguide(*base_args, "lint", *lint_args)
-
-    chdir(str(tmp_path))
+        return styleguide_command(base_args=base_args, command="lint", command_args=lint_args)
 
     return runner
 
