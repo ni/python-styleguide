@@ -62,7 +62,8 @@ def test_given_bad_input_produces_expected_output(test_dir, snapshot, tmp_path, 
     """Test that suppresion yields expected_output file."""
     in_file = test_dir / "bad_input.py"
     test_file = tmp_path / "bad_input.py"
-    shutil.copyfile(in_file, test_file)
+    raw = in_file.read_text()
+    test_file.write_text(raw)
 
     output = styleguide_command(command="acknowledge-existing-violations")
 
