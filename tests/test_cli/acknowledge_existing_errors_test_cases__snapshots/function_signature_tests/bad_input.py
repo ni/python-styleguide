@@ -35,7 +35,7 @@ def method_with_parameters_on_multiple_lines(x, y):
     return x + y
 
 
-def method_with_bad_names_on_signle_line(myBadlyNamedParam, my_other_Bad_name):
+def method_with_bad_names_on_single_line(myBadlyNamedParam, my_other_Bad_name):
     """Provide parameters with bad names on single line."""
     return myBadlyNamedParam + my_other_Bad_name
 
@@ -70,7 +70,7 @@ def method_withBadName_with_parameters_on_multiple_lines(x, y):
     return x + y
 
 
-def method_withBadName_with_bad_params_on_signle_line(myBadlyNamedParam, my_other_Bad_name):
+def method_withBadName_with_bad_params_on_single_line(myBadlyNamedParam, my_other_Bad_name):
     """Provide parameters with bad names on single line."""
     return myBadlyNamedParam + my_other_Bad_name
 
