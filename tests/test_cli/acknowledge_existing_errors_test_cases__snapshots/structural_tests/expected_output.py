@@ -21,6 +21,7 @@ if y == True:  # noqa E712: comparison to True should be 'if cond is True:' or '
 if x < 5:
     print("x < 5")
 
+
 def foo():  # noqa D103: Missing docstring in public function - This suppression was auto-generated to allow focus on handling new errors
     for l in range(3):  # noqa E741: ambiguous variable name 'l' - This suppression was auto-generated to allow focus on handling new errors
         pass
