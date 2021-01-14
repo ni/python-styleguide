@@ -1,6 +1,7 @@
 """Tests for the "acknowledge-existing-errors" subcommand of ni-python-styleguide."""
 
 import pathlib
+import shutil
 
 from ni_python_styleguide import _acknowledge_existing_errors
 
@@ -58,18 +59,17 @@ def test_can_acurately_detect_if_in_multiline_string(lineno, expected_in_multili
 
 @pytest.mark.parametrize("test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()])
 def test_given_bad_input_produces_expected_output(
-    test_dir, snapshot, tmp_path, styleguide_acknowledge
+    test_dir, snapshot, tmp_path, styleguide_command
 ):
     """Test that suppresion yields expected_output file."""
     in_file = test_dir / "bad_input.py"
-    out_file = tmp_path / "bad_input.py"
-    raw_file = in_file.read_text()
-    out_file.write_text(raw_file)
+    test_file = tmp_path / "bad_input.py"
+    shutil.copyfile(in_file, test_file)
 
     output = styleguide_command(command="acknowledge-existing-violations")
 
     assert output.exit_code == 0, f"Error in running:\n{output}"
-    result = out_file.read_text()
+    result = test_file.read_text()
     snapshot.snapshot_dir = test_dir
     snapshot.assert_match(result, "expected_output.py")
 
