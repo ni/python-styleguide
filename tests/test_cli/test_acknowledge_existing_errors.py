@@ -1,7 +1,6 @@
 """Tests for the "acknowledge-existing-errors" subcommand of ni-python-styleguide."""
 
 import pathlib
-import shutil
 
 from ni_python_styleguide import _acknowledge_existing_errors
 
