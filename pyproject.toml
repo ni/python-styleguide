@@ -52,7 +52,7 @@ exclude = '''
 '''
 
 [tool.pytest.ini_options]
-addopts = "--doctest-modules --ignore-glob='ni_python_styleguide/**'"
+addopts = "--doctest-modules"
 norecursedirs = "*__snapshots"
 
 [build-system]
