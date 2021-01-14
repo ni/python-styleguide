@@ -1,6 +1,7 @@
 """Useful plugins/fixtures which can (and should) be used in any test."""
 
 import os
+import logging
 
 import click.testing
 

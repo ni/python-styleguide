@@ -1,4 +1,5 @@
 import re
+import logging
 from collections import namedtuple
 
 LintError = namedtuple("LintError", ["file", "line", "column", "code", "explanation"])
@@ -47,6 +48,7 @@ class Parser:
         :rtype: LintError
         """
         data = Parser.__MATCHER.search(line)
+        logging.debug("parsing line: %s, yielded %s", line, data)
         if not data:
             return None
         result = Parser._to_lint_error(**data.groupdict())
