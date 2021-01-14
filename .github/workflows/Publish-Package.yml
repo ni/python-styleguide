@@ -1,0 +1,81 @@
+name: Publish Package
+
+on:
+  release:
+    types: [released]
+
+jobs:
+  publish_package:
+    name: Publish Package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.release.target_commitish }} # This is the branch the release was created from. Normally main, but can be a dev branch
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.6
+
+      - name: Set up Poetry cache for Python dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pypoetry
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: ${{ runner.os }}-poetry-
+
+      - uses: Gr1N/setup-poetry@v4
+        with:
+          poetry-version: 1.0.0
+
+      # @TODO: This is a workaround for there not being a way to check the lock file
+      #   See: https://github.com/python-poetry/poetry/issues/453
+      #   NOTE: This isn't ideal as it using the system Python and dirtying the system
+      #     Python libraries.
+      - name: Check for lock changes
+        run: |
+          PYTHONPATH="${PYTHONPATH}:${HOME}/.poetry/lib" \
+          python -c "from poetry.factory import Factory; \
+            locker = Factory().create_poetry('.').locker; \
+            exit(0) if locker.is_locked() and locker.is_fresh() else exit(1)" \
+            && echo 'OK'
+
+      - name: Install the Package
+        run: poetry install
+
+      - name: Lint the Code
+        run: poetry run ni-python-styleguide lint
+
+      - name: Run tests
+        run: poetry run pytest -v
+
+      # If the version is 0.1.0-alpha.0, this will set the version to 0.1.0
+      - name: Promote package version to release
+        run: |
+          poetry version patch
+
+      - name: Build Python package and publish to PyPI
+        if: ${{ github.event.release.target_commitish == 'main' }}
+        run: |
+          poetry publish --build --username __token__ --password ${{ secrets.PYPI_TOKEN}}
+
+      - name: Bump poetry version to next alpha version
+        run: |
+          poetry version prepatch
+
+      - name: Commit files
+        if: ${{ github.event.release.target_commitish == 'main' }}
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git pull --tags -f
+          git commit -m "Bump package version" -a
+
+      - name: Push changes
+        if: ${{ github.event.release.target_commitish == 'main' }}
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.ADMIN_PAT }}
+          branch: ${{ github.event.release.target_commitish }}

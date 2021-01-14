@@ -35,8 +35,10 @@ def _read_pyproject_toml(ctx, param, value):
 
 
 class AllowConfigGroup(click.Group):
-    def __init__(self, *args, **kwargs):
+    """click.Group subclass which allows for a config option to load options from."""
 
+    def __init__(self, *args, **kwargs):
+        """Construct the click.Group with the config option."""
         kwargs["params"].append(
             click.Option(
                 ["--config"],
@@ -86,6 +88,7 @@ class AllowConfigGroup(click.Group):
 @click.version_option()  # @TODO: override the message to include dependency version(s)
 @click.pass_context
 def main(ctx, verbose, quiet, config, exclude, extend_exclude):
+    """NI's internal and external Python linter rules and plugins."""  # noqa: D4
     ctx.ensure_object(dict)
     ctx.obj["VERBOSITY"] = verbose - quiet
     ctx.obj["EXCLUDE"] = ",".join(filter(bool, [exclude.strip(","), extend_exclude.strip(",")]))
@@ -102,6 +105,7 @@ def main(ctx, verbose, quiet, config, exclude, extend_exclude):
 @click.argument("file_or_dir", nargs=-1)
 @click.pass_obj
 def lint(obj, format, extend_ignore, file_or_dir):
+    """Lint the file(s)/directory(s) given."""  # noqa: D4
     app = flake8.main.application.Application()
     args = [
         _qs_or_vs(obj["VERBOSITY"]),
