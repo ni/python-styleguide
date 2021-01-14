@@ -21,6 +21,7 @@ if y == True:
 if x < 5:
     print("x < 5")
 
+
 def foo():
     for l in range(3):
         pass

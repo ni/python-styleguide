@@ -58,9 +58,7 @@ def test_can_acurately_detect_if_in_multiline_string(lineno, expected_in_multili
 
 
 @pytest.mark.parametrize("test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()])
-def test_given_bad_input_produces_expected_output(
-    test_dir, snapshot, tmp_path, styleguide_command
-):
+def test_given_bad_input_produces_expected_output(test_dir, snapshot, tmp_path, styleguide_command):
     """Test that suppresion yields expected_output file."""
     in_file = test_dir / "bad_input.py"
     test_file = tmp_path / "bad_input.py"
@@ -80,6 +78,8 @@ def test_given_suppressed_file_linter_does_not_error(test_dir, styleguide_comman
     chdir(test_dir)
 
     # lint the output file - we don't suppress BLK100, so it's not one we expect to pass
-    output = styleguide_command(command="lint", command_args=["expected_output.py", "--extend-ignore=BLK100"])
+    output = styleguide_command(
+        command="lint", command_args=["expected_output.py", "--extend-ignore=BLK100"]
+    )
 
     assert output.exit_code == 0, f"Error in running:\n{output.output}\n\n"

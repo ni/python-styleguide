@@ -37,6 +37,7 @@ def styleguide(monkeypatch, cli_runner):
 
     return runner
 
+
 @pytest.fixture
 def styleguide_command(styleguide, chdir, tmp_path):
     """Fixture which will run the styleguide with the passed command subcommand.
