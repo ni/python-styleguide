@@ -23,6 +23,7 @@ toml = "^0.10.1"
 
 # flake8 plugins should be listed here (in alphabetical order)
 flake8-black = "^0.2.1"
+pep8-naming = "^0.11.1"
 flake8-docstrings = "^1.5.0"
 
 # Rejected flake8 plugins should be listed here (in alphabetical order)
@@ -44,17 +45,8 @@ exclude = '''
   /(
       \.eggs         # exclude a few common directories in the
     | \.git          # root of the project
-    | \.hg
-    | \.mypy_cache
-    | \.tox
     | \.venv
-    | _build
-    | buck-out
-    | build
-    | dist
   )/
-  | foo.py           # also separately exclude a file named foo.py in
-                     # the root of the project
   | /.*__snapshots/.*_output\.py # exclude the snapshot outputs
 )
 '''
