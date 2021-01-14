@@ -56,39 +56,6 @@ def test_can_acurately_detect_if_in_multiline_string(lineno, expected_in_multili
     assert result == expected_in_multiline
 
 
-@pytest.fixture
-def styleguide_acknowledge(styleguide, tmp_path, chdir):
-    """Fixture which will run the styleguide with the "acknowledge-existing-violations" subcommand.
-
-    Both `base_args` and `lint_args` must be iterables which will be transformed into strings
-    and passed on the cmd line in the following order:
-    `<cmd> <base_args> acknowledge-existing-violations <lint_args>.
-
-    The fixture also ensures we run the command from within the tmp_path directory.
-    """
-
-    def runner(base_args=[], lint_args=[]):
-        return styleguide(*base_args, "acknowledge-existing-violations", *lint_args)
-
-    chdir(str(tmp_path))
-
-    return runner
-
-
-@pytest.fixture
-def styleguide_lint(styleguide, tmp_path, chdir):
-    """Fixture which will run the styleguide with the "lint" subcommand.
-
-    Both `base_args` and `lint_args` must be iterables which will be transformed into strings
-    and passed on the cmd line in the following order: `<cmd> <base_args> lint <lint_args>.
-    """
-
-    def runner(base_args=[], lint_args=[]):
-        return styleguide(*base_args, "lint", *lint_args)
-
-    return runner
-
-
 @pytest.mark.parametrize("test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()])
 def test_given_bad_input_produces_expected_output(
     test_dir, snapshot, tmp_path, styleguide_acknowledge
@@ -99,7 +66,7 @@ def test_given_bad_input_produces_expected_output(
     raw_file = in_file.read_text()
     out_file.write_text(raw_file)
 
-    output = styleguide_acknowledge()
+    output = styleguide_command(command="acknowledge-existing-violations")
 
     assert output.exit_code == 0, f"Error in running:\n{output}"
     result = out_file.read_text()
@@ -108,11 +75,11 @@ def test_given_bad_input_produces_expected_output(
 
 
 @pytest.mark.parametrize("test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()])
-def test_given_suppressed_file_linter_does_not_error(test_dir, styleguide_lint, chdir):
+def test_given_suppressed_file_linter_does_not_error(test_dir, styleguide_command, chdir):
     """Test linter does not error on output from suppresion."""
     chdir(test_dir)
 
     # lint the output file - we don't suppress BLK100, so it's not one we expect to pass
-    output = styleguide_lint(lint_args=["expected_output.py", "--extend-ignore=BLK100"])
+    output = styleguide_command(command="lint", command_args=["expected_output.py", "--extend-ignore=BLK100"])
 
     assert output.exit_code == 0, f"Error in running:\n{output.output}\n\n"
