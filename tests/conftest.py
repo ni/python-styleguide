@@ -40,10 +40,10 @@ def styleguide(monkeypatch, cli_runner):
 
 @pytest.fixture
 def styleguide_command(styleguide, chdir, tmp_path):
-    """Fixture which will run the styleguide with the passed command subcommand.
+    """Fixture which will run the styleguide with the passed subcommand.
 
-    Both `base_args` and `lint_args` must be iterables which will be transformed into strings
-    and passed on the cmd line in the following order: `<cmd> <base_args> lint <lint_args>.
+    Both `base_args` and `command_args` must be iterables which will be transformed into strings
+    and passed on the cmd line in the following order: `<cmd> <base_args> <command> <command_args>.
     """
 
     def runner(*, base_args=[], command="", command_args=[]):
