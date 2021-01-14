@@ -66,8 +66,7 @@ def test_given_bad_input_produces_expected_output(test_dir, snapshot, tmp_path, 
 
     output = styleguide_command(command="acknowledge-existing-violations")
 
-    assert output is not None, "command should return a result object"
-    assert output.exit_code == 0, f"Error in running:\n{output}"
+    assert output.exit_code in (True, 0), f"Error in running:\n{output}"
     result = test_file.read_text()
     snapshot.snapshot_dir = test_dir
     snapshot.assert_match(result, "expected_output.py")
@@ -83,4 +82,4 @@ def test_given_suppressed_file_linter_does_not_error(test_dir, styleguide_comman
         command="lint", command_args=["expected_output.py", "--extend-ignore=BLK100"]
     )
 
-    assert output.exit_code == 0, f"Error in running:\n{output.output}\n\n"
+    assert output.exit_code in (True, 0), f"Error in running:\n{output.output}\n\n"
