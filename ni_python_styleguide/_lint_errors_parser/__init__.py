@@ -17,6 +17,9 @@ def parse(line):
 
     >>> parse(r"expected_output.py:77:6: N802 function name 'method_withBadName_with_bad_params_on_multiple_lines_1' should be lowercase")
     LintError(file='expected_output.py', line=77, column=6, code='N802', explanation="function name 'method_withBadName_with_bad_params_on_multiple_lines_1' should be lowercase")
+
+    >>> parse(r"./tests/test_cli/acknowledge_existing_errors_test_cases__snapshots/doc_line_tests/expected_output.py:1:1: D100 Missing docstring in public module")
+    LintError(file='./tests/test_cli/acknowledge_existing_errors_test_cases__snapshots/doc_line_tests/expected_output.py', line=1, column=1, code='D100', explanation='Missing docstring in public module')
     """  # NOQA W505: doc line too long (115 > 100 characters)
     p = Parser()
     return p.parse(line)
@@ -26,7 +29,7 @@ class Parser:
     """Lint errors parser."""
 
     __MATCHER = re.compile(
-        r"^(?P<file>[\w\\\.]+):(?P<line>\d+):(?P<column>\d+): (?P<code>\w+) (?P<explanation>.+)"
+        r"^(?P<file>[\w\\/\.]+):(?P<line>\d+):(?P<column>\d+): (?P<code>\w+) (?P<explanation>.+)"
     )
 
     @staticmethod
