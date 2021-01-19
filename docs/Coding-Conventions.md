@@ -232,13 +232,43 @@ class Outputs:
 
 E.g. `tempfile` is preferred over `temp_file` or `temporary_file`
 
-### [N.2.2] ✔️ **DO** Use `snake_case` for function, variable, and parameter names
+### [N.2.2] ✔️ **DO** Use `snake_case` for function, variable, and parameter names 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-### [N.2.3] ✔️ **DO** Use CamelCase for class names
+> 💻 This rule is enforced by error codes N802, N803, N806
+
+```python
+# Bad - will produce N802
+def buyCheese(cheese_type):
+    pass
+```
+
+```python
+# Bad - will produce N803
+def buy_cheese(cheeseType):
+    pass
+```
+
+```python
+# Bad - will produce N806
+def buy_cheese(cheese_type):
+    cheeseShop = get_cheese_shop()
+    return cheeseShop.buy(cheese_type)
+```
+
+```python
+# Good
+def buy_cheese(cheese_type):
+    cheese_shop = get_cheese_shop()
+    return cheese_shop.buy(cheese_type)
+```
+
+### [N.2.3] ✔️ **DO** Use CamelCase for class names 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
+
+> 💻 This rule is enforced by error code N801
 
 ℹ️ An exception is made for classes which are used primarily as a callable. They should use function naming conventions instead.
 
