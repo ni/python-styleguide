@@ -38,7 +38,7 @@ class AllowConfigGroup(click.Group):
     """click.Group subclass which allows for a config option to load options from."""
 
     def __init__(self, *args, **kwargs):
-        """Construct the click.Group with the config option."""
+        """Constructs the click.Group with the config option."""
         kwargs["params"].append(
             click.Option(
                 ["--config"],
