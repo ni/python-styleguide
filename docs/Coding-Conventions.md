@@ -306,7 +306,7 @@ from typing import TypeVar
 FlyingCircus = TypeVar("FlyingCircus")
 ```
 
-### [N.2.7] ✔️ **DO** Suffix covariant and contravariant type variables with `_co` and `_contra` respectively
+### [N.2.6] ✔️ **DO** Suffix covariant and contravariant type variables with `_co` and `_contra` respectively
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -318,23 +318,23 @@ FlyingCircus_co = TypeVar("FlyingCircus_co", covariant=True)
 FlyingCircus_contra = TypeVar("FlyingCircus_contra", contravariant=True)
 ```
 
-### [N.2.6] ✔️ **DO** Suffix error exceptions with "Error"
+### [N.2.7] ✔️ **DO** Suffix error exceptions with "Error"
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-### [N.2.7] ✔️ **DO** Use `self` as the first argument to instance methods
+### [N.2.8] ✔️ **DO** Use `self` as the first argument to instance methods
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-### [N.2.8] ✔️ **DO** Use `cls` as the first argument to class methods
+### [N.2.9] ✔️ **DO** Use `cls` as the first argument to class methods
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-### [N.2.9] ✔️ **DO** Use one leading underscore only for non-public methods and instance variables
+### [N.2.10] ✔️ **DO** Use one leading underscore only for non-public methods and instance variables
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-### [N.2.10] ✔️ **CONSIDER** Using two leading underscores for truly private attributes when defining a base class
+### [N.2.11] ✔️ **CONSIDER** Using two leading underscores for truly private attributes when defining a base class
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
