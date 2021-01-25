@@ -14,6 +14,7 @@ class _Region(object):
             text: (forwarded to the object constructor)
             parent: (forwarded to the object constructor)
             header_depth: specifies which Markdown header depth to identify the section by.
+
         """
         header_marker = f"\\n{'#'* header_depth} \\["
 
@@ -32,6 +33,7 @@ class _Region(object):
         Args:
             text: The textual contents of the region.
             parent: Optional; A region which this region is a child of.
+
         """
         if parent:
             self.parent = parent
