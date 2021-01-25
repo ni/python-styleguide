@@ -863,7 +863,7 @@ def go_shopping():
 
 ### Which docstring format should I follow?
 
-We recommend (and use internally) using the [Google docstring format](https://google.github.io/styleguide/pyguide.html#383-functions-and-methods) but you can choose any format so long as you are consistent.
+We recommend (and internally use) the [Google docstring format](https://google.github.io/styleguide/pyguide.html#383-functions-and-methods) but you can choose any format so long as you are consistent.
 
 ### [D.1.2] ✔️ **DO** List exported modules and subpackages in a package's docstring
 
