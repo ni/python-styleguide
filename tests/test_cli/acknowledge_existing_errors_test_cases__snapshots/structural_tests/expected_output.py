@@ -41,8 +41,8 @@ except:  # noqa E722: do not use bare 'except' - This suppression was auto-gener
     pass
 
 
-class Cheese_Shop:  # noqa D101: Missing docstring in public class - This suppression was auto-generated to allow focus on handling new errors
-    def RequestCheese(self):
+class Cheese_Shop:  # noqa D101: Missing docstring in public class, N801: class name 'Cheese_Shop' should use CapWords convention - This suppression was auto-generated to allow focus on handling new errors
+    def RequestCheese(self):  # noqa N802: function name 'RequestCheese' should be lowercase - This suppression was auto-generated to allow focus on handling new errors
         """Provide method with bad name."""
         pass
 
