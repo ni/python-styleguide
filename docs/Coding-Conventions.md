@@ -232,13 +232,43 @@ class Outputs:
 
 E.g. `tempfile` is preferred over `temp_file` or `temporary_file`
 
-### [N.2.2] ✔️ **DO** Use `snake_case` for function, variable, and parameter names
+### [N.2.2] ✔️ **DO** Use `snake_case` for function, variable, and parameter names 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-### [N.2.3] ✔️ **DO** Use CamelCase for class names
+> 💻 This rule is enforced by error codes N802, N803, N806
+
+```python
+# Bad - will produce N802
+def buyCheese(cheese_type):
+    pass
+```
+
+```python
+# Bad - will produce N803
+def buy_cheese(cheeseType):
+    pass
+```
+
+```python
+# Bad - will produce N806
+def buy_cheese(cheese_type):
+    cheeseShop = get_cheese_shop()
+    return cheeseShop.buy(cheese_type)
+```
+
+```python
+# Good
+def buy_cheese(cheese_type):
+    cheese_shop = get_cheese_shop()
+    return cheese_shop.buy(cheese_type)
+```
+
+### [N.2.3] ✔️ **DO** Use CamelCase for class names 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
+
+> 💻 This rule is enforced by error code N801
 
 ℹ️ An exception is made for classes which are used primarily as a callable. They should use function naming conventions instead.
 
@@ -254,7 +284,11 @@ class CheeseShop:
     pass
 ```
 
-### [N.2.4] ✔️ **DO** Use `CamelCase` for type variable names
+### [N.2.4] ✔️ **DO** Use `SCREAMING_CASE` for module level constants
+
+> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
+
+### [N.2.5] ✔️ **DO** Use `CamelCase` for type variable names
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -272,7 +306,7 @@ from typing import TypeVar
 FlyingCircus = TypeVar("FlyingCircus")
 ```
 
-### [N.2.5] ✔️ **DO** Suffix covariant and contravariant type variables with `_co` and `_contra` respectively
+### [N.2.6] ✔️ **DO** Suffix covariant and contravariant type variables with `_co` and `_contra` respectively
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -284,23 +318,19 @@ FlyingCircus_co = TypeVar("FlyingCircus_co", covariant=True)
 FlyingCircus_contra = TypeVar("FlyingCircus_contra", contravariant=True)
 ```
 
-### [N.2.6] ✔️ **DO** Suffix error exceptions with "Error"
+### [N.2.7] ✔️ **DO** Suffix error exceptions with "Error"
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-### [N.2.7] ✔️ **DO** Use `self` as the first argument to instance methods
+### [N.2.8] ✔️ **DO** Use `self` as the first argument to instance methods
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-### [N.2.8] ✔️ **DO** Use `cls` as the first argument to class methods
+### [N.2.9] ✔️ **DO** Use `cls` as the first argument to class methods
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-### [N.2.9] ✔️ **DO** Use one leading underscore only for non-public methods and instance variables
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-### [N.2.10] ✔️ **DO** Use `SCREAMING_CASE` for module level constants
+### [N.2.10] ✔️ **DO** Use one leading underscore only for non-public methods and instance variables
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -768,6 +798,40 @@ import cheese_shop.brie
 ```python
 # Bad
 import os  # Assuming os is never used
+```
+
+### [O.1.8] ❌ **DO NOT** Change an imported object's case 💻
+
+> 💻 This rule is enforced by error codes N811, N812, N813, N814, N817
+
+```python
+# Bad - will produce N811
+from re import MULTILINE as multiline
+```
+
+```python
+# Bad - will produce N812
+import re as RE
+```
+
+```python
+# Bad - will produce N813
+from difflib import HtmlDiff as htmldiff
+```
+
+```python
+# Bad - will produce N814
+from difflib import HtmlDiff as HTML_DIFF
+```
+
+```python
+# Bad - will produce N817
+from difflib import SequenceMatcher as sm
+```
+
+```python
+# Good - Permissible to use "as" as long as you don't change the case
+from cheese_shop import buy_cheese_v4 as buy_cheese
 ```
 
 ## [O.2] Declarations
