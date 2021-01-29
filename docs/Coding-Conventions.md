@@ -825,11 +825,6 @@ from difflib import HtmlDiff as HTML_DIFF
 ```
 
 ```python
-# Bad - will produce N814
-from difflib import HtmlDiff as HTML_DIFF
-```
-
-```python
 # Bad - will produce N817
 from difflib import SequenceMatcher as sm
 ```
