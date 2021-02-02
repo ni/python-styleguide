@@ -1,6 +1,7 @@
 from collections import defaultdict
 import logging
 import re
+import pathlib
 
 import ni_python_styleguide._lint_errors_parser
 
@@ -10,14 +11,34 @@ def _filter_to_handled_errors(lint_errors):
     return filter(lambda o: o.code not in not_handled_errors, lint_errors)
 
 
-def _in_multiline_string(error_file, lineno):
-    with open(error_file) as in_file:
-        lines = in_file.readlines()[:lineno]
-    count_of_multiline_starts_and_stops = sum(
-        line.count('"""') + line.count("'''") for line in lines
-    )
-    # if occurances of multiline string markers is odd, this must be in a multiline
-    return count_of_multiline_starts_and_stops % 2 == 1
+class _in_multiline_string_checker:
+    def __init__(self, error_file):
+        self._error_file = pathlib.Path(error_file)
+        self._values = []
+        self._load_lines()
+
+    @property
+    def values(self):
+        return self._values
+
+    def in_multiline_string(self, lineno):
+        return self._values[lineno - 1]  # 0 indexed, but we number files 1 indexed
+
+    @staticmethod
+    def _count_multiline_string_endings_in_line(line):
+        return line.count('"""') + line.count("'''")
+
+    def _load_lines(self):
+        in_file = self._error_file.read_text().splitlines()
+        current_count = 0
+        for line in in_file:
+            line_value = (
+                current_count
+                + _in_multiline_string_checker._count_multiline_string_endings_in_line(line)
+            )
+            # if occurances of multiline string markers is odd, this must be in a multiline
+            self._values.append(line_value % 2 == 1)
+            current_count = line_value
 
 
 def _add_noqa_to_line(lineno, filepath, error_code, explanation):
@@ -61,11 +82,11 @@ def acknowledge_lint_errors(lint_errors):
     handled_lines = defaultdict(list)
     for error in lint_errors_to_process:
         skip = 0
-        if _in_multiline_string(error_file=error.file, lineno=error.line):
+
+        multiline_checker = _in_multiline_string_checker(error_file=error.file)
+        while multiline_checker.in_multiline_string(lineno=error.line + skip):
             # find when the multiline ends
-            skip = 1
-            while _in_multiline_string(error_file=error.file, lineno=error.line + skip):
-                skip += 1
+            skip += 1
 
         cached_key = f"{error.file}:{error.line + skip}"
         if error.code in handled_lines.get(cached_key, []):
