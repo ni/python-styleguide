@@ -1,10 +1,11 @@
 # NI Python Style Guide
 
-![logo](docs/logo.svg)
+![logo](https://raw.githubusercontent.com/ni/python-styleguide/main/docs/logo.svg)
 
 ---
 
-<!-- @TODO: We should show you some stinkin' badges -->
+[![PyPI version](https://badge.fury.io/py/ni-python-styleguide.svg)](https://badge.fury.io/py/ni-python-styleguide) ![Publish Package](https://github.com/ni/python-styleguide/workflows/Publish%20Package/badge.svg) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 
 Welcome to NI's internal and external Python conventions and enforcement tooling.
 
@@ -12,7 +13,7 @@ Welcome to NI's internal and external Python conventions and enforcement tooling
 
 Our written conventions can be found at https://ni.github.io/python-styleguide/.
 
-Their source is in [docs/Coding-Conventions.md](docs/Coding-Conventions.md).
+Their source is in [docs/Coding-Conventions.md](https://github.com/ni/python-styleguide/tree/main/docs/Coding-Conventions.md).
 
 NOTE: Using the GitHub Pages link is preferable to a GitHub `/blob` link.
 
