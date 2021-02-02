@@ -6,11 +6,6 @@ import pathlib
 import ni_python_styleguide._lint_errors_parser
 
 
-def _filter_to_handled_errors(lint_errors):
-    not_handled_errors = {"BLK100"}
-    return filter(lambda o: o.code not in not_handled_errors, lint_errors)
-
-
 class _in_multiline_string_checker:
     def __init__(self, error_file):
         self._error_file = pathlib.Path(error_file)
@@ -55,9 +50,7 @@ def _add_noqa_to_line(lineno, filepath, error_code, explanation):
         if error_code not in before:
             line = line.replace(before, before + f", {error_code}: {explanation}") + "\n"
     else:
-        line += (
-            f"  # noqa {error_code}: {explanation} (auto-generated noqa)\n"
-        )
+        line += f"  # noqa {error_code}: {explanation} (auto-generated noqa)\n"
     if not line_had_newline:
         line.rstrip("\n")
     code[lineno] = line
@@ -73,11 +66,13 @@ def acknowledge_lint_errors(lint_errors):
     Excluded error (reason):
     BLK100 - run black
     """
-    parsed_errors = filter(
-        lambda o: o is not None,
-        [ni_python_styleguide._lint_errors_parser.parse(error) for error in lint_errors],
-    )
-    lint_errors_to_process = _filter_to_handled_errors(parsed_errors)
+    EXCLUDED_ERRORS = {
+        "BLK100",
+    }
+    parsed_errors = map(ni_python_styleguide._lint_errors_parser.parse, lint_errors)
+    parsed_errors = filter(None, parsed_errors)
+    lint_errors_to_process = [error for error in parsed_errors if error not in EXCLUDED_ERRORS]
+
     # to avoid double marking a line with the same code, keep track of lines and codes
     handled_lines = defaultdict(list)
     for error in lint_errors_to_process:
