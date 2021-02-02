@@ -36,11 +36,8 @@ class _in_multiline_string_checker:
             current_count = line_value
 
 
-def _add_noqa_to_line(lineno, filepath, error_code, explanation):
-    with open(filepath, mode="r") as cache_file:
-        code = cache_file.readlines()
-
-    line = code[lineno]
+def _add_noqa_to_line(lineno, code_lines, error_code, explanation):
+    line = code_lines[lineno]
     line_had_newline = line.endswith("\n")
     line = line.rstrip("\n")
 
@@ -53,11 +50,8 @@ def _add_noqa_to_line(lineno, filepath, error_code, explanation):
         line += f"  # noqa {error_code}: {explanation} (auto-generated noqa)\n"
     if not line_had_newline:
         line.rstrip("\n")
-    code[lineno] = line
 
-    with open(filepath, mode="w") as out_file:
-        for line in code:
-            out_file.write(line)
+    code_lines[lineno] = line
 
 
 def acknowledge_lint_errors(lint_errors):
@@ -73,31 +67,43 @@ def acknowledge_lint_errors(lint_errors):
     parsed_errors = filter(None, parsed_errors)
     lint_errors_to_process = [error for error in parsed_errors if error not in EXCLUDED_ERRORS]
 
-    # to avoid double marking a line with the same code, keep track of lines and codes
-    handled_lines = defaultdict(list)
+    lint_errors_by_file = defaultdict(list)
     for error in lint_errors_to_process:
-        skip = 0
+        lint_errors_by_file[error.file].append(error)
 
-        multiline_checker = _in_multiline_string_checker(error_file=error.file)
-        while multiline_checker.in_multiline_string(lineno=error.line + skip):
-            # find when the multiline ends
-            skip += 1
+    for bad_file, errors_in_file in lint_errors_by_file.items():
+        path = pathlib.Path(bad_file)
+        lines = path.read_text().splitlines(keepends=True)
+        multiline_checker = _in_multiline_string_checker(error_file=bad_file)
 
-        cached_key = f"{error.file}:{error.line + skip}"
-        if error.code in handled_lines[cached_key]:
-            logging.warning(
-                "Multiple occurances of error %s code were logged for %s:%s, only suprressing first",
-                error.code,
-                error.file,
-                error.line + skip,
+        # to avoid double marking a line with the same code, keep track of lines and codes
+        handled_lines = defaultdict(list)
+        for error in errors_in_file:
+            skip = 0
+
+            while multiline_checker.in_multiline_string(
+                lineno=error.line + skip
+            ) and error.line + skip < len(lines):
+                # find when the multiline ends
+                skip += 1
+
+            cached_key = f"{error.file}:{error.line + skip}"
+            if error.code in handled_lines[cached_key]:
+                logging.warning(
+                    "Multiple occurances of error %s code were logged for %s:%s, only suprressing first",
+                    error.code,
+                    error.file,
+                    error.line + skip,
+                )
+                continue
+
+            handled_lines[cached_key].append(error.code)
+
+            _add_noqa_to_line(
+                lineno=error.line - 1 + skip,
+                code_lines=lines,
+                error_code=error.code,
+                explanation=error.explanation,
             )
-            continue
 
-        handled_lines[cached_key].append(error.code)
-
-        _add_noqa_to_line(
-            lineno=error.line - 1 + skip,
-            filepath=error.file,
-            error_code=error.code,
-            explanation=error.explanation,
-        )
+        path.write_text("".join(lines))
