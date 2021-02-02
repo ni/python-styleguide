@@ -3,7 +3,7 @@ import logging
 import re
 import pathlib
 
-import ni_python_styleguide._acknowledge_existing_errors._lint_errors_parser
+from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
 
 
 class _in_multiline_string_checker:
@@ -69,7 +69,7 @@ def acknowledge_lint_errors(lint_errors):
     EXCLUDED_ERRORS = {
         "BLK100",
     }
-    parsed_errors = map(_acknowledge_existing_errors._lint_errors_parser.parse, lint_errors)
+    parsed_errors = map(_lint_errors_parser.parse, lint_errors)
     parsed_errors = filter(None, parsed_errors)
     lint_errors_to_process = [error for error in parsed_errors if error not in EXCLUDED_ERRORS]
 
