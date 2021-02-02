@@ -38,20 +38,18 @@ class _in_multiline_string_checker:
 
 def _add_noqa_to_line(lineno, code_lines, error_code, explanation):
     line = code_lines[lineno]
-    line_had_newline = line.endswith("\n")
+    old_line_ending = "\n" if line.endswith("\n") else ""
     line = line.rstrip("\n")
 
     existing_suppression = re.search(r"noqa (?P<existing_suppresions>[\w\d]+\: [\w\W]+?) -", line)
     if existing_suppression:
         before = existing_suppression.groupdict()["existing_suppresions"]
         if error_code not in before:
-            line = line.replace(before, before + f", {error_code}: {explanation}") + "\n"
+            line = line.replace(before, before + f", {error_code}: {explanation}")
     else:
-        line += f"  # noqa {error_code}: {explanation} (auto-generated noqa)\n"
-    if not line_had_newline:
-        line.rstrip("\n")
+        line += f"  # noqa {error_code}: {explanation} (auto-generated noqa)"
 
-    code_lines[lineno] = line
+    code_lines[lineno] = line + old_line_ending
 
 
 def acknowledge_lint_errors(lint_errors):
