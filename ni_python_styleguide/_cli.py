@@ -6,7 +6,7 @@ import pathlib
 import toml
 from io import StringIO
 
-from . import _acknowledge_existing_errors
+from ni_python_styleguide import _acknowledge_existing_errors
 
 
 def _qs_or_vs(verbosity):
