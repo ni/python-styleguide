@@ -1,10 +1,12 @@
-import pathlib
-
 import click
-
+import contextlib
 import flake8.main.application
-
+import logging
+import pathlib
 import toml
+from io import StringIO
+
+from ni_python_styleguide import _acknowledge_existing_errors
 
 
 def _qs_or_vs(verbosity):
@@ -94,18 +96,7 @@ def main(ctx, verbose, quiet, config, exclude, extend_exclude):
     ctx.obj["EXCLUDE"] = ",".join(filter(bool, [exclude.strip(","), extend_exclude.strip(",")]))
 
 
-@main.command()
-# @TODO: When we're ready to encourage editor integration, add --diff flag
-@click.option("--format", type=str, help="Format errors according to the chosen formatter.")
-@click.option(
-    "--extend-ignore",
-    type=str,
-    help="Comma-separated list of errors and warnings to ignore (or skip)",
-)
-@click.argument("file_or_dir", nargs=-1)
-@click.pass_obj
-def lint(obj, format, extend_ignore, file_or_dir):
-    """Lint the file(s)/directory(s) given."""  # noqa: D4
+def _lint(obj, format, extend_ignore, file_or_dir):
     app = flake8.main.application.Application()
     args = [
         _qs_or_vs(obj["VERBOSITY"]),
@@ -121,3 +112,43 @@ def lint(obj, format, extend_ignore, file_or_dir):
     ]
     app.run(list(filter(bool, args)))
     app.exit()
+
+
+@main.command()
+# @TODO: When we're ready to encourage editor integration, add --diff flag
+@click.option("--format", type=str, help="Format errors according to the chosen formatter.")
+@click.option(
+    "--extend-ignore",
+    type=str,
+    help="Comma-separated list of errors and warnings to ignore (or skip)",
+)
+@click.argument("file_or_dir", nargs=-1)
+@click.pass_obj
+def lint(obj, format, extend_ignore, file_or_dir):
+    """Lint the file(s)/directory(s) given."""  # noqa: D4
+    _lint(obj=obj, format=format, extend_ignore=extend_ignore, file_or_dir=file_or_dir)
+
+
+@main.command()
+@click.option(
+    "--extend-ignore",
+    type=str,
+    help="Comma-separated list of errors and warnings to ignore (or skip)",
+)
+@click.argument("file_or_dir", nargs=-1)
+@click.pass_obj
+def acknowledge_existing_violations(obj, extend_ignore, file_or_dir):
+    """Lint existing error and suppress.
+
+    Use this command to acknowledge violations in existing code to allow for enforcing new code.
+    """
+    logging.info("linting code")
+    capture = StringIO()
+    with contextlib.redirect_stdout(capture):
+        try:
+            _lint(obj=obj, format=None, extend_ignore=extend_ignore, file_or_dir=file_or_dir)
+        except SystemExit:
+            pass  # the flake8 app wants to always SystemExit :(
+
+    lines = capture.getvalue().splitlines()
+    _acknowledge_existing_errors.acknowledge_lint_errors(lines)
