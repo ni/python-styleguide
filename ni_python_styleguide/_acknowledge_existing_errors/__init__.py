@@ -35,8 +35,7 @@ def _add_noqa_to_line(lineno, filepath, error_code, explanation):
             line = line.replace(before, before + f", {error_code}: {explanation}") + "\n"
     else:
         line += (
-            f"  # noqa {error_code}: {explanation} - This suppression was "
-            "auto-generated to allow focus on handling new errors\n"
+            f"  # noqa {error_code}: {explanation} (auto-generated noqa)\n"
         )
     if not line_had_newline:
         line.rstrip("\n")
