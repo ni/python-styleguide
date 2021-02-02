@@ -1,6 +1,6 @@
 # NI Python Style Guide
 
-![logo](docs/logo.svg)
+![logo](https://raw.githubusercontent.com/ni/python-styleguide/main/docs/logo.svg)
 
 ---
 
@@ -12,7 +12,7 @@ Welcome to NI's internal and external Python conventions and enforcement tooling
 
 Our written conventions can be found at https://ni.github.io/python-styleguide/.
 
-Their source is in [docs/Coding-Conventions.md](docs/Coding-Conventions.md).
+Their source is in [docs/Coding-Conventions.md](https://github.com/ni/python-styleguide/tree/main/docs/Coding-Conventions.md).
 
 NOTE: Using the GitHub Pages link is preferable to a GitHub `/blob` link.
 
