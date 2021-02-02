@@ -5,6 +5,10 @@ import pathlib
 
 from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
 
+EXCLUDED_ERRORS = {
+    "BLK100",
+}
+
 
 class _InMultiLineStringChecker:
     def __init__(self, error_file):
@@ -58,9 +62,6 @@ def acknowledge_lint_errors(lint_errors):
     Excluded error (reason):
     BLK100 - run black
     """
-    EXCLUDED_ERRORS = {
-        "BLK100",
-    }
     parsed_errors = map(_lint_errors_parser.parse, lint_errors)
     parsed_errors = filter(None, parsed_errors)
     lint_errors_to_process = [error for error in parsed_errors if error not in EXCLUDED_ERRORS]
