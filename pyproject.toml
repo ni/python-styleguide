@@ -47,7 +47,7 @@ exclude = '''
     | \.git          # root of the project
     | \.venv
   )/
-  | /.*__snapshots/.*_output\.py # exclude the snapshot outputs
+  | /.*__snapshots/.*output\.py # exclude the snapshot outputs
 )
 '''
 

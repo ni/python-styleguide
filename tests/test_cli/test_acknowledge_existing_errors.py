@@ -48,9 +48,7 @@ def test_can_acurately_detect_if_in_multiline_string(lineno, expected_in_multili
     file_lineno = lineno + 1  # we number files 1-n, not 0-n
     offending_file = tmp_path / "python_file.py"
     offending_file.write_text("\n".join(input_lines))
-    checker = _acknowledge_existing_errors._InMultiLineStringChecker(
-        error_file=str(offending_file)
-    )
+    checker = _acknowledge_existing_errors._InMultiLineStringChecker(error_file=str(offending_file))
 
     result = checker.in_multiline_string(
         lineno=file_lineno,
