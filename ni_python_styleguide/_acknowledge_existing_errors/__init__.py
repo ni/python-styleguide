@@ -3,7 +3,7 @@ import logging
 import re
 import pathlib
 
-import ni_python_styleguide._lint_errors_parser
+import ni_python_styleguide._acknowledge_existing_errors._lint_errors_parser
 
 
 class _in_multiline_string_checker:
