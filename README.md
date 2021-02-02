@@ -4,7 +4,8 @@
 
 ---
 
-<!-- @TODO: We should show you some stinkin' badges -->
+[![PyPI version](https://badge.fury.io/py/ni-python-styleguide.svg)](https://badge.fury.io/py/ni-python-styleguide) ![Publish Package](https://github.com/ni/python-styleguide/workflows/Publish%20Package/badge.svg) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 
 Welcome to NI's internal and external Python conventions and enforcement tooling.
 
