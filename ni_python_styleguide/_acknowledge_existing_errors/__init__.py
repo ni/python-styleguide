@@ -6,7 +6,7 @@ import pathlib
 from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
 
 
-class _in_multiline_string_checker:
+class _InMultiLineStringChecker:
     def __init__(self, error_file):
         self._error_file = pathlib.Path(error_file)
         self._values = []
@@ -29,7 +29,7 @@ class _in_multiline_string_checker:
         for line in in_file:
             line_value = (
                 current_count
-                + _in_multiline_string_checker._count_multiline_string_endings_in_line(line)
+                + _InMultiLineStringChecker._count_multiline_string_endings_in_line(line)
             )
             # if occurances of multiline string markers is odd, this must be in a multiline
             self._values.append(line_value % 2 == 1)
@@ -72,7 +72,7 @@ def acknowledge_lint_errors(lint_errors):
     for bad_file, errors_in_file in lint_errors_by_file.items():
         path = pathlib.Path(bad_file)
         lines = path.read_text().splitlines(keepends=True)
-        multiline_checker = _in_multiline_string_checker(error_file=bad_file)
+        multiline_checker = _InMultiLineStringChecker(error_file=bad_file)
 
         # to avoid double marking a line with the same code, keep track of lines and codes
         handled_lines = defaultdict(list)
