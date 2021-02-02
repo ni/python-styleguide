@@ -5,7 +5,7 @@ import pytest
 
 @pytest.fixture
 def lint_codeblock(styleguide, tmp_path):
-    """Fixture which runs the styleguide's `lint` subcommand when executed."""
+    """Runs the styleguide's `lint` subcommand when executed."""
 
     def run_linter(
         codeblock,
@@ -35,17 +35,17 @@ def lint_codeblock(styleguide, tmp_path):
 
 
 def test_rule_codeblock_uses_python(codeblock):
-    """Test that the codeblock specifies "python" as its language."""
+    """Tests that the codeblock specifies "python" as its language."""
     assert codeblock.language == "python"
 
 
 def test_rule_codeblocks_documents_bad_good_best(codeblock):
-    """Test that the codeblock has a descriptor (first line comment) specifying Good/Bad/Best."""
+    """Tests that the codeblock has a descriptor (first line comment) specifying Good/Bad/Best."""
     assert codeblock.descriptor in ("Good", "Bad", "Best")
 
 
 def test_bad_codeblocks_document_lint_errors(lint_codeblock, bad_codeblock):
-    """Test that "bad" codeblocks fail to lint and documents the resulting error codes."""
+    """Tests that "bad" codeblocks fail to lint and documents the resulting error codes."""
     if bad_codeblock.rule.is_automatically_enforced:
         result = lint_codeblock(
             bad_codeblock,
@@ -66,12 +66,12 @@ def test_bad_codeblocks_document_lint_errors(lint_codeblock, bad_codeblock):
 
 
 def test_good_codeblocks_have_no_lint_errors(lint_codeblock, good_codeblock):
-    """Test that "good" codeblocks do not fail to lint."""
+    """Tests that "good" codeblocks do not fail to lint."""
     result = lint_codeblock(good_codeblock)
     assert result, result.output
 
 
 def test_best_codeblocks_have_no_lint_errors(lint_codeblock, best_codeblock):
-    """Test that "best" codeblocks do not fail to lint."""
+    """Tests that "best" codeblocks do not fail to lint."""
     result = lint_codeblock(best_codeblock)
     assert result, result.output

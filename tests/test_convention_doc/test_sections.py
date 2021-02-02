@@ -5,12 +5,12 @@ import re
 
 
 def test_section_identifier_valid(section):
-    """Test that the section's identifier is alphabetic."""
+    """Tests that the section's identifier is alphabetic."""
     assert re.match(r"[A-Z]+", section.identifier)
 
 
 def test_section_identifiers_unique(sections):
-    """Test that the section's identifiers are unique."""
+    """Tests that the section's identifiers are unique."""
     section_identifier_counts = collections.defaultdict(int)
     for section in sections:
         section_identifier_counts[section.identifier] += 1
@@ -19,6 +19,6 @@ def test_section_identifiers_unique(sections):
 
 
 def test_section_identifier_follows_case_convention(section):
-    """Test that the section's header starts with an uppercase letter."""
+    """Tests that the section's header starts with an uppercase letter."""
     header_text = section.header_text.lstrip()
     assert header_text[0].isupper(), "header should start with an uppercase letter"

@@ -925,6 +925,10 @@ def go_shopping():
 
 ℹ️ You can document a package by documenting the module docstring of the package directory's `__init__.py`
 
+### Which docstring format should I follow?
+
+We recommend (and internally use) the [Google docstring format](https://google.github.io/styleguide/pyguide.html#383-functions-and-methods) but you can choose any format so long as you are consistent.
+
 ### [D.1.2] ✔️ **DO** List exported modules and subpackages in a package's docstring
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
