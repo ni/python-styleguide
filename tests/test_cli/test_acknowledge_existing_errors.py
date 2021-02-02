@@ -62,8 +62,8 @@ def test_can_acurately_detect_if_in_multiline_string(lineno, expected_in_multili
 @pytest.mark.parametrize("test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()])
 def test_given_bad_input_produces_expected_output(test_dir, snapshot, tmp_path, styleguide_command):
     """Test that suppresion yields expected_output file."""
-    in_file = test_dir / "bad_input.py"
-    test_file = tmp_path / "bad_input.py"
+    in_file = test_dir / "input.py"
+    test_file = tmp_path / "input.py"
     shutil.copyfile(in_file, test_file)
 
     output = styleguide_command(command="acknowledge-existing-violations")
@@ -71,7 +71,7 @@ def test_given_bad_input_produces_expected_output(test_dir, snapshot, tmp_path, 
     assert output.exit_code in (True, 0), f"Error in running:\n{output}"
     result = test_file.read_text()
     snapshot.snapshot_dir = test_dir
-    snapshot.assert_match(result, "expected_output.py")
+    snapshot.assert_match(result, "output.py")
 
 
 @pytest.mark.parametrize("test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()])
