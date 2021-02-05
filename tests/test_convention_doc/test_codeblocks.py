@@ -17,7 +17,6 @@ def lint_codeblock(styleguide, tmp_path):
         # code to trivial examples, detracting from the interesting lines.
         ignore_unused_imports=True,
     ):
-
         extend_ignore = [
             # Undefined name. Defining all the names in each example would detract from the
             # interesting lines.
