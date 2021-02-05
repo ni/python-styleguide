@@ -731,8 +731,10 @@ import my_app.utils
 # Bad - will produce I202
 import os
 
+import cheese_shop
 
 import ministry
+
 import my_app.utils
 ```
 
@@ -807,10 +809,7 @@ import ministry
 
 ```python
 # Bad
-# cheese_shop.py - Imports module `brie`
-import brie
-
-# customer.py - Relying on the fact that `cheese_shop` imported module `brie`
+# Assuming the module cheese_shop imported module `brie`, the following would be wrong:
 import cheese_shop.brie
 ```
 

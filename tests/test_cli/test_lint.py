@@ -2,9 +2,9 @@
 
 import itertools
 
+import pytest
 import toml
 
-import pytest
 
 TOO_LONG_LINE = "a_really_long_order = [" + ", ".join(itertools.repeat('"spam"', 10)) + "]\n"
 

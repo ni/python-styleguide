@@ -1,5 +1,7 @@
 """Tests for the codeblocks in the convention document."""
 
+import pathlib
+
 import pytest
 
 
@@ -29,7 +31,13 @@ def lint_codeblock(styleguide, tmp_path):
 
         test_file = tmp_path / "test.py"
         test_file.write_text(codeblock.contents, encoding="utf-8")
-        return styleguide("lint", *styleguide_args, test_file)
+        return styleguide(
+            "--config",
+            pathlib.Path(__file__).parent / "codeblock_config.toml",
+            "lint",
+            *styleguide_args,
+            test_file,
+        )
 
     return run_linter
 

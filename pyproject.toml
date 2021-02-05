@@ -59,7 +59,8 @@ addopts = "--doctest-modules"
 norecursedirs = "*__snapshots"
 
 [tool.ni-python-styleguide]
-exclude = "*__snapshots/*/*input.py"
+extend_exclude = "*__snapshots/*/*input.py"
+
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"

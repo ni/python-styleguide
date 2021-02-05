@@ -1,8 +1,9 @@
 """Tests for the lint_errors_parser sub-module."""
 
+import pytest
+
 import ni_python_styleguide._acknowledge_existing_errors._lint_errors_parser
 
-import pytest
 
 EXAMPLE_LINT_ERROR_LINES = [  # noqa W505
     r".\source\lorem.py:158:101: W505 doc line too long (186 > 100 characters)",

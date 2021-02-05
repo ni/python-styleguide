@@ -3,9 +3,10 @@
 import pathlib
 import shutil
 
+import pytest
+
 from ni_python_styleguide import _acknowledge_existing_errors
 
-import pytest
 
 TEST_CASE_DIR = (
     pathlib.Path(__file__).parent.absolute() / "acknowledge_existing_errors_test_cases__snapshots"

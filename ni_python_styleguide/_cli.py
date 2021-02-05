@@ -1,10 +1,11 @@
-import click
 import contextlib
-import flake8.main.application
+from io import StringIO
 import logging
 import pathlib
+
+import click
+import flake8.main.application
 import toml
-from io import StringIO
 
 from ni_python_styleguide import _acknowledge_existing_errors
 
@@ -25,6 +26,8 @@ def _read_pyproject_toml(ctx, param, value):
     except (toml.TomlDecodeError, OSError) as e:
         raise click.FileError(filename=value, hint=f"Error reading configuration file: {e}")
 
+    ctx.ensure_object(dict)
+    ctx.obj["PYPROJECT"] = pyproject_data
     config = pyproject_data.get("tool", {}).get("ni-python-styleguide", {})
 
     config.pop("quiet", None)
@@ -36,7 +39,23 @@ def _read_pyproject_toml(ctx, param, value):
     return value
 
 
-class AllowConfigGroup(click.Group):
+def _get_application_import_names(pyproject):
+    """Return the application package name the config."""
+    # Otherwise override with what was specified
+    app_name = (
+        pyproject.get("tool", {})
+        .get("ni-python-styleguide", {})
+        .get("application-import-names", "")
+    )
+
+    # Allow the poetry name as a fallback
+    if not app_name:
+        app_name = pyproject.get("tool", {}).get("poetry", {}).get("name", "").replace("-", "_")
+
+    return f"{app_name},tests"
+
+
+class ConfigGroup(click.Group):
     """click.Group subclass which allows for a config option to load options from."""
 
     def __init__(self, *args, **kwargs):
@@ -61,7 +80,7 @@ class AllowConfigGroup(click.Group):
         super().__init__(*args, **kwargs)
 
 
-@click.group(cls=AllowConfigGroup)
+@click.group(cls=ConfigGroup)
 @click.option(
     "-v",
     "--verbose",
@@ -94,6 +113,7 @@ def main(ctx, verbose, quiet, config, exclude, extend_exclude):
     ctx.ensure_object(dict)
     ctx.obj["VERBOSITY"] = verbose - quiet
     ctx.obj["EXCLUDE"] = ",".join(filter(bool, [exclude.strip(","), extend_exclude.strip(",")]))
+    ctx.obj["APP_IMPORT_NAMES"] = _get_application_import_names(ctx.obj.get("PYPROJECT", {}))
 
 
 def _lint(obj, format, extend_ignore, file_or_dir):
@@ -108,6 +128,7 @@ def _lint(obj, format, extend_ignore, file_or_dir):
         # [tool.black] setting (which makes sense if you think about it)
         # So we need to give it one
         f"--black-config={(pathlib.Path(__file__).parent / 'config.toml').resolve()}",
+        f"--application-import-names={obj['APP_IMPORT_NAMES']}",
         *file_or_dir,
     ]
     app.run(list(filter(bool, args)))

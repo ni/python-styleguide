@@ -3,7 +3,6 @@
 import os
 
 import click.testing
-
 import pytest
 
 from ni_python_styleguide.__main__ import main as styleguide_main
