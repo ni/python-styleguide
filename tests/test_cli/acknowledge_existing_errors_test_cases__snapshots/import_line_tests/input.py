@@ -1,17 +1,15 @@
 """example of a python file with linter errors.
 """
 
+import pathlib, glob
 import os
 from os import path
-import pathlib, glob
-
 from os.path import *
-
 from os.path.lorem.ipsum.dolor.sit.amet.consectetur.adipiscing.elit.sed.do.eiusmod.tempor.incididunt.ut.labore.et.dolore.magna import (
     aliqua,
-    lorem,
-    ipsum,
     dolor,
+    ipsum,
+    lorem,
 )
 
 aliqua()

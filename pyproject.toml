@@ -26,6 +26,7 @@ toml = "^0.10.1"
 # flake8 plugins should be listed here (in alphabetical order)
 flake8-black = "^0.2.1"
 flake8-docstrings = "^1.5.0"
+flake8-import-order = "^0.18.1"
 pep8-naming = "^0.11.1"
 
 # Rejected flake8 plugins should be listed here (in alphabetical order)
