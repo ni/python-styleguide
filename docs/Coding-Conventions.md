@@ -712,17 +712,30 @@ import ministry
 URL = "http://python.org"
 ```
 
-### [O.1.3] ✔️ **DO** Group imports by standard library, third party, then first_party
+### [O.1.3] ✔️ **DO** Group imports by standard library, third party, then first_party 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-Additionally, you should put a blank line between each group of imports.
+> 💻 This rule is enforced by error codes I201, I202
+
+Additionally, you should put a single blank line between each group of imports.
 
 ```python
-# Bad
-import my_app.utils
+# Bad - will produce I201
 import os
 import ministry
+import my_app.utils
+```
+
+```python
+# Bad - will produce I202
+import os
+
+import cheese_shop
+
+import ministry
+
+import my_app.utils
 ```
 
 ```python
@@ -734,7 +747,18 @@ import ministry
 import my_app.utils
 ```
 
-### [O.1.4] ✔️ **DO** Use absolute imports
+### [O.1.4] ✔️ **DO** List imports in alphabetical order 💻
+
+> 💻 This rule is enforced by error code I100
+
+```python
+# Bad
+import pathlib
+import os
+from abc import ABC
+```
+
+### [O.1.5] ✔️ **DO** Use absolute imports
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -742,6 +766,7 @@ import my_app.utils
 
 ```python
 # Bad
+from . import sibling
 from .sibling import rivalry
 ```
 
@@ -750,7 +775,7 @@ from .sibling import rivalry
 from my_app.relationships.sibling import rivalry
 ```
 
-### [O.1.5] ❌ **DO NOT** Use wildcard imports 💻
+### [O.1.6] ❌ **DO NOT** Use wildcard imports 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -773,7 +798,7 @@ from ministry import silly_walk
 import ministry
 ```
 
-### [O.1.6] ❌ **DO NOT** Rely on a module's imported names
+### [O.1.7] ❌ **DO NOT** Rely on a module's imported names
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -784,14 +809,11 @@ import ministry
 
 ```python
 # Bad
-# cheese_shop.py - Imports module `brie`
-import brie
-
-# customer.py - Relying on the fact that `cheese_shop` imported module `brie`
+# Assuming the module cheese_shop imported module `brie`, the following would be wrong:
 import cheese_shop.brie
 ```
 
-### [O.1.7] ❌ **DO NOT** Import definitions that are not used 💻
+### [O.1.8] ❌ **DO NOT** Import definitions that are not used 💻
 
 > 💻 This rule is enforced by error code F401
 
@@ -800,7 +822,7 @@ import cheese_shop.brie
 import os  # Assuming os is never used
 ```
 
-### [O.1.8] ❌ **DO NOT** Change an imported object's case 💻
+### [O.1.9] ❌ **DO NOT** Change an imported object's case 💻
 
 > 💻 This rule is enforced by error codes N811, N812, N813, N814, N817
 

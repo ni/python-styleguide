@@ -1,17 +1,15 @@
 """example of a python file with linter errors.
 """
 
-import os
-from os import path  # noqa F401: 'os.path' imported but unused (auto-generated noqa)
 import pathlib, glob  # noqa F401: 'pathlib' imported but unused (auto-generated noqa)  # noqa E401: multiple imports on one line (auto-generated noqa)
-
+import os  # noqa I100: Import statements are in the wrong order. 'import os' should be before 'import pathlib, glob' (auto-generated noqa)
+from os import path  # noqa F401: 'os.path' imported but unused (auto-generated noqa)
 from os.path import *  # noqa F403: 'from os.path import *' used; unable to detect undefined names (auto-generated noqa)
-
 from os.path.lorem.ipsum.dolor.sit.amet.consectetur.adipiscing.elit.sed.do.eiusmod.tempor.incididunt.ut.labore.et.dolore.magna import (  # noqa F401: 'os.path.lorem.ipsum.dolor.sit.amet.consectetur.adipiscing.elit.sed.do.eiusmod.tempor.incididunt.ut.labore.et.dolore.magna.lorem' imported but unused (auto-generated noqa)
     aliqua,
-    lorem,
-    ipsum,
     dolor,
+    ipsum,
+    lorem,
 )
 
 aliqua()
@@ -25,8 +23,8 @@ os.listdir()
 
 
 def _test_os_name():
-    for os in range(3):  # noqa F402: import 'os' from line 4 shadowed by loop variable (auto-generated noqa)
+    for os in range(3):  # noqa F402: import 'os' from line 5 shadowed by loop variable (auto-generated noqa)
         print(os)
 
 
-import collections  # noqa E402: module level import not at top of file (auto-generated noqa)  # noqa F401: 'collections' imported but unused (auto-generated noqa)
+import collections  # noqa E402: module level import not at top of file (auto-generated noqa)  # noqa F401: 'collections' imported but unused (auto-generated noqa)  # noqa I100: Import statements are in the wrong order. 'import collections' should be before 'from os.path.lorem.ipsum.dolor.sit.amet.consectetur.adipiscing.elit.sed.do.eiusmod.tempor.incididunt.ut.labore.et.dolore.magna import aliqua, dolor, ipsum, lorem' (auto-generated noqa)  # noqa I202: Additional newline in a group of imports. 'import collections' is identified as Stdlib and 'from os.path.lorem.ipsum.dolor.sit.amet.consectetur.adipiscing.elit.sed.do.eiusmod.tempor.incididunt.ut.labore.et.dolore.magna import aliqua, dolor, ipsum, lorem' is identified as Stdlib. (auto-generated noqa)

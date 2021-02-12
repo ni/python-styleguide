@@ -1,6 +1,6 @@
-import re
-import logging
 from collections import namedtuple
+import logging
+import re
 
 LintError = namedtuple("LintError", ["file", "line", "column", "code", "explanation"])
 
