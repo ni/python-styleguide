@@ -31,6 +31,7 @@ pep8-naming = "^0.11.1"
 
 # Rejected flake8 plugins should be listed here (in alphabetical order)
 # Also describe why it is rejected and/or add a link
+# flake8-isort: Already covered by flake8-import-order
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.0.1"
