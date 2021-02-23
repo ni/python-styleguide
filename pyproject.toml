@@ -31,6 +31,7 @@ pep8-naming = "^0.11.1"
 
 # Rejected flake8 plugins should be listed here (in alphabetical order)
 # Also describe why it is rejected and/or add a link
+# flake8-commas: Already handled by flake8-black
 # hacking: Most rules are either covered by other plugins or would be turned off.
 
 [tool.poetry.dev-dependencies]
