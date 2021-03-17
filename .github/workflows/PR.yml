@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+      - users/rick-morrow/multi-platform-python-pr
     paths:
       - ni_python_styleguide/**
       - poetry.lock
