@@ -1,11 +1,10 @@
 name: PR
 
 on:
-  workflow_dispatch:
+  push:
   pull_request:
     branches:
       - main
-      - users/rick-morrow/multi-platform-python-pr
     paths:
       - ni_python_styleguide/**
       - poetry.lock
