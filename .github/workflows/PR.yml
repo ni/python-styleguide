@@ -13,13 +13,17 @@ on:
 
 jobs:
   pr:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        python-version: [3.6, 3.7, 3.8, 3.9]
     steps:
       - uses: actions/checkout@v2
 
       - uses: actions/setup-python@v1
         with:
-          python-version: 3.6
+          python-version: ${{ matrix.python-version }}
 
       - uses: Gr1N/setup-poetry@v4
         with:
@@ -36,6 +40,7 @@ jobs:
             locker = Factory().create_poetry('.').locker; \
             exit(0) if locker.is_locked() and locker.is_fresh() else exit(1)" \
             && echo 'OK'
+        shell: bash
 
       - name: Install the Package
         run: poetry install
