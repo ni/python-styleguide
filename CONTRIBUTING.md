@@ -64,7 +64,7 @@ Once this is released, it should show up on https://pypi.org/project/ni-python-s
 
 ### Manually Setting Version
 
-The Poetry verison can be manually overridden through `version` commands and checked into source in an alpha state.
+The Poetry verison can be manually overridden through `poetry version` commands. The version checked into source should be in an alpha state.
 
 In a fork:
 
