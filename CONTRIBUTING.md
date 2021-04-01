@@ -48,3 +48,26 @@ it, you can serve it locally by following [these steps](https://docs.github.com/
 
 NOTE: There can be a delay between changes going into the `master` branch and
 GitHub Pages rebuilding with the changes.
+
+## Releasing
+
+The version checked into source is kept in an alpha state until we are ready to release. The release workflow automatically increments the version to a non-alpha version when a GitHub Release is created, and then moves to the next alpha afterwards.
+
+The release process is as follows:
+
+1. Check the version located in [pyproject.toml](https://github.com/ni/python-styleguide/blob/main/pyproject.toml).
+1. Create a [new release](https://github.com/ni/python-styleguide/releases/new) with the appropriate description.
+1. Use the current version to specify the git tag. (remove the alpha part) (v1.0.0).
+1. Publish the release.
+
+Once this is released, it should show up on https://pypi.org/project/ni-python-styleguide/.
+
+### Manually Setting Version
+
+The Poetry verison can be manually overridden through `version` commands and checked into source in an alpha state.
+
+In a fork:
+
+1. Run `poetry version preminor` for minor update (v0.1.7-alpha.0 -> v0.2.0-alpha.0).
+1. Run `poetry version premajor` for major update (v0.6.7-alpha.0 -> v1.0.0-alpha.0).
+1. Merge the fork and complete the normal release process above.
