@@ -49,6 +49,7 @@ However there are some situations you might need to configure the tool.
 If you're using `setup.py`, you'll need to set your app's import names for import sorting.
 
 ```toml
+# pyproject.toml
 [tool.ni-python-styleguide]
 application-import-names = "<app_name>"
 ```
