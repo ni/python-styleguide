@@ -751,10 +751,24 @@ import my_app.utils
 
 > 💻 This rule is enforced by error code I100
 
+`from X import Y` imports should follow `import X` imports.
+
 ```python
 # Bad
 import pathlib
 import os
+```
+
+```python
+# Bad
+from abc import ABC
+import os
+```
+
+```python
+# Good
+import os
+import pathlib
 from abc import ABC
 ```
 
