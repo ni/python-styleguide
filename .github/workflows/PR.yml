@@ -13,7 +13,7 @@ on:
 
 env:
   # You also need to change the version in ./Publish-Package.yml
-  POETRY_VERSION: 1.0.5
+  POETRY_VERSION: 1.0.4
   # To fix an error when running Poetry on Windows
   # (https://github.com/python-poetry/poetry/issues/2629),
   # we set Poetry's cache directory to .poetry_cache in the current directory.
