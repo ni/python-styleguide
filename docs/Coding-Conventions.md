@@ -751,7 +751,7 @@ import my_app.utils
 
 > 💻 This rule is enforced by error code I100
 
-`from X import Y` imports should follow `import X` imports.
+`from X import Y` imports should follow `import X` imports and be alphabetized by module name.
 
 ```python
 # Bad
@@ -761,15 +761,22 @@ import os
 
 ```python
 # Bad
-from abc import ABC
+from collections import defaultdict
 import os
+```
+
+```python
+# Bad
+from contextlib import contextmanager
+from collections import defaultdict
 ```
 
 ```python
 # Good
 import os
 import pathlib
-from abc import ABC
+from collections import defaultdict
+from contextlib import contextmanager
 ```
 
 ### [O.1.5] ✔️ **DO** Use absolute imports
