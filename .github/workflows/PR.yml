@@ -64,7 +64,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v1
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.8
       - uses: Gr1N/setup-poetry@v4
         with:
           poetry-version: ${{ env.POETRY_VERSION }}
@@ -73,6 +73,9 @@ jobs:
       #     path: ~/.cache/pypoetry/virtualenvs
       #     key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
 
+      - uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
       - name: Install the Package
         run: poetry install -vvv
 
