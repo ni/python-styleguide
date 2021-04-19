@@ -11,24 +11,25 @@ on:
       - docs/Coding-Conventions.md
       - .github/workflows/PR.yml
 
+env:
+  # You also need to change the version in ./Publish-Package.yml
+  POETRY_VERSION: 1.0.5
+
 jobs:
-  pr:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
-        python-version: [3.6, 3.7, 3.8, 3.9]
+  checks:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
       - uses: actions/setup-python@v1
         with:
-          python-version: ${{ matrix.python-version }}
-
+          python-version: 3.9 # Just use the latest
       - uses: Gr1N/setup-poetry@v4
         with:
-          # You also need to change the version in ./Publish-Package.yml
-          poetry-version: 1.0.5
+          poetry-version: ${{ env.POETRY_VERSION }}
+      # - uses: actions/cache@v2
+      #   with:
+      #     path: ~/.cache/pypoetry/virtualenvs
+      #     key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
 
       # @TODO: This is a workaround for there not being a way to check the lock file
       #   See: https://github.com/python-poetry/poetry/issues/453
@@ -45,9 +46,30 @@ jobs:
 
       - name: Install the Package
         run: poetry install -vvv
-
       - name: Lint the Code
         run: poetry run ni-python-styleguide lint
+
+  tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        python-version: [3.6, 3.7, 3.8, 3.9]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: Gr1N/setup-poetry@v4
+        with:
+          poetry-version: ${{ env.POETRY_VERSION }}
+      # - uses: actions/cache@v2
+      #   with:
+      #     path: ~/.cache/pypoetry/virtualenvs
+      #     key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+
+      - name: Install the Package
+        run: poetry install -vvv
 
       - name: Run tests
         run: poetry run pytest -v
