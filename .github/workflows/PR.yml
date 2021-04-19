@@ -31,8 +31,8 @@ jobs:
         with:
           python-version: 3.9 # Just use the latest
       - uses: Gr1N/setup-poetry@v4
-        with:
-          # poetry-version: ${{ env.POETRY_VERSION }}
+        # with:
+        #   poetry-version: ${{ env.POETRY_VERSION }}
       # - uses: actions/cache@v2
       #   with:
       #     path: ~/.cache/pypoetry/virtualenvs
@@ -66,8 +66,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - uses: Gr1N/setup-poetry@v4
-        with:
-          # poetry-version: ${{ env.POETRY_VERSION }}
+        # with:
+        #   poetry-version: ${{ env.POETRY_VERSION }}
       # - uses: actions/cache@v2
       #   with:
       #     path: ~/.cache/pypoetry/virtualenvs
