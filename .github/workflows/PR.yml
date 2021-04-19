@@ -36,6 +36,7 @@ jobs:
 
       - uses: Gr1N/setup-poetry@v4
         with:
+          # You also need to change the version in ./Publish-Package.yml
           poetry-version: 1.0.5
 
       # @TODO: This is a workaround for there not being a way to check the lock file
@@ -44,7 +45,7 @@ jobs:
       #     Python libraries.
       - name: Check for lock changes
         run: |
-          pip install poetry==1.0.5
+          PYTHONPATH="${PYTHONPATH}:${HOME}/.poetry/lib" \
           python -c "from poetry.factory import Factory; \
             locker = Factory().create_poetry('.').locker; \
             exit(0) if locker.is_locked() and locker.is_fresh() else exit(1)" \
@@ -52,7 +53,7 @@ jobs:
         shell: bash
 
       - name: Install the Package
-        run: poetry install
+        run: poetry -vvv install
 
       - name: Lint the Code
         run: poetry run ni-python-styleguide lint

@@ -28,7 +28,7 @@ jobs:
 
       - uses: Gr1N/setup-poetry@v4
         with:
-          poetry-version: 1.0.0
+          poetry-version: 1.0.5
 
       # @TODO: This is a workaround for there not being a way to check the lock file
       #   See: https://github.com/python-poetry/poetry/issues/453
@@ -43,7 +43,7 @@ jobs:
             && echo 'OK'
 
       - name: Install the Package
-        run: poetry install
+        run: poetry -vvv install
 
       - name: Lint the Code
         run: poetry run ni-python-styleguide lint
