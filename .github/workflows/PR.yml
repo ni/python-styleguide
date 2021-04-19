@@ -35,7 +35,7 @@ jobs:
       #     Python libraries.
       - name: Check for lock changes
         run: |
-          pip install poetry==1.0
+          pip install poetry==1.0.5
           python -c "from poetry.factory import Factory; \
             locker = Factory().create_poetry('.').locker; \
             exit(0) if locker.is_locked() and locker.is_fresh() else exit(1)" \
