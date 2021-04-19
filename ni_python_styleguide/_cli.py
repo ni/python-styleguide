@@ -1,7 +1,7 @@
 import contextlib
-from io import StringIO
 import logging
 import pathlib
+from io import StringIO
 
 import click
 import flake8.main.application
