@@ -53,7 +53,7 @@ jobs:
         shell: bash
 
       - name: Install the Package
-        run: poetry -vvv install
+        run: poetry install -vvv
 
       - name: Lint the Code
         run: poetry run ni-python-styleguide lint
