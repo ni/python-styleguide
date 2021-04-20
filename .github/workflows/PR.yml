@@ -51,9 +51,10 @@ jobs:
         python-version: [3.7]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
+      - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+
       - uses: Gr1N/setup-poetry@v4
         with:
           poetry-version: ${{ env.POETRY_VERSION }}
@@ -61,6 +62,8 @@ jobs:
       #   with:
       #     path: ~/.cache/pypoetry/virtualenvs
       #     key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+
+      - run: python -m venv .venv
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
