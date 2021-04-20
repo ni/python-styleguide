@@ -11,8 +11,8 @@ on:
       - docs/Coding-Conventions.md
       - .github/workflows/PR.yml
 
-# env:
-#   POETRY_VERSION: 1.0.5
+env:
+  POETRY_VERSION: 1.1.6
 
 jobs:
   checks:
