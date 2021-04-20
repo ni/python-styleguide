@@ -40,7 +40,7 @@ jobs:
           path: ~/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
       - name: Install the Package
-        run: poetry install -vvv
+        run: poetry install
       - name: Lint the Code
         run: poetry run ni-python-styleguide lint
 
