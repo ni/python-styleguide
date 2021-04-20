@@ -29,9 +29,6 @@ jobs:
           poetry-version: ${{ env.POETRY_VERSION }}
       # @TODO: This is a workaround for there not being a way to check the lock file
       #   See: https://github.com/python-poetry/poetry/issues/453
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Check for lock changes
         run: |
           PYTHONPATH="${PYTHONPATH}:${HOME}/.poetry/lib:${HOME}/.poetry/lib/poetry/_vendor/py${{ env.PYTHON_VERSION }}" \
