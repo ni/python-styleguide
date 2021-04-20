@@ -12,13 +12,49 @@ on:
       - .github/workflows/PR.yml
 
 jobs:
-  checks:
-    runs-on: ubuntu-latest
+  # checks:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-python@v1
+  #       with:
+  #         python-version: 3.9 # Just use the latest
+  #     - uses: Gr1N/setup-poetry@v4
+  #       with:
+  #         poetry-version: ${{ env.POETRY_VERSION }}
+  #     # - uses: actions/cache@v2
+  #     #   with:
+  #     #     path: ~/.cache/pypoetry/virtualenvs
+  #     #     key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+  #     # @TODO: This is a workaround for there not being a way to check the lock file
+  #     #   See: https://github.com/python-poetry/poetry/issues/453
+  #     - name: Setup tmate session
+  #       uses: mxschmitt/action-tmate@v3
+  #     - name: Check for lock changes
+  #       run: |
+  #         PYTHONPATH="${PYTHONPATH}:${HOME}/.poetry/lib" \
+  #         python -c "from poetry.factory import Factory; \
+  #           locker = Factory().create_poetry('.').locker; \
+  #           exit(0) if locker.is_locked() and locker.is_fresh() else exit(1)" \
+  #           && echo 'OK'
+  #       shell: bash
+  #     - name: Install the Package
+  #       run: poetry install -vvv
+  #     - name: Lint the Code
+  #       run: poetry run ni-python-styleguide lint
+
+  tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        python-version: [3.8]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
+      - uses: actions/setup-python@v2
         with:
-          python-version: 3.9 # Just use the latest
+          python-version: ${{ matrix.python-version }}
+
       - uses: Gr1N/setup-poetry@v4
         with:
           poetry-version: ${{ env.POETRY_VERSION }}
@@ -26,50 +62,14 @@ jobs:
       #   with:
       #     path: ~/.cache/pypoetry/virtualenvs
       #     key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
-      # @TODO: This is a workaround for there not being a way to check the lock file
-      #   See: https://github.com/python-poetry/poetry/issues/453
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-      - name: Check for lock changes
-        run: |
-          PYTHONPATH="${PYTHONPATH}:${HOME}/.poetry/lib" \
-          python -c "from poetry.factory import Factory; \
-            locker = Factory().create_poetry('.').locker; \
-            exit(0) if locker.is_locked() and locker.is_fresh() else exit(1)" \
-            && echo 'OK'
-        shell: bash
+
+
+
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+
       - name: Install the Package
         run: poetry install -vvv
-      - name: Lint the Code
-        run: poetry run ni-python-styleguide lint
 
-#   tests:
-#     runs-on: ${{ matrix.os }}
-#     strategy:
-#       matrix:
-#         os: [macos-latest, windows-latest, ubuntu-latest]
-#         python-version: [3.8]
-#     steps:
-#       - uses: actions/checkout@v2
-#       - uses: actions/setup-python@v2
-#         with:
-#           python-version: ${{ matrix.python-version }}
-#
-#       - uses: Gr1N/setup-poetry@v4
-#         with:
-#           poetry-version: ${{ env.POETRY_VERSION }}
-#       # - uses: actions/cache@v2
-#       #   with:
-#       #     path: ~/.cache/pypoetry/virtualenvs
-#       #     key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
-#
-#
-#
-#       # - name: Setup tmate session
-#       #   uses: mxschmitt/action-tmate@v3
-#
-#       - name: Install the Package
-#         run: poetry install -vvv
-#
-#       - name: Run tests
-#         run: poetry run pytest -v
+      - name: Run tests
+        run: poetry run pytest -v
