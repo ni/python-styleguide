@@ -21,12 +21,15 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
       - uses: Gr1N/setup-poetry@v4
         with:
           poetry-version: ${{ env.POETRY_VERSION }}
       # @TODO: This is a workaround for there not being a way to check the lock file
       #   See: https://github.com/python-poetry/poetry/issues/453
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
       - name: Check for lock changes
         run: |
           PYTHONPATH="${PYTHONPATH}:${HOME}/.poetry/lib" \
@@ -34,6 +37,7 @@ jobs:
             locker = Factory().create_poetry('.').locker; \
             exit(0) if locker.is_locked() and locker.is_fresh() else exit(1)" \
             && echo 'OK'
+
       - uses: actions/cache@v2
         with:
           path: ~/.cache/pypoetry/virtualenvs
