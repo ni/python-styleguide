@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: 3.9 # Just use the latest
+          python-version: 3.8
       - uses: Gr1N/setup-poetry@v4
         with:
           poetry-version: ${{ env.POETRY_VERSION }}
