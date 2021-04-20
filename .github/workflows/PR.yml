@@ -63,10 +63,10 @@ jobs:
       #     path: ~/.cache/pypoetry/virtualenvs
       #     key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
 
-      - run: python -m venv .venv
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
 
       - name: Install the Package
         run: poetry install -vvv
