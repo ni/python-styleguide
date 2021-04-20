@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: 3.8 # Just use the latest
+          python-version: 3.9 # Just use the latest
       - uses: Gr1N/setup-poetry@v4
         with:
           poetry-version: ${{ env.POETRY_VERSION }}
@@ -34,7 +34,6 @@ jobs:
             locker = Factory().create_poetry('.').locker; \
             exit(0) if locker.is_locked() and locker.is_fresh() else exit(1)" \
             && echo 'OK'
-        shell: bash
       - uses: actions/cache@v2
         with:
           path: ~/.cache/pypoetry/virtualenvs
