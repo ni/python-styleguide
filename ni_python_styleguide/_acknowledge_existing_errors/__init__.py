@@ -73,6 +73,10 @@ def acknowledge_lint_errors(lint_errors):
     for bad_file, errors_in_file in lint_errors_by_file.items():
         path = pathlib.Path(bad_file)
         lines = path.read_text().splitlines(keepends=True)
+        # sometimes errors are reported on line 1 for empty files.
+        # to make suppressions work for those cases, add an empty line.
+        if len(lines) == 0:
+            lines = [""]
         multiline_checker = _InMultiLineStringChecker(error_file=bad_file)
 
         # to avoid double marking a line with the same code, keep track of lines and codes
@@ -80,9 +84,9 @@ def acknowledge_lint_errors(lint_errors):
         for error in errors_in_file:
             skip = 0
 
-            while multiline_checker.in_multiline_string(
+            while error.line + skip < len(lines) and multiline_checker.in_multiline_string(
                 lineno=error.line + skip
-            ) and error.line + skip < len(lines):
+            ):
                 # find when the multiline ends
                 skip += 1
 
