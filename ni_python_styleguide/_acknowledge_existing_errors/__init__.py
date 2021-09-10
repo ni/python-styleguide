@@ -1,6 +1,5 @@
 import logging
 import pathlib
-import re
 from collections import defaultdict
 
 from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
