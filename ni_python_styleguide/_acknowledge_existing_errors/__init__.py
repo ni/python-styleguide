@@ -25,19 +25,26 @@ class _InMultiLineStringChecker:
 
     @staticmethod
     def _count_multiline_string_endings_in_line(line):
-        return line.count('"""') + line.count("'''")
+        return line.count('"""'), line.count("'''")
 
     def _load_lines(self):
         in_file = self._error_file.read_text().splitlines()
-        current_count = 0
+        current_count = [0, 0]
         for line in in_file:
-            line_value = (
-                current_count
-                + _InMultiLineStringChecker._count_multiline_string_endings_in_line(line)
+            type1, type2 = _InMultiLineStringChecker._count_multiline_string_endings_in_line(line)
+            current_count[0] += type1
+            current_count[1] += type2
+
+            code_part_of_line = line
+            if "#" in line:
+                code_part_of_line = line.split("#", maxsplit=1)[0]
+
+            # if occurrences of multiline string markers is odd, this must be in a multiline
+            #  or, if line continuation token is on the ending, assume in a multiline statement
+            self._values.append(
+                any([part % 2 == 1 for part in current_count])
+                or code_part_of_line.strip().endswith("\\")
             )
-            # if occurances of multiline string markers is odd, this must be in a multiline
-            self._values.append(line_value % 2 == 1)
-            current_count = line_value
 
 
 def _add_noqa_to_line(lineno, code_lines, error_code, explanation):
