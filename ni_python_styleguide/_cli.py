@@ -1,10 +1,13 @@
+import contextlib
+import logging
 import pathlib
+from io import StringIO
 
 import click
-
 import flake8.main.application
-
 import toml
+
+from ni_python_styleguide import _acknowledge_existing_errors
 
 
 def _qs_or_vs(verbosity):
@@ -23,6 +26,8 @@ def _read_pyproject_toml(ctx, param, value):
     except (toml.TomlDecodeError, OSError) as e:
         raise click.FileError(filename=value, hint=f"Error reading configuration file: {e}")
 
+    ctx.ensure_object(dict)
+    ctx.obj["PYPROJECT"] = pyproject_data
     config = pyproject_data.get("tool", {}).get("ni-python-styleguide", {})
 
     config.pop("quiet", None)
@@ -34,7 +39,23 @@ def _read_pyproject_toml(ctx, param, value):
     return value
 
 
-class AllowConfigGroup(click.Group):
+def _get_application_import_names(pyproject):
+    """Return the application package name the config."""
+    # Otherwise override with what was specified
+    app_name = (
+        pyproject.get("tool", {})
+        .get("ni-python-styleguide", {})
+        .get("application-import-names", "")
+    )
+
+    # Allow the poetry name as a fallback
+    if not app_name:
+        app_name = pyproject.get("tool", {}).get("poetry", {}).get("name", "").replace("-", "_")
+
+    return f"{app_name},tests"
+
+
+class ConfigGroup(click.Group):
     """click.Group subclass which allows for a config option to load options from."""
 
     def __init__(self, *args, **kwargs):
@@ -59,7 +80,7 @@ class AllowConfigGroup(click.Group):
         super().__init__(*args, **kwargs)
 
 
-@click.group(cls=AllowConfigGroup)
+@click.group(cls=ConfigGroup)
 @click.option(
     "-v",
     "--verbose",
@@ -92,6 +113,26 @@ def main(ctx, verbose, quiet, config, exclude, extend_exclude):
     ctx.ensure_object(dict)
     ctx.obj["VERBOSITY"] = verbose - quiet
     ctx.obj["EXCLUDE"] = ",".join(filter(bool, [exclude.strip(","), extend_exclude.strip(",")]))
+    ctx.obj["APP_IMPORT_NAMES"] = _get_application_import_names(ctx.obj.get("PYPROJECT", {}))
+
+
+def _lint(obj, format, extend_ignore, file_or_dir):
+    app = flake8.main.application.Application()
+    args = [
+        _qs_or_vs(obj["VERBOSITY"]),
+        f"--config={(pathlib.Path(__file__).parent / 'config.ini').resolve()}",
+        f"--exclude={obj['EXCLUDE']}" if obj["EXCLUDE"] else "",
+        f"--format={format}" if format else "",
+        f"--extend-ignore={extend_ignore}" if extend_ignore else "",
+        # The only way to configure flake8-black's line length is through a pyproject.toml's
+        # [tool.black] setting (which makes sense if you think about it)
+        # So we need to give it one
+        f"--black-config={(pathlib.Path(__file__).parent / 'config.toml').resolve()}",
+        f"--application-import-names={obj['APP_IMPORT_NAMES']}",
+        *file_or_dir,
+    ]
+    app.run(list(filter(bool, args)))
+    app.exit()
 
 
 @main.command()
@@ -106,18 +147,29 @@ def main(ctx, verbose, quiet, config, exclude, extend_exclude):
 @click.pass_obj
 def lint(obj, format, extend_ignore, file_or_dir):
     """Lint the file(s)/directory(s) given."""  # noqa: D4
-    app = flake8.main.application.Application()
-    args = [
-        _qs_or_vs(obj["VERBOSITY"]),
-        f"--config={(pathlib.Path(__file__).parent / 'config.ini').resolve()}",
-        f"--exclude={obj['EXCLUDE']}" if obj["EXCLUDE"] else "",
-        f"--format={format}" if format else "",
-        f"--extend-ignore={extend_ignore}" if extend_ignore else "",
-        # The only way to configure flake8-black's line length is through a pyproject.toml's
-        # [tool.black] setting (which makes sense if you think about it)
-        # So we need to give it one
-        f"--black-config={(pathlib.Path(__file__).parent / 'config.toml').resolve()}",
-        *file_or_dir,
-    ]
-    app.run(list(filter(bool, args)))
-    app.exit()
+    _lint(obj=obj, format=format, extend_ignore=extend_ignore, file_or_dir=file_or_dir)
+
+
+@main.command()
+@click.option(
+    "--extend-ignore",
+    type=str,
+    help="Comma-separated list of errors and warnings to ignore (or skip)",
+)
+@click.argument("file_or_dir", nargs=-1)
+@click.pass_obj
+def acknowledge_existing_violations(obj, extend_ignore, file_or_dir):
+    """Lint existing error and suppress.
+
+    Use this command to acknowledge violations in existing code to allow for enforcing new code.
+    """
+    logging.info("linting code")
+    capture = StringIO()
+    with contextlib.redirect_stdout(capture):
+        try:
+            _lint(obj=obj, format=None, extend_ignore=extend_ignore, file_or_dir=file_or_dir)
+        except SystemExit:
+            pass  # the flake8 app wants to always SystemExit :(
+
+    lines = capture.getvalue().splitlines()
+    _acknowledge_existing_errors.acknowledge_lint_errors(lines)

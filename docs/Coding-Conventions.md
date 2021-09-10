@@ -232,13 +232,43 @@ class Outputs:
 
 E.g. `tempfile` is preferred over `temp_file` or `temporary_file`
 
-### [N.2.2] ✔️ **DO** Use `snake_case` for function, variable, and parameter names
+### [N.2.2] ✔️ **DO** Use `snake_case` for function, variable, and parameter names 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-### [N.2.3] ✔️ **DO** Use CamelCase for class names
+> 💻 This rule is enforced by error codes N802, N803, N806
+
+```python
+# Bad - will produce N802
+def buyCheese(cheese_type):
+    pass
+```
+
+```python
+# Bad - will produce N803
+def buy_cheese(cheeseType):
+    pass
+```
+
+```python
+# Bad - will produce N806
+def buy_cheese(cheese_type):
+    cheeseShop = get_cheese_shop()
+    return cheeseShop.buy(cheese_type)
+```
+
+```python
+# Good
+def buy_cheese(cheese_type):
+    cheese_shop = get_cheese_shop()
+    return cheese_shop.buy(cheese_type)
+```
+
+### [N.2.3] ✔️ **DO** Use CamelCase for class names 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
+
+> 💻 This rule is enforced by error code N801
 
 ℹ️ An exception is made for classes which are used primarily as a callable. They should use function naming conventions instead.
 
@@ -254,7 +284,11 @@ class CheeseShop:
     pass
 ```
 
-### [N.2.4] ✔️ **DO** Use `CamelCase` for type variable names
+### [N.2.4] ✔️ **DO** Use `SCREAMING_CASE` for module level constants
+
+> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
+
+### [N.2.5] ✔️ **DO** Use `CamelCase` for type variable names
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -272,7 +306,7 @@ from typing import TypeVar
 FlyingCircus = TypeVar("FlyingCircus")
 ```
 
-### [N.2.5] ✔️ **DO** Suffix covariant and contravariant type variables with `_co` and `_contra` respectively
+### [N.2.6] ✔️ **DO** Suffix covariant and contravariant type variables with `_co` and `_contra` respectively
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -284,23 +318,19 @@ FlyingCircus_co = TypeVar("FlyingCircus_co", covariant=True)
 FlyingCircus_contra = TypeVar("FlyingCircus_contra", contravariant=True)
 ```
 
-### [N.2.6] ✔️ **DO** Suffix error exceptions with "Error"
+### [N.2.7] ✔️ **DO** Suffix error exceptions with "Error"
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-### [N.2.7] ✔️ **DO** Use `self` as the first argument to instance methods
+### [N.2.8] ✔️ **DO** Use `self` as the first argument to instance methods
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-### [N.2.8] ✔️ **DO** Use `cls` as the first argument to class methods
+### [N.2.9] ✔️ **DO** Use `cls` as the first argument to class methods
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-### [N.2.9] ✔️ **DO** Use one leading underscore only for non-public methods and instance variables
-
-> 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
-
-### [N.2.10] ✔️ **DO** Use `SCREAMING_CASE` for module level constants
+### [N.2.10] ✔️ **DO** Use one leading underscore only for non-public methods and instance variables
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -682,17 +712,30 @@ import ministry
 URL = "http://python.org"
 ```
 
-### [O.1.3] ✔️ **DO** Group imports by standard library, third party, then first_party
+### [O.1.3] ✔️ **DO** Group imports by standard library, third party, then first_party 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-Additionally, you should put a blank line between each group of imports.
+> 💻 This rule is enforced by error codes I201, I202
+
+Additionally, you should put a single blank line between each group of imports.
 
 ```python
-# Bad
-import my_app.utils
+# Bad - will produce I201
 import os
 import ministry
+import my_app.utils
+```
+
+```python
+# Bad - will produce I202
+import os
+
+import cheese_shop
+
+import ministry
+
+import my_app.utils
 ```
 
 ```python
@@ -704,7 +747,39 @@ import ministry
 import my_app.utils
 ```
 
-### [O.1.4] ✔️ **DO** Use absolute imports
+### [O.1.4] ✔️ **DO** List imports in alphabetical order 💻
+
+> 💻 This rule is enforced by error code I100
+
+`from X import Y` imports should follow `import X` imports and be alphabetized by module name.
+
+```python
+# Bad
+import pathlib
+import os
+```
+
+```python
+# Bad
+from collections import defaultdict
+import os
+```
+
+```python
+# Bad
+from contextlib import contextmanager
+from collections import defaultdict
+```
+
+```python
+# Good
+import os
+import pathlib
+from collections import defaultdict
+from contextlib import contextmanager
+```
+
+### [O.1.5] ✔️ **DO** Use absolute imports
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -712,6 +787,7 @@ import my_app.utils
 
 ```python
 # Bad
+from . import sibling
 from .sibling import rivalry
 ```
 
@@ -720,7 +796,7 @@ from .sibling import rivalry
 from my_app.relationships.sibling import rivalry
 ```
 
-### [O.1.5] ❌ **DO NOT** Use wildcard imports 💻
+### [O.1.6] ❌ **DO NOT** Use wildcard imports 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -743,7 +819,7 @@ from ministry import silly_walk
 import ministry
 ```
 
-### [O.1.6] ❌ **DO NOT** Rely on a module's imported names
+### [O.1.7] ❌ **DO NOT** Rely on a module's imported names
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
@@ -754,20 +830,51 @@ import ministry
 
 ```python
 # Bad
-# cheese_shop.py - Imports module `brie`
-import brie
-
-# customer.py - Relying on the fact that `cheese_shop` imported module `brie`
+# Assuming the module cheese_shop imported module `brie`, the following would be wrong:
 import cheese_shop.brie
 ```
 
-### [O.1.7] ❌ **DO NOT** Import definitions that are not used 💻
+### [O.1.8] ❌ **DO NOT** Import definitions that are not used 💻
 
 > 💻 This rule is enforced by error code F401
 
 ```python
 # Bad
 import os  # Assuming os is never used
+```
+
+### [O.1.9] ❌ **DO NOT** Change an imported object's case 💻
+
+> 💻 This rule is enforced by error codes N811, N812, N813, N814, N817
+
+```python
+# Bad - will produce N811
+from re import MULTILINE as multiline
+```
+
+```python
+# Bad - will produce N812
+import re as RE
+```
+
+```python
+# Bad - will produce N813
+from difflib import HtmlDiff as htmldiff
+```
+
+```python
+# Bad - will produce N814
+from difflib import HtmlDiff as HTML_DIFF
+```
+
+```python
+# Bad - will produce N817
+from difflib import SequenceMatcher as sm
+```
+
+```python
+# Good - Permissible to use "as" as long as you don't change the case
+from cheese_shop import buy_cheese_v4 as buy_cheese
 ```
 
 ## [O.2] Declarations

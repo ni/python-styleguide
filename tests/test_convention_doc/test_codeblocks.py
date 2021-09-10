@@ -1,5 +1,7 @@
 """Tests for the codeblocks in the convention document."""
 
+import pathlib
+
 import pytest
 
 
@@ -15,7 +17,6 @@ def lint_codeblock(styleguide, tmp_path):
         # code to trivial examples, detracting from the interesting lines.
         ignore_unused_imports=True,
     ):
-
         extend_ignore = [
             # Undefined name. Defining all the names in each example would detract from the
             # interesting lines.
@@ -29,7 +30,13 @@ def lint_codeblock(styleguide, tmp_path):
 
         test_file = tmp_path / "test.py"
         test_file.write_text(codeblock.contents, encoding="utf-8")
-        return styleguide("lint", *styleguide_args, test_file)
+        return styleguide(
+            "--config",
+            pathlib.Path(__file__).parent / "codeblock_config.toml",
+            "lint",
+            *styleguide_args,
+            test_file,
+        )
 
     return run_linter
 
