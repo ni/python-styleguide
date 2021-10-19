@@ -68,7 +68,7 @@ def test_given_bad_input_produces_expected_output(test_dir, snapshot, tmp_path, 
     output = styleguide_command(command="acknowledge-existing-violations")
 
     assert output.exit_code in (True, 0), f"Error in running:\n{output}"
-    result = test_file.read_text()
+    result = test_file.read_text(encoding="UTF-8")
     snapshot.snapshot_dir = test_dir
     snapshot.assert_match(result, "output.py")
 
