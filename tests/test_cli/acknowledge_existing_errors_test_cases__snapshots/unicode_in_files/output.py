@@ -1,6 +1,7 @@
 """Unicode in file should not cause error (e.g., ©)."""
 
-class Foo():
+
+class Foo:
     """Example class with unicode consts."""
 
     def __init__(self) -> None:

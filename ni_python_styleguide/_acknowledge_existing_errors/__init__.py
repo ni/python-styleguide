@@ -10,6 +10,7 @@ EXCLUDED_ERRORS = {
 
 DEFAULT_ENCODING = "UTF-8"
 
+
 class _InMultiLineStringChecker:
     def __init__(self, error_file):
         self._error_file = pathlib.Path(error_file)
