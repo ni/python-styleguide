@@ -8,6 +8,8 @@ EXCLUDED_ERRORS = {
     "BLK100",
 }
 
+DEFAULT_ENCODING = "UTF-8"
+
 
 class _InMultiLineStringChecker:
     def __init__(self, error_file):
@@ -27,7 +29,7 @@ class _InMultiLineStringChecker:
         return line.count('"""'), line.count("'''")
 
     def _load_lines(self):
-        in_file = self._error_file.read_text().splitlines()
+        in_file = self._error_file.read_text(encoding=DEFAULT_ENCODING).splitlines()
         current_count = [0, 0]
         for line in in_file:
             type1, type2 = _InMultiLineStringChecker._count_multiline_string_endings_in_line(line)
@@ -73,7 +75,7 @@ def acknowledge_lint_errors(lint_errors):
 
     for bad_file, errors_in_file in lint_errors_by_file.items():
         path = pathlib.Path(bad_file)
-        lines = path.read_text().splitlines(keepends=True)
+        lines = path.read_text(encoding=DEFAULT_ENCODING).splitlines(keepends=True)
         # sometimes errors are reported on line 1 for empty files.
         # to make suppressions work for those cases, add an empty line.
         if len(lines) == 0:
@@ -110,4 +112,4 @@ def acknowledge_lint_errors(lint_errors):
                 explanation=error.explanation,
             )
 
-        path.write_text("".join(lines))
+        path.write_text("".join(lines), encoding=DEFAULT_ENCODING)

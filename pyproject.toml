@@ -39,7 +39,7 @@ pep8-naming = "^0.11.1"
 pytest = "^6.0.1"
 pytest_click = "^1.0.2"
 black = "^20.8b1"
-pytest-snapshot = "^0.4.2"
+pytest-snapshot = ">=0.6.3"
 
 [tool.poetry.scripts]
 ni-python-styleguide = 'ni_python_styleguide._cli:main'
