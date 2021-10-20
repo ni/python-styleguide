@@ -14,7 +14,6 @@ Since this changes the Coding Conventions, I'll @-mention the appropriate NI eng
 @rtzoeller
 @sbethur
 @stick152
-@thejcannon
 @Adithyak1998
 @innagarc
 @ShibaniRout
