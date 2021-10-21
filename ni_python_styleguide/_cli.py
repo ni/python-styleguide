@@ -4,10 +4,10 @@ import pathlib
 from io import StringIO
 
 import click
-import flake8.main.application
 import toml
 
 from ni_python_styleguide import _acknowledge_existing_errors
+from ni_python_styleguide import _lint
 
 
 def _qs_or_vs(verbosity):
@@ -116,25 +116,6 @@ def main(ctx, verbose, quiet, config, exclude, extend_exclude):
     ctx.obj["APP_IMPORT_NAMES"] = _get_application_import_names(ctx.obj.get("PYPROJECT", {}))
 
 
-def _lint(qs_or_vs, exclude, app_import_names, format, extend_ignore, file_or_dir):
-    app = flake8.main.application.Application()
-    args = [
-        qs_or_vs,
-        f"--config={(pathlib.Path(__file__).parent / 'config.ini').resolve()}",
-        f"--exclude={exclude}" if exclude else "",
-        f"--format={format}" if format else "",
-        f"--extend-ignore={extend_ignore}" if extend_ignore else "",
-        # The only way to configure flake8-black's line length is through a pyproject.toml's
-        # [tool.black] setting (which makes sense if you think about it)
-        # So we need to give it one
-        f"--black-config={(pathlib.Path(__file__).parent / 'config.toml').resolve()}",
-        f"--application-import-names={app_import_names}",
-        *file_or_dir,
-    ]
-    app.run(list(filter(bool, args)))
-    app.exit()
-
-
 @main.command()
 # @TODO: When we're ready to encourage editor integration, add --diff flag
 @click.option("--format", type=str, help="Format errors according to the chosen formatter.")
@@ -147,7 +128,7 @@ def _lint(qs_or_vs, exclude, app_import_names, format, extend_ignore, file_or_di
 @click.pass_obj
 def lint(obj, format, extend_ignore, file_or_dir):
     """Lint the file(s)/directory(s) given."""  # noqa: D4
-    _lint(
+    _lint.lint(
         qs_or_vs=_qs_or_vs(obj["VERBOSITY"]),
         exclude=obj["EXCLUDE"],
         app_import_names=obj["APP_IMPORT_NAMES"],
@@ -174,8 +155,8 @@ def acknowledge_existing_violations(obj, extend_ignore, file_or_dir):
     capture = StringIO()
     with contextlib.redirect_stdout(capture):
         try:
-            _lint(
-                qs_or_vs=None, # we want normal output
+            _lint.lint(
+                qs_or_vs=None,  # we want normal output
                 exclude=obj["EXCLUDE"],
                 app_import_names=obj["APP_IMPORT_NAMES"],
                 format=None,
