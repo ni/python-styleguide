@@ -59,12 +59,33 @@ def _add_noqa_to_line(lineno, code_lines, error_code, explanation):
     code_lines[lineno] = line + old_line_ending
 
 
-def acknowledge_lint_errors(lint_errors):
+
+def _get_lint_output(exclude, app_import_names, extend_ignore, file_or_dir):
+    capture = StringIO()
+    with contextlib.redirect_stdout(capture):
+        try:
+            _lint.lint(
+                qs_or_vs=None,  # we want normal output
+                exclude=exclude,
+                app_import_names=app_import_names,
+                format=None,
+                extend_ignore=extend_ignore,
+                file_or_dir=file_or_dir,
+            )
+        except SystemExit:
+            pass  # the flake8 app wants to always SystemExit :(
+    return capture.getvalue()
+
+
+def acknowledge_lint_errors(exclude, app_import_names, extend_ignore, file_or_dir):
     """Add a "noqa" comment for each of existing errors (unless excluded).
 
     Excluded error (reason):
     BLK100 - run black
     """
+    lint_errors = _get_lint_output(
+        exclude, app_import_names, extend_ignore, file_or_dir
+    ).splitlines()
     parsed_errors = map(_lint_errors_parser.parse, lint_errors)
     parsed_errors = filter(None, parsed_errors)
     lint_errors_to_process = [error for error in parsed_errors if error.code not in EXCLUDED_ERRORS]

@@ -1,8 +1,3 @@
-import contextlib
-import logging
-import pathlib
-from io import StringIO
-
 import click
 import toml
 
@@ -151,20 +146,9 @@ def acknowledge_existing_violations(obj, extend_ignore, file_or_dir):
 
     Use this command to acknowledge violations in existing code to allow for enforcing new code.
     """
-    logging.info("linting code")
-    capture = StringIO()
-    with contextlib.redirect_stdout(capture):
-        try:
-            _lint.lint(
-                qs_or_vs=None,  # we want normal output
-                exclude=obj["EXCLUDE"],
-                app_import_names=obj["APP_IMPORT_NAMES"],
-                format=None,
-                extend_ignore=extend_ignore,
-                file_or_dir=file_or_dir,
-            )
-        except SystemExit:
-            pass  # the flake8 app wants to always SystemExit :(
-
-    lines = capture.getvalue().splitlines()
-    _acknowledge_existing_errors.acknowledge_lint_errors(lines)
+    _acknowledge_existing_errors.acknowledge_lint_errors(
+        exclude=obj["EXCLUDE"],
+        app_import_names=obj["APP_IMPORT_NAMES"],
+        extend_ignore=extend_ignore,
+        file_or_dir=file_or_dir,
+    )

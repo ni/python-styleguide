@@ -5,6 +5,7 @@ import flake8.main.application
 
 
 def lint(qs_or_vs, exclude, app_import_names, format, extend_ignore, file_or_dir):
+    """Run the linter."""
     app = flake8.main.application.Application()
     args = [
         qs_or_vs,
