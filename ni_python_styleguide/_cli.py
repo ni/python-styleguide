@@ -175,7 +175,7 @@ def acknowledge_existing_violations(obj, extend_ignore, file_or_dir):
     with contextlib.redirect_stdout(capture):
         try:
             _lint(
-                qs_or_vs=_qs_or_vs(obj["VERBOSITY"]),
+                qs_or_vs=None, # we want normal output
                 exclude=obj["EXCLUDE"],
                 app_import_names=obj["APP_IMPORT_NAMES"],
                 format=None,
