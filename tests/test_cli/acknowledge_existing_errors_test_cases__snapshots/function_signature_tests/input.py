@@ -88,3 +88,15 @@ def method_withBadName_with_bad_params_on_multiple_lines_2(
 ):
     """Provide parameters with bad names on multiple lines."""
     return myBadlyNamedParam + my_other_Bad_name
+
+
+def method_withBadName_andParams(my_normal_param, myBadlyNamedParam, my_other_Bad_param):
+    """Provide example where black will want to split out result."""
+    return 5 + 7
+
+
+def method_withBadName_and_bad_param_with_long_name(
+    my_normal_param, myBadlyNamedParam, my_other_Bad_param
+):
+    """Provide example where black will want to split out result even more"""
+    return 5 + 7

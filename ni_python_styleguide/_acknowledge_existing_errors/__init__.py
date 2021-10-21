@@ -1,14 +1,29 @@
+import contextlib
 import logging
 import pathlib
+import re
 from collections import defaultdict
+from collections.abc import Iterable
+from io import StringIO
+from typing import Union
 
+import black
+
+from ni_python_styleguide import _config_constants
+from ni_python_styleguide import _lint
 from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
+
+MODULE_LOGGER = logging.getLogger(__name__)
 
 EXCLUDED_ERRORS = {
     "BLK100",
 }
 
 DEFAULT_ENCODING = "UTF-8"
+
+
+class _LimitReachedError(RecursionError):
+    ...
 
 
 class _InMultiLineStringChecker:
@@ -59,22 +74,109 @@ def _add_noqa_to_line(lineno, code_lines, error_code, explanation):
     code_lines[lineno] = line + old_line_ending
 
 
+class _Acknowlegder:
 
-def _get_lint_output(exclude, app_import_names, extend_ignore, file_or_dir):
-    capture = StringIO()
-    with contextlib.redirect_stdout(capture):
-        try:
-            _lint.lint(
-                qs_or_vs=None,  # we want normal output
-                exclude=exclude,
-                app_import_names=app_import_names,
-                format=None,
-                extend_ignore=extend_ignore,
-                file_or_dir=file_or_dir,
-            )
-        except SystemExit:
-            pass  # the flake8 app wants to always SystemExit :(
-    return capture.getvalue()
+    # some cases are expected to take up to 4 passes, making this slightly over 2x for safety
+    MAX_FORMAT_RETRIES_LIMIT = 10
+
+    def __init__(
+        self, exclude, app_import_names, extend_ignore, cwd, encoding=DEFAULT_ENCODING
+    ) -> None:
+        self._exclude = exclude
+        self._app_import_names = app_import_names
+        self._extend_ignore = extend_ignore
+        self._cwd = cwd
+        self._encoding = encoding
+
+    def _get_lint_output(self, cwd=None):
+        if cwd is None:
+            cwd = self._cwd
+        if not isinstance(cwd, Iterable):
+            cwd = (cwd,)
+        capture = StringIO()
+        with contextlib.redirect_stdout(capture):
+            try:
+                _lint.lint(
+                    qs_or_vs=None,  # we want normal output
+                    exclude=self._exclude,
+                    app_import_names=self._app_import_names,
+                    format=None,
+                    extend_ignore=self._extend_ignore,
+                    file_or_dir=cwd,
+                )
+            except SystemExit:
+                pass  # the flake8 app wants to always SystemExit :(
+        return capture.getvalue()
+
+    def get_lint_errors(self, file_or_dir=None):
+        lint_errors = self._get_lint_output(cwd=file_or_dir).splitlines()
+        parsed_errors = map(_lint_errors_parser.parse, lint_errors)
+        parsed_errors = filter(None, parsed_errors)
+        lint_errors_to_process = [
+            error for error in parsed_errors if error.code not in EXCLUDED_ERRORS
+        ]
+        return lint_errors_to_process
+
+    def run_formatter(self, file_or_dir=None):
+        file_or_dir = file_or_dir or self._cwd
+        if not isinstance(file_or_dir, Iterable):
+            file_or_dir = (file_or_dir,)
+        capture = StringIO()
+        with contextlib.redirect_stderr(capture):
+            try:
+                black.main(
+                    [
+                        *(str(o) for o in file_or_dir),
+                        f"--config={_config_constants.BLACK_CONFIG_FILE.resolve()}",
+                    ]
+                )
+            except SystemExit:
+                pass  # why are they exiting when called via import ?! ‾\_(ツ)_/‾
+        output = capture.getvalue()
+        done = all(["file reformatted" not in output, "files reformatted" not in output])
+
+        return done
+
+    def handle_lines_that_are_now_too_long(
+        self, file: pathlib.Path, limit: Union[int, None] = None
+    ):
+        if limit is not None and limit <= 0:
+            raise _LimitReachedError()
+
+        # format the files - this may move the suppression off the correct lines
+        self.run_formatter(file)
+
+        # remove suppressions
+        lines = file.read_text(encoding=self._encoding).splitlines()
+        stripped_lines = [_Acknowlegder._filter_suppresion(line) for line in lines]
+        file.write_text("\n".join(stripped_lines) + "\n")
+
+        # re-apply suppressions on correct lines
+        current_lint_errors = self.get_lint_errors(file)
+        _suppress_errors_in_file(file, current_lint_errors, encoding=self._encoding)
+
+        # format - are we done?
+        done = self.run_formatter(file)
+        if not done:
+            try:
+                limit_ = limit
+                if limit is None:
+                    limit_ = _Acknowlegder.MAX_FORMAT_RETRIES_LIMIT
+
+                self.handle_lines_that_are_now_too_long(file, limit=limit_ - 1)
+            except _LimitReachedError:
+                if limit is None:
+                    logging.warning(
+                        "Could not handle suppressions/formatting of file %s after maximum number of tries",
+                        file,
+                    )
+
+    @staticmethod
+    def _filter_suppresion(line: str):
+        if "(auto-generated noqa)" in line:
+            return re.sub(r"# noqa .+\(auto-generated noqa\)", "", line).rstrip()
+        else:
+            return line
 
 
 def acknowledge_lint_errors(exclude, app_import_names, extend_ignore, file_or_dir):
@@ -83,54 +185,60 @@ def acknowledge_lint_errors(exclude, app_import_names, extend_ignore, file_or_di
     Excluded error (reason):
     BLK100 - run black
     """
-    lint_errors = _get_lint_output(
-        exclude, app_import_names, extend_ignore, file_or_dir
-    ).splitlines()
-    parsed_errors = map(_lint_errors_parser.parse, lint_errors)
-    parsed_errors = filter(None, parsed_errors)
-    lint_errors_to_process = [error for error in parsed_errors if error.code not in EXCLUDED_ERRORS]
+    acknowlegder = _Acknowlegder(
+        exclude,
+        app_import_names,
+        extend_ignore,
+        [pathlib.Path(file_or_dir_) for file_or_dir_ in file_or_dir or "."],
+    )
+    lint_errors_to_process = acknowlegder.get_lint_errors()
 
     lint_errors_by_file = defaultdict(list)
     for error in lint_errors_to_process:
         lint_errors_by_file[error.file].append(error)
 
     for bad_file, errors_in_file in lint_errors_by_file.items():
-        path = pathlib.Path(bad_file)
-        lines = path.read_text(encoding=DEFAULT_ENCODING).splitlines(keepends=True)
-        # sometimes errors are reported on line 1 for empty files.
-        # to make suppressions work for those cases, add an empty line.
-        if len(lines) == 0:
-            lines = [""]
-        multiline_checker = _InMultiLineStringChecker(error_file=bad_file)
+        _suppress_errors_in_file(bad_file, errors_in_file, encoding=DEFAULT_ENCODING)
+        acknowlegder.handle_lines_that_are_now_too_long(pathlib.Path(bad_file))
 
-        # to avoid double marking a line with the same code, keep track of lines and codes
-        handled_lines = defaultdict(list)
-        for error in errors_in_file:
-            skip = 0
 
-            while error.line + skip < len(lines) and multiline_checker.in_multiline_string(
-                lineno=error.line + skip
-            ):
-                # find when the multiline ends
-                skip += 1
+def _suppress_errors_in_file(bad_file, errors_in_file, encoding):
+    path = pathlib.Path(bad_file)
+    lines = path.read_text(encoding=encoding).splitlines(keepends=True)
+    # sometimes errors are reported on line 1 for empty files.
+    # to make suppressions work for those cases, add an empty line.
+    if len(lines) == 0:
+        lines = [""]
+    multiline_checker = _InMultiLineStringChecker(error_file=bad_file)
 
-            cached_key = f"{error.file}:{error.line + skip}"
-            if error.code in handled_lines[cached_key]:
-                logging.warning(
-                    "Multiple occurrences of error %s code were logged for %s:%s, only suprressing first",
-                    error.code,
-                    error.file,
-                    error.line + skip,
-                )
-                continue
+    # to avoid double marking a line with the same code, keep track of lines and codes
+    handled_lines = defaultdict(list)
+    for error in errors_in_file:
+        skip = 0
 
-            handled_lines[cached_key].append(error.code)
+        while error.line + skip < len(lines) and multiline_checker.in_multiline_string(
+            lineno=error.line + skip
+        ):
+            # find when the multiline ends
+            skip += 1
 
-            _add_noqa_to_line(
-                lineno=error.line - 1 + skip,
-                code_lines=lines,
-                error_code=error.code,
-                explanation=error.explanation,
+        cached_key = f"{error.file}:{error.line + skip}"
+        if error.code in handled_lines[cached_key]:
+            MODULE_LOGGER.warning(
+                "Multiple occurrences of error %s code were logged for %s:%s, only supressing first",
+                error.code,
+                error.file,
+                error.line + skip,
             )
+            continue
 
-        path.write_text("".join(lines), encoding=DEFAULT_ENCODING)
+        handled_lines[cached_key].append(error.code)
+
+        _add_noqa_to_line(
+            lineno=error.line - 1 + skip,
+            code_lines=lines,
+            error_code=error.code,
+            explanation=error.explanation,
+        )
+
+    path.write_text("".join(lines), encoding=encoding)

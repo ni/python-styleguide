@@ -23,7 +23,9 @@ os.listdir()
 
 
 def _test_os_name():
-    for os in range(3):  # noqa F402: import 'os' from line 5 shadowed by loop variable (auto-generated noqa)
+    for (
+        os  # noqa F402: import 'os' from line 5 shadowed by loop variable (auto-generated noqa)
+    ) in range(3):
         print(os)
 
 
