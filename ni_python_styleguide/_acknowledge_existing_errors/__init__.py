@@ -102,7 +102,7 @@ class _Acknowlegder:
                     app_import_names=self._app_import_names,
                     format=None,
                     extend_ignore=self._extend_ignore,
-                    file_or_dir=cwd,
+                    file_or_dir=(str(path) for path in cwd),
                 )
             except SystemExit:
                 pass  # the flake8 app wants to always SystemExit :(
