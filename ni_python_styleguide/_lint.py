@@ -18,7 +18,7 @@ def lint(qs_or_vs, exclude, app_import_names, format, extend_ignore, file_or_dir
         # So we need to give it one
         f"--black-config={_config_constants.BLACK_CONFIG_FILE.resolve()}",
         f"--application-import-names={app_import_names}",
-        *[str(o) for o in file_or_dir],
+        *file_or_dir,
     ]
     app.run(list(filter(bool, args)))
     app.exit()
