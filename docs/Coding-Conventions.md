@@ -63,7 +63,7 @@ This document is applicable to all Python versions which are not end-of-life.
 
 > 💻 This rule is enforced by error code BLK100
 
-`black`'s style is well-documented and can be found [here](https://black.readthedocs.io/en/stable/the_black_code_style.html).
+`black`'s style is well-documented and can be found [here](https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html).
 
 #### Why do we need a formatter?
 
