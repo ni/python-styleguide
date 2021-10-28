@@ -7,9 +7,7 @@ from collections.abc import Iterable
 from io import StringIO
 from typing import Union
 
-import black
-
-from ni_python_styleguide import _config_constants
+from ni_python_styleguide import _format
 from ni_python_styleguide import _lint
 from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
 
@@ -124,12 +122,7 @@ class _Acknowlegder:
         capture = StringIO()
         with contextlib.redirect_stderr(capture):
             try:
-                black.main(
-                    [
-                        *(str(o) for o in file_or_dir),
-                        f"--config={_config_constants.BLACK_CONFIG_FILE.resolve()}",
-                    ]
-                )
+                _format.format([str(o) for o in file_or_dir])
             except SystemExit:
                 pass  # why are they exiting when called via import ?! ‾\_(ツ)_/‾
         output = capture.getvalue()
