@@ -140,9 +140,14 @@ def lint(obj, format, extend_ignore, file_or_dir):
     help="Comma-separated list of errors and warnings to ignore (or skip)",
 )
 @click.argument("file_or_dir", nargs=-1)
+@click.option(
+    "--aggressive",
+    is_flag=True,
+    help="Attempt to handle long acknowledgement lines by formatting and repeating the acknowledgement.",
+)
 @click.pass_obj
-def acknowledge_existing_violations(obj, extend_ignore, file_or_dir):
-    """Lint existing error and suppress.
+def acknowledge_existing_violations(obj, extend_ignore, file_or_dir, aggressive):
+    """Lint existing violations and suppress.
 
     Use this command to acknowledge violations in existing code to allow for enforcing new code.
     """
@@ -151,4 +156,5 @@ def acknowledge_existing_violations(obj, extend_ignore, file_or_dir):
         app_import_names=obj["APP_IMPORT_NAMES"],
         extend_ignore=extend_ignore,
         file_or_dir=file_or_dir,
+        aggressive=aggressive,
     )
