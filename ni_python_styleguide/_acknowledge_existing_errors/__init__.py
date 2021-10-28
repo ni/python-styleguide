@@ -126,7 +126,7 @@ class _Acknowlegder:
             except SystemExit:
                 pass  # why are they exiting when called via import ?! ‾\_(ツ)_/‾
         output = capture.getvalue()
-        done = all(["file reformatted" not in output, "files reformatted" not in output])
+        done = not any(["file reformatted" in output, "files reformatted" in output])
 
         return done
 
@@ -163,6 +163,7 @@ class _Acknowlegder:
                         "Could not handle suppressions/formatting of file %s after maximum number of tries",
                         file,
                     )
+                raise
 
     @staticmethod
     def _filter_suppresion(line: str):
@@ -172,7 +173,9 @@ class _Acknowlegder:
             return line
 
 
-def acknowledge_lint_errors(exclude, app_import_names, extend_ignore, file_or_dir):
+def acknowledge_lint_errors(
+    exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=False
+):
     """Add a "noqa" comment for each of existing errors (unless excluded).
 
     Excluded error (reason):
@@ -192,7 +195,8 @@ def acknowledge_lint_errors(exclude, app_import_names, extend_ignore, file_or_di
 
     for bad_file, errors_in_file in lint_errors_by_file.items():
         _suppress_errors_in_file(bad_file, errors_in_file, encoding=DEFAULT_ENCODING)
-        acknowlegder.handle_lines_that_are_now_too_long(pathlib.Path(bad_file))
+        if aggressive:
+            acknowlegder.handle_lines_that_are_now_too_long(pathlib.Path(bad_file))
 
 
 def _suppress_errors_in_file(bad_file, errors_in_file, encoding):
