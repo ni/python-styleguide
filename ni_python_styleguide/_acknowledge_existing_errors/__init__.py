@@ -159,7 +159,7 @@ class _Acknowlegder:
                 self.handle_lines_that_are_now_too_long(file, limit=limit_ - 1)
             except _LimitReachedError:
                 if limit is None:
-                    logging.warning(
+                    MODULE_LOGGER.warning(
                         "Could not handle suppressions/formatting of file %s after maximum number of tries",
                         file,
                     )
