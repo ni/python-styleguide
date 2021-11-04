@@ -115,21 +115,6 @@ class _Acknowlegder:
         ]
         return lint_errors_to_process
 
-    def run_formatter(self, file_or_dir=None):
-        file_or_dir = file_or_dir or self._cwd
-        if not isinstance(file_or_dir, Iterable):
-            file_or_dir = (file_or_dir,)
-        capture = StringIO()
-        with contextlib.redirect_stderr(capture):
-            try:
-                _format.format([str(o) for o in file_or_dir])
-            except SystemExit:
-                pass  # why are they exiting when called via import ?! ‾\_(ツ)_/‾
-        output = capture.getvalue()
-        done = not any(["file reformatted" in output, "files reformatted" in output])
-
-        return done
-
     def handle_lines_that_are_now_too_long(
         self, file: pathlib.Path, limit: Union[int, None] = None
     ):
@@ -137,7 +122,7 @@ class _Acknowlegder:
             raise _LimitReachedError()
 
         # format the files - this may move the suppression off the correct lines
-        self.run_formatter(file)
+        _format.format(file)
 
         # remove suppressions
         lines = file.read_text(encoding=self._encoding).splitlines()
@@ -149,8 +134,8 @@ class _Acknowlegder:
         _suppress_errors_in_file(file, current_lint_errors, encoding=self._encoding)
 
         # format - are we done?
-        done = self.run_formatter(file)
-        if not done:
+        changed = _format.does_formatting_make_changes(file)
+        if changed:
             try:
                 limit_ = limit
                 if limit is None:
