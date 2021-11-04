@@ -71,6 +71,13 @@ def _add_noqa_to_line(lineno, code_lines, error_code, explanation):
 
     code_lines[lineno] = line + old_line_ending
 
+def _filter_suppresion_from_line(line: str):
+    if "(auto-generated noqa)" in line:
+        return re.sub(r"# noqa .+\(auto-generated noqa\)", "", line).rstrip()
+    else:
+        return line
+
+
 
 class _Acknowlegder:
 
@@ -124,10 +131,7 @@ class _Acknowlegder:
         # format the files - this may move the suppression off the correct lines
         _format.format(file)
 
-        # remove suppressions
-        lines = file.read_text(encoding=self._encoding).splitlines()
-        stripped_lines = [_Acknowlegder._filter_suppresion(line) for line in lines]
-        file.write_text("\n".join(stripped_lines) + "\n")
+        _remove_auto_suppressions_from_file(file)
 
         # re-apply suppressions on correct lines
         current_lint_errors = self.get_lint_errors(file)
@@ -149,13 +153,6 @@ class _Acknowlegder:
                         file,
                     )
                 raise
-
-    @staticmethod
-    def _filter_suppresion(line: str):
-        if "(auto-generated noqa)" in line:
-            return re.sub(r"# noqa .+\(auto-generated noqa\)", "", line).rstrip()
-        else:
-            return line
 
 
 def acknowledge_lint_errors(
@@ -182,6 +179,11 @@ def acknowledge_lint_errors(
         _suppress_errors_in_file(bad_file, errors_in_file, encoding=DEFAULT_ENCODING)
         if aggressive:
             acknowlegder.handle_lines_that_are_now_too_long(pathlib.Path(bad_file))
+
+def _remove_auto_suppressions_from_file(file):
+    lines = file.read_text(encoding=DEFAULT_ENCODING).splitlines()
+    stripped_lines = [_filter_suppresion_from_line(line) for line in lines]
+    file.write_text("\n".join(stripped_lines) + "\n")
 
 
 def _suppress_errors_in_file(bad_file, errors_in_file, encoding):
@@ -224,3 +226,4 @@ def _suppress_errors_in_file(bad_file, errors_in_file, encoding):
         )
 
     path.write_text("".join(lines), encoding=encoding)
+
