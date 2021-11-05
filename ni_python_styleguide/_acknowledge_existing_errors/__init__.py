@@ -107,36 +107,36 @@ def acknowledge_lint_errors(
     get_lint_errors_to_process__simple = functools.partial(
         _get_lint_errors_to_process, exclude, app_import_names, extend_ignore
     )  # leaving file_or_dir to get passed on demand
+
     lint_errors_to_process = get_lint_errors_to_process__simple(
         [pathlib.Path(file_or_dir_) for file_or_dir_ in file_or_dir or "."],
     )
 
     lint_errors_by_file = defaultdict(list)
     for error in lint_errors_to_process:
-        lint_errors_by_file[error.file].append(error)
+        lint_errors_by_file[pathlib.Path(error.file)].append(error)
 
     for bad_file, errors_in_file in lint_errors_by_file.items():
         _suppress_errors_in_file(bad_file, errors_in_file, encoding=DEFAULT_ENCODING)
         if aggressive:
             limit = 10  # some cases are expected to take up to 4 passes, making this slightly over 2x for safety
             for _ in range(limit):
-                bad_file_pth = pathlib.Path(bad_file)
                 # format the files - this may move the suppression off the correct lines
-                _format.format(bad_file_pth)
+                _format.format(bad_file)
 
-                _remove_auto_suppressions_from_file(bad_file_pth)
+                _remove_auto_suppressions_from_file(bad_file)
 
                 # re-apply suppressions on correct lines
-                current_lint_errors = get_lint_errors_to_process__simple([bad_file_pth])
+                current_lint_errors = get_lint_errors_to_process__simple([bad_file])
                 _suppress_errors_in_file(bad_file, current_lint_errors, encoding=DEFAULT_ENCODING)
 
                 # format - are we done?
-                changed = _format.does_formatting_make_changes(bad_file_pth)
+                changed = _format.does_formatting_make_changes(bad_file)
                 if not changed:
                     break
             else:
                 raise _LimitReachedError(
-                    f"Could not handle suppressions/formatting of file {bad_file_pth} after maximum number of tries ({limit})"
+                    f"Could not handle suppressions/formatting of file {bad_file} after maximum number of tries ({limit})"
                 )
 
 
@@ -186,4 +186,3 @@ def _suppress_errors_in_file(bad_file, errors_in_file, encoding):
         )
 
     path.write_text("".join(lines), encoding=encoding)
-
