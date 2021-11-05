@@ -21,7 +21,7 @@ EXCLUDED_ERRORS = {
 DEFAULT_ENCODING = "UTF-8"
 
 
-class _LimitReachedError(RecursionError):
+class LimitReachedError(Exception):
     ...
 
 
@@ -116,27 +116,29 @@ def acknowledge_lint_errors(
     for error in lint_errors_to_process:
         lint_errors_by_file[pathlib.Path(error.file)].append(error)
 
+
     for bad_file, errors_in_file in lint_errors_by_file.items():
         _suppress_errors_in_file(bad_file, errors_in_file, encoding=DEFAULT_ENCODING)
+
         if aggressive:
-            limit = 10  # some cases are expected to take up to 4 passes, making this slightly over 2x for safety
-            for _ in range(limit):
+            per_file_format_iteration_limit = 10 # some cases are expected to take up to 4 passes, making this slightly over 2x for safety
+            for _ in range(per_file_format_iteration_limit):
                 # format the files - this may move the suppression off the correct lines
+                #  Note: due to Github pycodestyle#868, we have to format, change, format (check if that made changes)
+                #    else we wind up with lambda's going un-suppressed and/or not re-formatted (to fail later)
                 _format.format(bad_file)
 
-                _remove_auto_suppressions_from_file(bad_file)
-
                 # re-apply suppressions on correct lines
+                _remove_auto_suppressions_from_file(bad_file)
                 current_lint_errors = get_lint_errors_to_process__simple([bad_file])
                 _suppress_errors_in_file(bad_file, current_lint_errors, encoding=DEFAULT_ENCODING)
 
-                # format - are we done?
                 changed = _format.does_formatting_make_changes(bad_file)
-                if not changed:
+                if not changed: # are we done?
                     break
             else:
-                raise _LimitReachedError(
-                    f"Could not handle suppressions/formatting of file {bad_file} after maximum number of tries ({limit})"
+                raise LimitReachedError(
+                    f"Could not handle suppressions/formatting of file {bad_file} after maximum number of tries ({per_file_format_iteration_limit})"
                 )
 
 
