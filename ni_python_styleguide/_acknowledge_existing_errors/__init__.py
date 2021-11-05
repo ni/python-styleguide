@@ -104,28 +104,6 @@ class _Acknowlegder:
         ]
         return lint_errors_to_process
 
-    def handle_lines_that_are_now_too_long(
-        self, file: pathlib.Path, limit: int = 10
-    ):
-        for _ in range(limit):
-
-            # format the files - this may move the suppression off the correct lines
-            _format.format(file)
-
-            _remove_auto_suppressions_from_file(file)
-
-            # re-apply suppressions on correct lines
-            current_lint_errors = self.get_lint_errors([file])
-            _suppress_errors_in_file(file, current_lint_errors, encoding=self._encoding)
-
-            # format - are we done?
-            changed = _format.does_formatting_make_changes(file)
-            if not changed:
-                break
-        else:
-            raise _LimitReachedError(
-                f"Could not handle suppressions/formatting of file {file} after maximum number of tries ({limit})"
-            )
 
 
 
@@ -152,7 +130,27 @@ def acknowledge_lint_errors(
     for bad_file, errors_in_file in lint_errors_by_file.items():
         _suppress_errors_in_file(bad_file, errors_in_file, encoding=DEFAULT_ENCODING)
         if aggressive:
-            acknowlegder.handle_lines_that_are_now_too_long(pathlib.Path(bad_file))
+            limit = 10
+            for _ in range(limit):
+                bad_file_pth = pathlib.Path(bad_file)
+                # format the files - this may move the suppression off the correct lines
+                _format.format(bad_file_pth)
+
+                _remove_auto_suppressions_from_file(bad_file_pth)
+
+                # re-apply suppressions on correct lines
+                current_lint_errors = acknowlegder.get_lint_errors([bad_file_pth])
+                _suppress_errors_in_file(bad_file, current_lint_errors, encoding=DEFAULT_ENCODING)
+
+                # format - are we done?
+                changed = _format.does_formatting_make_changes(bad_file_pth)
+                if not changed:
+                    break
+            else:
+                raise _LimitReachedError(
+                    f"Could not handle suppressions/formatting of file {bad_file_pth} after maximum number of tries ({limit})"
+                )
+
 
 def _remove_auto_suppressions_from_file(file):
     lines = file.read_text(encoding=DEFAULT_ENCODING).splitlines()
