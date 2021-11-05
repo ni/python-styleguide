@@ -94,28 +94,9 @@ class _Acknowlegder:
         self._cwd = cwd
         self._encoding = encoding
 
-    def _get_lint_output(self, cwd=None):
-        if cwd is None:
-            cwd = self._cwd
-        if not isinstance(cwd, Iterable):
-            cwd = (cwd,)
-        capture = StringIO()
-        with contextlib.redirect_stdout(capture):
-            try:
-                _lint.lint(
-                    qs_or_vs=None,  # we want normal output
-                    exclude=self._exclude,
-                    app_import_names=self._app_import_names,
-                    format=None,
-                    extend_ignore=self._extend_ignore,
-                    file_or_dir=(str(path) for path in cwd),
-                )
-            except SystemExit:
-                pass  # the flake8 app wants to always SystemExit :(
-        return capture.getvalue()
 
-    def get_lint_errors(self, file_or_dir=None):
-        lint_errors = self._get_lint_output(cwd=file_or_dir).splitlines()
+    def get_lint_errors(self, file_or_dir):
+        lint_errors = _lint.get_lint_output(qs_or_vs=None, exclude=self._exclude, app_import_names=self._app_import_names, extend_ignore=self._extend_ignore, format=None, file_or_dir=file_or_dir).splitlines()
         parsed_errors = map(_lint_errors_parser.parse, lint_errors)
         parsed_errors = filter(None, parsed_errors)
         lint_errors_to_process = [
@@ -134,7 +115,7 @@ class _Acknowlegder:
             _remove_auto_suppressions_from_file(file)
 
             # re-apply suppressions on correct lines
-            current_lint_errors = self.get_lint_errors(file)
+            current_lint_errors = self.get_lint_errors([file])
             _suppress_errors_in_file(file, current_lint_errors, encoding=self._encoding)
 
             # format - are we done?
@@ -159,7 +140,7 @@ def acknowledge_lint_errors(
         extend_ignore,
         [pathlib.Path(file_or_dir_) for file_or_dir_ in file_or_dir or "."],
     )
-    lint_errors_to_process = acknowlegder.get_lint_errors()
+    lint_errors_to_process = acknowlegder.get_lint_errors([pathlib.Path(file_or_dir_) for file_or_dir_ in file_or_dir or "."],)
 
     lint_errors_by_file = defaultdict(list)
     for error in lint_errors_to_process:
