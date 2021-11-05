@@ -81,21 +81,6 @@ def _filter_suppresion_from_line(line: str):
         return line
 
 
-class _Acknowlegder:
-
-    # some cases are expected to take up to 4 passes, making this slightly over 2x for safety
-    MAX_FORMAT_RETRIES_LIMIT = 10
-
-    def __init__(
-        self, exclude, app_import_names, extend_ignore, cwd, encoding=DEFAULT_ENCODING
-    ) -> None:
-        self._exclude = exclude
-        self._app_import_names = app_import_names
-        self._extend_ignore = extend_ignore
-        self._cwd = cwd
-        self._encoding = encoding
-
-
 def _get_lint_errors_to_process(exclude, app_import_names, extend_ignore, file_or_dir):
     lint_errors = _lint.get_lint_output(
         format=None,
@@ -119,12 +104,6 @@ def acknowledge_lint_errors(
     Excluded error (reason):
     BLK100 - run black
     """
-    acknowlegder = _Acknowlegder(
-        exclude,
-        app_import_names,
-        extend_ignore,
-        [pathlib.Path(file_or_dir_) for file_or_dir_ in file_or_dir or "."],
-    )
     get_lint_errors_to_process__simple = functools.partial(
         _get_lint_errors_to_process, exclude, app_import_names, extend_ignore
     )  # leaving file_or_dir to get passed on demand
@@ -139,7 +118,7 @@ def acknowledge_lint_errors(
     for bad_file, errors_in_file in lint_errors_by_file.items():
         _suppress_errors_in_file(bad_file, errors_in_file, encoding=DEFAULT_ENCODING)
         if aggressive:
-            limit = 10
+            limit = 10  # some cases are expected to take up to 4 passes, making this slightly over 2x for safety
             for _ in range(limit):
                 bad_file_pth = pathlib.Path(bad_file)
                 # format the files - this may move the suppression off the correct lines
