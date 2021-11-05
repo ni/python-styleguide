@@ -127,7 +127,7 @@ def acknowledge_lint_errors(
                 )
                 _suppress_errors_in_file(bad_file, current_lint_errors, encoding=DEFAULT_ENCODING)
 
-                changed = _format.does_formatting_make_changes(bad_file)
+                changed = _format.format_check(bad_file)
                 if not changed:  # are we done?
                     break
             else:

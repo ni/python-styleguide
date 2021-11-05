@@ -24,7 +24,7 @@ def format(file_or_dir, *additional_formatter_args):
             raise
 
 
-def does_formatting_make_changes(file_or_dir):
+def format_check(file_or_dir):
     """Perform format and return True if changes were made (False otherwise)."""
     capture = StringIO()
     with contextlib.redirect_stderr(capture):
