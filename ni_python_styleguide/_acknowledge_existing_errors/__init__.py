@@ -1,12 +1,8 @@
-import contextlib
 import functools
 import logging
 import pathlib
 import re
 from collections import defaultdict
-from collections.abc import Iterable
-from io import StringIO
-from typing import Union
 
 from ni_python_styleguide import _format
 from ni_python_styleguide import _lint
@@ -22,6 +18,8 @@ DEFAULT_ENCODING = "UTF-8"
 
 
 class LimitReachedError(Exception):
+    """Iteration limited reached."""
+
     ...
 
 
@@ -116,16 +114,18 @@ def acknowledge_lint_errors(
     for error in lint_errors_to_process:
         lint_errors_by_file[pathlib.Path(error.file)].append(error)
 
-
     for bad_file, errors_in_file in lint_errors_by_file.items():
         _suppress_errors_in_file(bad_file, errors_in_file, encoding=DEFAULT_ENCODING)
 
         if aggressive:
-            per_file_format_iteration_limit = 10 # some cases are expected to take up to 4 passes, making this slightly over 2x for safety
+            # some cases are expected to take up to 4 passes, making this 2x rounded
+            per_file_format_iteration_limit = 10
             for _ in range(per_file_format_iteration_limit):
                 # format the files - this may move the suppression off the correct lines
-                #  Note: due to Github pycodestyle#868, we have to format, change, format (check if that made changes)
-                #    else we wind up with lambda's going un-suppressed and/or not re-formatted (to fail later)
+                #  Note: due to Github pycodestyle#868, we have to format, change, format
+                #   (check if that time made changes)
+                # -  else we wind up with lambda's going un-suppressed
+                # and/or not re-formatted (to fail later)
                 _format.format(bad_file)
 
                 # re-apply suppressions on correct lines
@@ -134,7 +134,7 @@ def acknowledge_lint_errors(
                 _suppress_errors_in_file(bad_file, current_lint_errors, encoding=DEFAULT_ENCODING)
 
                 changed = _format.does_formatting_make_changes(bad_file)
-                if not changed: # are we done?
+                if not changed:  # are we done?
                     break
             else:
                 raise LimitReachedError(

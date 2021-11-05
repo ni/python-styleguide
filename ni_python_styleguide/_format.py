@@ -1,6 +1,6 @@
 """Linting methods."""
-from io import StringIO
 import contextlib
+from io import StringIO
 
 import black
 
@@ -25,6 +25,7 @@ def format(file_or_dir, *additional_formatter_args):
 
 
 def does_formatting_make_changes(file_or_dir):
+    """Perform format and return True if changes were made (False otherwise)."""
     capture = StringIO()
     with contextlib.redirect_stderr(capture):
         format(file_or_dir)
