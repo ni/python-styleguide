@@ -123,36 +123,25 @@ class _Acknowlegder:
         return lint_errors_to_process
 
     def handle_lines_that_are_now_too_long(
-        self, file: pathlib.Path, limit: Union[int, None] = None
+        self, file: pathlib.Path, limit: int = 10
     ):
-        if limit is not None and limit <= 0:
-            raise _LimitReachedError()
+        for _ in range(limit):
 
-        # format the files - this may move the suppression off the correct lines
-        _format.format(file)
+            # format the files - this may move the suppression off the correct lines
+            _format.format(file)
 
-        _remove_auto_suppressions_from_file(file)
+            _remove_auto_suppressions_from_file(file)
 
-        # re-apply suppressions on correct lines
-        current_lint_errors = self.get_lint_errors(file)
-        _suppress_errors_in_file(file, current_lint_errors, encoding=self._encoding)
+            # re-apply suppressions on correct lines
+            current_lint_errors = self.get_lint_errors(file)
+            _suppress_errors_in_file(file, current_lint_errors, encoding=self._encoding)
 
-        # format - are we done?
-        changed = _format.does_formatting_make_changes(file)
-        if changed:
-            try:
-                limit_ = limit
-                if limit is None:
-                    limit_ = _Acknowlegder.MAX_FORMAT_RETRIES_LIMIT
-
-                self.handle_lines_that_are_now_too_long(file, limit=limit_ - 1)
-            except _LimitReachedError:
-                if limit is None:
-                    MODULE_LOGGER.warning(
-                        "Could not handle suppressions/formatting of file %s after maximum number of tries",
-                        file,
-                    )
-                raise
+            # format - are we done?
+            changed = _format.does_formatting_make_changes(file)
+            if not changed:
+                break
+        else:
+            raise _LimitReachedError(f"Could not handle suppressions/formatting of file {file} after maximum number of tries ({limit})")
 
 
 def acknowledge_lint_errors(
