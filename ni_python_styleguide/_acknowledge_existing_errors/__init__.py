@@ -1,4 +1,5 @@
 import contextlib
+import functools
 import logging
 import pathlib
 import re
@@ -95,16 +96,19 @@ class _Acknowlegder:
         self._encoding = encoding
 
 
-    def get_lint_errors(self, file_or_dir):
-        lint_errors = _lint.get_lint_output(qs_or_vs=None, exclude=self._exclude, app_import_names=self._app_import_names, extend_ignore=self._extend_ignore, format=None, file_or_dir=file_or_dir).splitlines()
-        parsed_errors = map(_lint_errors_parser.parse, lint_errors)
-        parsed_errors = filter(None, parsed_errors)
-        lint_errors_to_process = [
-            error for error in parsed_errors if error.code not in EXCLUDED_ERRORS
-        ]
-        return lint_errors_to_process
-
-
+def _get_lint_errors_to_process(exclude, app_import_names, extend_ignore, file_or_dir):
+    lint_errors = _lint.get_lint_output(
+        format=None,
+        qs_or_vs=None,
+        exclude=exclude,
+        app_import_names=app_import_names,
+        extend_ignore=extend_ignore,
+        file_or_dir=file_or_dir,
+    ).splitlines()
+    parsed_errors = map(_lint_errors_parser.parse, lint_errors)
+    parsed_errors = filter(None, parsed_errors)
+    lint_errors_to_process = [error for error in parsed_errors if error.code not in EXCLUDED_ERRORS]
+    return lint_errors_to_process
 
 
 def acknowledge_lint_errors(
@@ -121,7 +125,12 @@ def acknowledge_lint_errors(
         extend_ignore,
         [pathlib.Path(file_or_dir_) for file_or_dir_ in file_or_dir or "."],
     )
-    lint_errors_to_process = acknowlegder.get_lint_errors([pathlib.Path(file_or_dir_) for file_or_dir_ in file_or_dir or "."],)
+    get_lint_errors_to_process__simple = functools.partial(
+        _get_lint_errors_to_process, exclude, app_import_names, extend_ignore
+    )  # leaving file_or_dir to get passed on demand
+    lint_errors_to_process = get_lint_errors_to_process__simple(
+        [pathlib.Path(file_or_dir_) for file_or_dir_ in file_or_dir or "."],
+    )
 
     lint_errors_by_file = defaultdict(list)
     for error in lint_errors_to_process:
@@ -139,7 +148,7 @@ def acknowledge_lint_errors(
                 _remove_auto_suppressions_from_file(bad_file_pth)
 
                 # re-apply suppressions on correct lines
-                current_lint_errors = acknowlegder.get_lint_errors([bad_file_pth])
+                current_lint_errors = get_lint_errors_to_process__simple([bad_file_pth])
                 _suppress_errors_in_file(bad_file, current_lint_errors, encoding=DEFAULT_ENCODING)
 
                 # format - are we done?
