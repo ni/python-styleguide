@@ -1,4 +1,3 @@
-import functools
 import logging
 import pathlib
 import re
@@ -15,12 +14,6 @@ EXCLUDED_ERRORS = {
 }
 
 DEFAULT_ENCODING = "UTF-8"
-
-
-class LimitReachedError(Exception):
-    """Iteration limited reached."""
-
-    ...
 
 
 class _InMultiLineStringChecker:
@@ -102,11 +95,10 @@ def acknowledge_lint_errors(
     Excluded error (reason):
     BLK100 - run black
     """
-    get_lint_errors_to_process__simple = functools.partial(
-        _get_lint_errors_to_process, exclude, app_import_names, extend_ignore
-    )  # leaving file_or_dir to get passed on demand
-
-    lint_errors_to_process = get_lint_errors_to_process__simple(
+    lint_errors_to_process = _get_lint_errors_to_process(
+        exclude,
+        app_import_names,
+        extend_ignore,
         [pathlib.Path(file_or_dir_) for file_or_dir_ in file_or_dir or "."],
     )
 
@@ -130,14 +122,16 @@ def acknowledge_lint_errors(
 
                 # re-apply suppressions on correct lines
                 _remove_auto_suppressions_from_file(bad_file)
-                current_lint_errors = get_lint_errors_to_process__simple([bad_file])
+                current_lint_errors = _get_lint_errors_to_process(
+                    exclude, app_import_names, extend_ignore, [bad_file]
+                )
                 _suppress_errors_in_file(bad_file, current_lint_errors, encoding=DEFAULT_ENCODING)
 
                 changed = _format.does_formatting_make_changes(bad_file)
                 if not changed:  # are we done?
                     break
             else:
-                raise LimitReachedError(
+                raise RuntimeError(
                     f"Could not handle suppressions/formatting of file {bad_file} after maximum number of tries ({per_file_format_iteration_limit})"
                 )
 
