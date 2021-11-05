@@ -67,7 +67,8 @@ def _add_noqa_to_line(lineno, code_lines, error_code, explanation):
     line = line.rstrip("\n")
 
     if f"noqa {error_code}" not in line:
-        line += f"  # noqa {error_code}: {explanation} (auto-generated noqa)"
+        prefix = "  " if line.strip() else ""
+        line += f"{prefix}# noqa {error_code}: {explanation} (auto-generated noqa)"
 
     code_lines[lineno] = line + old_line_ending
 
