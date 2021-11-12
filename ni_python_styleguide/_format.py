@@ -8,7 +8,7 @@ from ni_python_styleguide import _config_constants
 
 
 def format(file_or_dir, *additional_formatter_args):
-    """"Format the specified file or directory using the builtin config."""
+    """Format the specified file or directory using the builtin config."""
     try:
         black.main(
             [
