@@ -148,7 +148,7 @@ def _suppress_errors_in_file(bad_file, errors_in_file, encoding):
     # sometimes errors are reported on line 1 for empty files.
     # to make suppressions work for those cases, add an empty line.
     if len(lines) == 0:
-        lines = [""]
+        lines = ["\n"]
     multiline_checker = _InMultiLineStringChecker(error_file=bad_file)
 
     # to avoid double marking a line with the same code, keep track of lines and codes
