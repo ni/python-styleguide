@@ -12,7 +12,7 @@ license = "MIT"
 include = ["ni_python_styleguide/config.toml"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = ">=3.6.2"
 
 # Tools we aggregate
 flake8 = "^3.8.3"
