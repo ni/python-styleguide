@@ -7,7 +7,7 @@ from ni_python_styleguide import _format
 from ni_python_styleguide import _lint
 from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
 
-MODULE_LOGGER = logging.getLogger(__name__)
+_module_logger = logging.getLogger(__name__)
 
 EXCLUDED_ERRORS = {
     "BLK100",
@@ -164,7 +164,7 @@ def _suppress_errors_in_file(bad_file, errors_in_file, encoding):
 
         cached_key = f"{error.file}:{error.line + skip}"
         if error.code in handled_lines[cached_key]:
-            MODULE_LOGGER.warning(
+            _module_logger.warning(
                 "Multiple occurrences of error %s code were logged for %s:%s, only supressing first",
                 error.code,
                 error.file,
