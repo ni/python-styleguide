@@ -340,6 +340,20 @@ FlyingCircus_contra = TypeVar("FlyingCircus_contra", contravariant=True)
 
 ℹ️ This invokes Python's name mangling which does have well-known, yet unintended side-effects. See [the docs](https://docs.python.org/3.6/tutorial/classes.html#private-variables)
 
+### [N.2.12] ✔️ **DO** Name global *mutable* objects as global variables (i.e., use `snake_case`)
+
+ℹ️ While it can be argued that a global reference that should not be re-assigned is a CONST, we chose to acknowledge that global *mutable* objects are variables whose behavior may change without getting re-assigned.
+
+```python
+# Bad
+CHEESE_LOGGER = logging.getLogger("Cheese")
+```
+
+```python
+# Good
+_logger = logging.getLogger("Cheese")
+```
+
 ---
 
 # [L] Language Features
