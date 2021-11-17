@@ -107,6 +107,7 @@ def acknowledge_lint_errors(
     for error in lint_errors_to_process:
         lint_errors_by_file[pathlib.Path(error.file)].append(error)
 
+    failed_files = []
     for bad_file, errors_in_file in lint_errors_by_file.items():
         _module_logger.warn("Acknowledging violations in %s", bad_file)
         _suppress_errors_in_file(bad_file, errors_in_file, encoding=DEFAULT_ENCODING)
@@ -133,9 +134,12 @@ def acknowledge_lint_errors(
                 if not changed:  # are we done?
                     break
             else:
-                raise RuntimeError(
+                failed_files.append(
                     f"Could not handle suppressions/formatting of file {bad_file} after maximum number of tries ({per_file_format_iteration_limit})"
                 )
+                _module_logger.warning("Max tries reached on %s", bad_file)
+    if failed_files:
+        raise RuntimeError("Could not handle some files:\n" + "\n\n".join(failed_files) + "\n\n\n")
 
 
 def _remove_auto_suppressions_from_file(file):
