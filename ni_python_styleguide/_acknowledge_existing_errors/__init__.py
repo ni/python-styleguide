@@ -101,7 +101,6 @@ def acknowledge_lint_errors(
         extend_ignore,
         [pathlib.Path(file_or_dir_) for file_or_dir_ in file_or_dir or "."],
     )
-    _module_logger.warn("Processing %d violations", len(lint_errors_to_process))
 
     lint_errors_by_file = defaultdict(list)
     for error in lint_errors_to_process:
@@ -109,7 +108,6 @@ def acknowledge_lint_errors(
 
     failed_files = []
     for bad_file, errors_in_file in lint_errors_by_file.items():
-        _module_logger.warn("Acknowledging violations in %s", bad_file)
         _suppress_errors_in_file(bad_file, errors_in_file, encoding=DEFAULT_ENCODING)
 
         if aggressive:
