@@ -16,6 +16,7 @@ EXAMPLE_LINT_ERROR_LINES = [  # noqa W505
     r".\source\lorem.py:33:12: E713 test for membership should be 'not in'",
     r".\source\lorem.py:43:5: F811 redefinition of unused 'argparse' from line 7",
     r".\source\lorem.py:169:30: F821 undefined name 'option_values'",
+    r".\source\lorem-name_with_other_valid_chars_in_it.py:169:30: F821 undefined name 'option_values'",
     r".\source\lorem.py:33:9: F402 import 'entry' from line 8 shadowed by loop variable",
     r".\source\lorem.py:157:9: E722 do not use bare 'except'",
     r".\source\lorem.py:6:1: F403 'from ipsum import *' used; unable to detect undefined names",

@@ -12,3 +12,7 @@ class Foo:
     def problem_chars(self):
         """Return stored string with a unicode char."""
         return self._problem_chars
+
+def method_withBadName_andParams(my_normal_param, myBadlyNamedParam, my_other_Bad_param):
+    """Provide example where black will want to split out result."""
+    return 5 + 7
