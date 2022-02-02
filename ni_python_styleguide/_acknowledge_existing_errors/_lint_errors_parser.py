@@ -29,7 +29,7 @@ class Parser:
     """Lint errors parser."""
 
     __MATCHER = re.compile(
-        r"^(?P<file>[\w\\/\.]+):(?P<line>\d+):(?P<column>\d+): (?P<code>\w+) (?P<explanation>.+)"
+        r"^(?P<file>[\w\\/\.\-]+):(?P<line>\d+):(?P<column>\d+): (?P<code>\w+) (?P<explanation>.+)"
     )
 
     @staticmethod

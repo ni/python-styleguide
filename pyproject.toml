@@ -3,7 +3,7 @@ name = "ni-python-styleguide"
 # The -alpha.0 here denotes a source based version
 # This is removed when released through the Publish-Package.yml GitHub action
 # Official PyPI releases follow Major.Minor.Patch
-version = "0.1.6-alpha.0"
+version = "0.1.10-alpha.0"
 description = "NI's internal and external Python linter rules and plugins"
 authors = ["NI <opensource@ni.com>"]
 readme = "README.md" # apply the repo readme to the package as well
@@ -12,11 +12,11 @@ license = "MIT"
 include = ["ni_python_styleguide/config.toml"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = ">=3.6.2"
 
 # Tools we aggregate
 flake8 = "^3.8.3"
-black = "^20.8b1"
+black = "^21.10b0"
 
 # Additional support libraries
 # These dependencies were selected because they are already used by black.
@@ -38,8 +38,8 @@ pep8-naming = "^0.11.1"
 [tool.poetry.dev-dependencies]
 pytest = "^6.0.1"
 pytest_click = "^1.0.2"
-black = "^20.8b1"
-pytest-snapshot = "^0.4.2"
+black = "^21.10b0"
+pytest-snapshot = ">=0.6.3"
 
 [tool.poetry.scripts]
 ni-python-styleguide = 'ni_python_styleguide._cli:main'
@@ -53,7 +53,7 @@ exclude = '''
     | \.git          # root of the project
     | \.venv
   )/
-  | /.*__snapshots/.*output\.py # exclude the snapshot outputs
+  | /.*__snapshots/.*output\.py # exclude the simple snapshot outputs
 )
 '''
 
