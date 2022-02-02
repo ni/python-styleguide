@@ -15,19 +15,19 @@ include = ["ni_python_styleguide/config.toml"]
 python = ">=3.6.2"
 
 # Tools we aggregate
-flake8 = "^3.8.3"
-black = "^21.10b0"
+flake8 = "^3.8"  # flake8 4.x broke the test
+black = ">=21.10b0"
 
 # Additional support libraries
 # These dependencies were selected because they are already used by black.
-click = "^7.1.2"
-toml = "^0.10.1"
+click = ">=7.1.2"
+toml = ">=0.10.1"
 
 # flake8 plugins should be listed here (in alphabetical order)
-flake8-black = "^0.2.1"
-flake8-docstrings = "^1.5.0"
-flake8-import-order = "^0.18.1"
-pep8-naming = "^0.11.1"
+flake8-black = ">=0.2.1"
+flake8-docstrings = ">=1.5.0"
+flake8-import-order = ">=0.18.1"
+pep8-naming = ">=0.11.1"
 
 # Rejected flake8 plugins should be listed here (in alphabetical order)
 # Also describe why it is rejected and/or add a link
@@ -36,9 +36,8 @@ pep8-naming = "^0.11.1"
 # hacking: Most rules are either covered by other plugins or would be turned off.
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.0.1"
-pytest_click = "^1.0.2"
-black = "^21.10b0"
+pytest = ">=6.0.1"
+pytest_click = ">=1.0.2"
 pytest-snapshot = ">=0.6.3"
 
 [tool.poetry.scripts]
