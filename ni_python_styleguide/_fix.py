@@ -22,8 +22,7 @@ def _split_imports_line(lines: str, *_, **__):
 
     >>> _split_imports_line("from ni_python_styleguide import"
     ... " _acknowledge_existing_errors, _format")
-    'from ni_python_styleguide import _acknowledge_existing_errors\n"
-    ... "from ni_python_styleguide import _format\n'
+    'from ni_python_styleguide import _acknowledge_existing_errors\nfrom ni_python_styleguide import _format\n'
 
     >>> _split_imports_line("from ni_python_styleguide import _acknowledge_existing_errors")
     'from ni_python_styleguide import _acknowledge_existing_errors\n'
@@ -33,9 +32,12 @@ def _split_imports_line(lines: str, *_, **__):
 
     >>> _split_imports_line("import os, collections\nimport pathlib, os")
     'import os\nimport collections\nimport pathlib\nimport os\n'
-    """
+
+    >>> _split_imports_line("\n")
+    '\n'
+    """  # noqa W505: long lines...
     result_parts = []
-    for line in lines.splitlines():
+    for line in lines.splitlines(keepends=True):
         first, _, rest = line.partition(",")
         if not rest or "import" not in line:
             result_parts.append(line)
@@ -44,8 +46,8 @@ def _split_imports_line(lines: str, *_, **__):
         split_up = [first] + rest.split(",")
         result_parts.extend([prefix + " " + part.strip() for part in split_up])
     result = "\n".join(result_parts)
-    if result:
-        return result + "\n"
+    if result.strip():
+        return result.rstrip() + "\n"
     return result
 
 
