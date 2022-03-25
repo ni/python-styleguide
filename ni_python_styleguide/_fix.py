@@ -4,10 +4,10 @@ import pathlib
 from collections import defaultdict
 from typing import Iterable, List
 
+import ni_python_styleguide._utils
 from ni_python_styleguide import _acknowledge_existing_errors, _format
 from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
 
-# from ni_python_styleguide import _git_utils
 
 _module_logger = logging.getLogger(__name__)
 
@@ -21,8 +21,10 @@ def _split_imports_line(lines: str, *_, **__):
     >>> _split_imports_line("import os\n")
     'import os\n'
 
-    >>> _split_imports_line("from ni_python_styleguide import _acknowledge_existing_errors, _format")
-    'from ni_python_styleguide import _acknowledge_existing_errors\nfrom ni_python_styleguide import _format\n'
+    >>> _split_imports_line("from ni_python_styleguide import"
+    ... " _acknowledge_existing_errors, _format")
+    'from ni_python_styleguide import _acknowledge_existing_errors\n"
+    ... "from ni_python_styleguide import _format\n'
 
     >>> _split_imports_line("from ni_python_styleguide import _acknowledge_existing_errors")
     'from ni_python_styleguide import _acknowledge_existing_errors\n'
@@ -114,13 +116,13 @@ def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=Fa
                             ),
                         ]
                     ):
-                        print(line)
+                        print(line, end="")
                         continue
 
                     working_line = line
                     for handler in [_split_imports_line, _remove_unused_non_fist_party_imports]:
                         working_line = handler(working_line)
-                    print(working_line, end='')
+                    print(working_line, end="")
             _format.format(bad_file)
         except AttributeError as e:
             failed_files.append((bad_file, e))
