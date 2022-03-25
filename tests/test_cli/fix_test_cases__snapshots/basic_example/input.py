@@ -1,3 +1,4 @@
+"""Provide example cases of imports that need sorting and a file that needs formatted."""
 from typing import Iterable, List, Hashable
 from os import path, access
 
@@ -7,6 +8,7 @@ class Foo(object):  # comment should get moved
     i = 1
 
     def __init__(self, o: Iterable[int]) -> None:
+        """Test class."""
         this_method = 1
 
         serperator = path.sep
