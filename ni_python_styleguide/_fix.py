@@ -4,7 +4,6 @@ import pathlib
 from collections import defaultdict
 from typing import Iterable, List
 
-import ni_python_styleguide._utils
 from ni_python_styleguide import _acknowledge_existing_errors, _format
 from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
 

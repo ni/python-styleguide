@@ -4,7 +4,9 @@ import re
 from collections import defaultdict
 
 from ni_python_styleguide import _format
+from ni_python_styleguide import _lint
 from ni_python_styleguide import _utils
+from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
 
 _module_logger = logging.getLogger(__name__)
 
@@ -92,6 +94,9 @@ def acknowledge_lint_errors(
                 current_lint_errors = _get_lint_errors_to_process(
                     exclude, app_import_names, extend_ignore, [bad_file]
                 )
+                _suppress_errors_in_file(
+                    bad_file, current_lint_errors, encoding=_utils.DEFAULT_ENCODING
+                )
 
                 changed = _format.format_check(bad_file)
                 if not changed:  # are we done?
@@ -107,7 +112,7 @@ def acknowledge_lint_errors(
 
 def remove_auto_suppressions_from_file(file: pathlib.Path):
     """Remove auto-suppressions from file."""
-    lines = file.read_text(encoding=DEFAULT_ENCODING).splitlines()
+    lines = file.read_text(encoding=_utils.DEFAULT_ENCODING).splitlines()
     stripped_lines = [_filter_suppresion_from_line(line) for line in lines]
     file.write_text("\n".join(stripped_lines) + "\n", encoding=_utils.DEFAULT_ENCODING)
 

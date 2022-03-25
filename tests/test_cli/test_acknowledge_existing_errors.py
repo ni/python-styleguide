@@ -10,6 +10,7 @@ TEST_CASE_DIR = (
 )
 
 
+
 @pytest.mark.parametrize("test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()])
 def test_given_bad_input_produces_expected_output_simple(
     test_dir, snapshot, tmp_path, styleguide_command
