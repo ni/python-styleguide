@@ -66,7 +66,7 @@ def _split_imports(file: pathlib.Path, offending_lines: Iterable[int]):
 
 def _sort_imports(file: pathlib.Path):
     raw = file.read_text()
-    output = isort.code(raw, multi_line_output =3, line_length=1)
+    output = isort.code(raw, multi_line_output=3, line_length=1)
     file.write_text(output)
 
 
@@ -120,12 +120,14 @@ def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=Fa
             _format.format(bad_file)
             _handle_multiple_import_lines(bad_file, line_to_codes_mapping)
             _format.format(bad_file)
-            remaining_lint_errors_in_file = _acknowledge_existing_errors._get_lint_errors_to_process(
-                exclude,
-                app_import_names,
-                extend_ignore,
-                [bad_file],
-                excluded_errors=[],  # we fix black errors, so we don't need to filter it.
+            remaining_lint_errors_in_file = (
+                _acknowledge_existing_errors._get_lint_errors_to_process(
+                    exclude,
+                    app_import_names,
+                    extend_ignore,
+                    [bad_file],
+                    excluded_errors=[],  # we fix black errors, so we don't need to filter it.
+                )
             )
         except AttributeError as e:
             failed_files.append((bad_file, e))
