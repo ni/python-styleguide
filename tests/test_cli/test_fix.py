@@ -5,8 +5,6 @@ import shutil
 
 import pytest
 
-from ni_python_styleguide import _fix
-
 
 TEST_CASE_DIR = pathlib.Path(__file__).parent.absolute() / "fix_test_cases__snapshots"
 
