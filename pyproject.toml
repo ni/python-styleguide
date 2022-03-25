@@ -26,6 +26,7 @@ GitPython = [
   {version=">=3.1", python=">=3.7"},
   {version="<=3.0", python=">=3.6,<3.7"}
 ]
+gitdb2 = {version="^2.0.0", python=">=3.6,<3.7"} # for py 3.6, pin this down
 
 # flake8 plugins should be listed here (in alphabetical order)
 flake8-black = ">=0.2.1"
@@ -61,8 +62,8 @@ exclude = '''
 '''
 
 [tool.pytest.ini_options]
-addopts = "--doctest-modules"
-norecursedirs = "*__snapshots"
+# addopts = "--doctest-modules"
+# norecursedirs = "*__snapshots"
 
 [tool.ni-python-styleguide]
 extend_exclude = "*__snapshots/*/*input.py"
