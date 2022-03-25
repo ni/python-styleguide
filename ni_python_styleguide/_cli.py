@@ -1,5 +1,6 @@
-import click
 import pathlib
+
+import click
 import toml
 
 from ni_python_styleguide import _acknowledge_existing_errors
