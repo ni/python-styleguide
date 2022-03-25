@@ -1,3 +1,4 @@
+"""Test the _utils submodule."""
 import pytest
 
 from ni_python_styleguide import _utils
