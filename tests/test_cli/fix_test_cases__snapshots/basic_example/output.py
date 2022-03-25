@@ -14,7 +14,7 @@ class Foo(object):  # comment should get moved
         """Test class."""
         this_method = 1
 
-        serperator = path.sep
+        seperator = path.sep
 
         has_a_lot_of_empty_lines = 2
         pass
