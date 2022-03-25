@@ -1,9 +1,12 @@
 """Provide example cases of imports that need sorting and a file that needs formatted."""
+import pathlib
+from os import access
+from os import path
+from typing import Hashable
 from typing import Iterable
 from typing import List
-from typing import Hashable
-from os import path
-from os import access
+
+import pytest
 
 
 class Foo(object):  # comment should get moved
