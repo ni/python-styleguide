@@ -1,6 +1,6 @@
 import fnmatch
-import pathlib
 import os
+import pathlib
 
 from git import repo
 
