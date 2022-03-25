@@ -32,6 +32,25 @@ def _filter_suppresion_from_line(line: str):
         return line
 
 
+def _get_lint_errors_to_process(
+    exclude, app_import_names, extend_ignore, file_or_dir, *_, excluded_errors=None
+):
+    lint_errors = _lint.get_lint_output(
+        format=None,
+        qs_or_vs=None,
+        exclude=exclude,
+        app_import_names=app_import_names,
+        extend_ignore=extend_ignore,
+        file_or_dir=file_or_dir,
+    ).splitlines()
+    parsed_errors = map(_lint_errors_parser.parse, lint_errors)
+    parsed_errors = list(filter(None, parsed_errors))
+    if excluded_errors is None:
+        excluded_errors = EXCLUDED_ERRORS
+    lint_errors_to_process = [error for error in parsed_errors if error.code not in excluded_errors]
+    return lint_errors_to_process
+
+
 def acknowledge_lint_errors(
     exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=False
 ):
@@ -70,16 +89,8 @@ def acknowledge_lint_errors(
 
                 # re-apply suppressions on correct lines
                 remove_auto_suppressions_from_file(bad_file)
-                current_lint_errors = _utils.lint.get_errors_to_process(
-                    exclude=exclude,
-                    app_import_names=app_import_names,
-                    extend_ignore=extend_ignore,
-                    file_or_dir=file_or_dir,
-                    excluded_errors=EXCLUDED_ERRORS,
-                )
-
-                _suppress_errors_in_file(
-                    bad_file, current_lint_errors, encoding=_utils.DEFAULT_ENCODING
+                current_lint_errors = _get_lint_errors_to_process(
+                    exclude, app_import_names, extend_ignore, [bad_file]
                 )
 
                 changed = _format.format_check(bad_file)
@@ -96,7 +107,7 @@ def acknowledge_lint_errors(
 
 def remove_auto_suppressions_from_file(file: pathlib.Path):
     """Remove auto-suppressions from file."""
-    lines = file.read_text(encoding=_utils.DEFAULT_ENCODING).splitlines()
+    lines = file.read_text(encoding=DEFAULT_ENCODING).splitlines()
     stripped_lines = [_filter_suppresion_from_line(line) for line in lines]
     file.write_text("\n".join(stripped_lines) + "\n", encoding=_utils.DEFAULT_ENCODING)
 
