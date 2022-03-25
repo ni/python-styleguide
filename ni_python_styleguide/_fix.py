@@ -4,6 +4,8 @@ import pathlib
 from collections import defaultdict
 from typing import Iterable, List
 
+import isort
+
 from ni_python_styleguide import _acknowledge_existing_errors, _format
 from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
 
@@ -63,7 +65,9 @@ def _split_imports(file: pathlib.Path, offending_lines: Iterable[int]):
 
 
 def _sort_imports(file: pathlib.Path):
-    pass
+    raw = file.read_text()
+    output = isort.code(raw, multi_line_output =3, line_length=1)
+    file.write_text(output)
 
 
 def _remove_unused_non_fist_party_imports(lines: str, *_, **__):
@@ -112,7 +116,7 @@ def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=Fa
                 # humans talk 1-based, enumerate is 0-based
                 line_to_codes_mapping[int(error.line) - 1].add(error.code)
             # in_memory_file = deque(bad_file.read_text().splitlines())
-           
+            _sort_imports(bad_file)
             _format.format(bad_file)
             _handle_multiple_import_lines(bad_file, line_to_codes_mapping)
             _format.format(bad_file)
