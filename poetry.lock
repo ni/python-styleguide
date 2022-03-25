@@ -73,6 +73,14 @@ optional = false
 python-versions = ">=3.6, <3.7"
 
 [[package]]
+name = "ddt"
+version = "1.4.4"
+description = "Data-Driven/Decorated Tests"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "flake8"
 version = "3.9.2"
 description = "the modular source code checker: pep8 pyflakes and co"
@@ -132,6 +140,53 @@ python-versions = "*"
 
 [package.dependencies]
 flake8 = "*"
+
+[[package]]
+name = "gitdb"
+version = "4.0.9"
+description = "Git Object Database"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+smmap = ">=3.0.1,<6"
+
+[[package]]
+name = "gitdb2"
+version = "4.0.2"
+description = "A mirror package for gitdb"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+gitdb = ">=4.0.1"
+
+[[package]]
+name = "gitpython"
+version = "3.0.0"
+description = "Python Git Library"
+category = "main"
+optional = false
+python-versions = ">=3.0, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[package.dependencies]
+ddt = ">=1.1.1"
+gitdb = ">=0.6.4"
+gitdb2 = ">=2.0.0"
+
+[[package]]
+name = "gitpython"
+version = "3.1.27"
+description = "GitPython is a python library used to interact with Git repositories"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+gitdb = ">=4.0.1,<5"
+typing-extensions = {version = ">=3.7.4.3", markers = "python_version < \"3.8\""}
 
 [[package]]
 name = "importlib-metadata"
@@ -327,6 +382,14 @@ python-versions = ">=3.5"
 pytest = ">=3.0.0"
 
 [[package]]
+name = "smmap"
+version = "5.0.0"
+description = "A pure Python implementation of a sliding window memory map manager"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "snowballstemmer"
 version = "2.2.0"
 description = "This package provides 29 stemmers for 28 languages generated from Snowball algorithms."
@@ -381,7 +444,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.6.2"
-content-hash = "137b130c84cdc39d2856217674905ddb4185a179303d7b9e358bd1c71bfc868b"
+content-hash = "9e96bdd7ab8525079bd8453f4dff4db0b5b82004268a24ee9ff844f8482220de"
 
 [metadata.files]
 atomicwrites = [
@@ -429,6 +492,10 @@ dataclasses = [
     {file = "dataclasses-0.8-py3-none-any.whl", hash = "sha256:0201d89fa866f68c8ebd9d08ee6ff50c0b255f8ec63a71c16fda7af82bb887bf"},
     {file = "dataclasses-0.8.tar.gz", hash = "sha256:8479067f342acf957dc82ec415d355ab5edb7e7646b90dc6e2fd1d96ad084c97"},
 ]
+ddt = [
+    {file = "ddt-1.4.4-py2.py3-none-any.whl", hash = "sha256:439f163a149d47761bcb11fefdd7327c7bc9262fa1c53f5929f643a6faa6d454"},
+    {file = "ddt-1.4.4.tar.gz", hash = "sha256:8de39a69730442dc835e4d33f9d2e33043ff91151c8d18086959ee556febb9f8"},
+]
 flake8 = [
     {file = "flake8-3.9.2-py2.py3-none-any.whl", hash = "sha256:bf8fd333346d844f616e8d47905ef3a3384edae6b4e9beb0c5101e25e3110907"},
     {file = "flake8-3.9.2.tar.gz", hash = "sha256:07528381786f2a6237b061f6e96610a4167b226cb926e2aa2b6b1d78057c576b"},
@@ -448,6 +515,20 @@ flake8-import-order = [
 flake8-polyfill = [
     {file = "flake8-polyfill-1.0.2.tar.gz", hash = "sha256:e44b087597f6da52ec6393a709e7108b2905317d0c0b744cdca6208e670d8eda"},
     {file = "flake8_polyfill-1.0.2-py2.py3-none-any.whl", hash = "sha256:12be6a34ee3ab795b19ca73505e7b55826d5f6ad7230d31b18e106400169b9e9"},
+]
+gitdb = [
+    {file = "gitdb-4.0.9-py3-none-any.whl", hash = "sha256:8033ad4e853066ba6ca92050b9df2f89301b8fc8bf7e9324d412a63f8bf1a8fd"},
+    {file = "gitdb-4.0.9.tar.gz", hash = "sha256:bac2fd45c0a1c9cf619e63a90d62bdc63892ef92387424b855792a6cabe789aa"},
+]
+gitdb2 = [
+    {file = "gitdb2-4.0.2-py3-none-any.whl", hash = "sha256:a1c974e5fab8c2c90192c1367c81cbc54baec04244bda1816e9c8ab377d1cba3"},
+    {file = "gitdb2-4.0.2.tar.gz", hash = "sha256:0986cb4003de743f2b3aba4c828edd1ab58ce98e1c4a8acf72ef02760d4beb4e"},
+]
+gitpython = [
+    {file = "GitPython-3.0.0-py3-none-any.whl", hash = "sha256:556b64796c5e268b35e3b431a429e813ad54aa178e1baaec2a9ba82e8575a89e"},
+    {file = "GitPython-3.0.0.tar.gz", hash = "sha256:629867ebf609cef21bb9d849039e281e25963fb7d714a2f6bacc1ecce4800293"},
+    {file = "GitPython-3.1.27-py3-none-any.whl", hash = "sha256:5b68b000463593e05ff2b261acff0ff0972df8ab1b70d3cdbd41b546c8b8fc3d"},
+    {file = "GitPython-3.1.27.tar.gz", hash = "sha256:1c885ce809e8ba2d88a29befeb385fcea06338d3640712b59ca623c220bb5704"},
 ]
 importlib-metadata = [
     {file = "importlib_metadata-4.8.3-py3-none-any.whl", hash = "sha256:65a9576a5b2d58ca44d133c42a241905cc45e34d2c06fd5ba2bafa221e5d7b5e"},
@@ -516,6 +597,10 @@ pytest-click = [
 pytest-snapshot = [
     {file = "pytest-snapshot-0.8.0.tar.gz", hash = "sha256:cf84c88c3e0b4ae08ae797d9ccdc32715b64dd68b2da40f575db56956ed23326"},
     {file = "pytest_snapshot-0.8.0-py3-none-any.whl", hash = "sha256:cc75e1a89a394ff790a7032e4eec7cc64aee0fef4c6c11eab038c991532619e6"},
+]
+smmap = [
+    {file = "smmap-5.0.0-py3-none-any.whl", hash = "sha256:2aba19d6a040e78d8b09de5c57e96207b09ed71d8e55ce0959eeee6c8e190d94"},
+    {file = "smmap-5.0.0.tar.gz", hash = "sha256:c840e62059cd3be204b0c9c9f74be2c09d5648eddd4580d9314c3ecde0b30936"},
 ]
 snowballstemmer = [
     {file = "snowballstemmer-2.2.0-py2.py3-none-any.whl", hash = "sha256:c8e1716e83cc398ae16824e5572ae04e0d9fc2c6b985fb0f900f5f0c96ecba1a"},
