@@ -62,7 +62,7 @@ def _split_imports(file: pathlib.Path, offending_lines: Iterable[int]):
                 print(line)
 
 
-def _sort_imports():
+def _sort_imports(file: pathlib.Path):
     pass
 
 
@@ -76,6 +76,14 @@ CODE_TO_HANDLER_MAPPING = {
     "F401": _remove_unused_non_fist_party_imports,
     "E401": _split_imports,
 }
+
+
+def _handle_multiple_import_lines(bad_file, line_to_codes_mapping):
+    with fileinput.FileInput(files=[str(bad_file)], inplace=True) as f:
+        for line in f:
+            working_line = line
+            working_line = _split_imports_line(working_line)
+            print(working_line, end="")
 
 
 def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=False, diff=False):
@@ -104,27 +112,17 @@ def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=Fa
                 # humans talk 1-based, enumerate is 0-based
                 line_to_codes_mapping[int(error.line) - 1].add(error.code)
             # in_memory_file = deque(bad_file.read_text().splitlines())
-            with fileinput.FileInput(files=[str(bad_file)], inplace=True) as f:
-                for line_no, line in enumerate(f):
-                    if not any(
-                        [
-                            line_no in line_to_codes_mapping,
-                            any(
-                                [
-                                    code in CODE_TO_HANDLER_MAPPING
-                                    for code in line_to_codes_mapping.get(line_no, [])
-                                ]
-                            ),
-                        ]
-                    ):
-                        print(line, end="")
-                        continue
-
-                    working_line = line
-                    for handler in [_split_imports_line, _remove_unused_non_fist_party_imports]:
-                        working_line = handler(working_line)
-                    print(working_line, end="")
+           
             _format.format(bad_file)
+            _handle_multiple_import_lines(bad_file, line_to_codes_mapping)
+            _format.format(bad_file)
+            remaining_lint_errors_in_file = _acknowledge_existing_errors._get_lint_errors_to_process(
+                exclude,
+                app_import_names,
+                extend_ignore,
+                [bad_file],
+                excluded_errors=[],  # we fix black errors, so we don't need to filter it.
+            )
         except AttributeError as e:
             failed_files.append((bad_file, e))
     if failed_files:
