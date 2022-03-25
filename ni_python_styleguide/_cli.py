@@ -1,7 +1,9 @@
 import click
+import pathlib
 import toml
 
 from ni_python_styleguide import _acknowledge_existing_errors
+from ni_python_styleguide import _fix
 from ni_python_styleguide import _lint
 
 
@@ -156,5 +158,29 @@ def acknowledge_existing_violations(obj, extend_ignore, file_or_dir, aggressive)
         app_import_names=obj["APP_IMPORT_NAMES"],
         extend_ignore=extend_ignore,
         file_or_dir=file_or_dir,
+        aggressive=aggressive,
+    )
+
+
+@main.command()
+@click.option(
+    "--extend-ignore",
+    type=str,
+    help="Comma-separated list of errors and warnings to ignore (or skip)",
+)
+@click.argument("file_or_dir", nargs=-1)
+@click.option(
+    "--aggressive",
+    is_flag=True,
+    help="Remove any existing suppressions, fix what can be fixed, and suppress remaining.",
+)
+@click.pass_obj
+def fix(obj, extend_ignore, file_or_dir, aggressive):
+    """Fix basic linter/formatting errors in file(s)/directory(s) given."""  # noqa: D4
+    _fix.fix(
+        exclude=obj["EXCLUDE"],
+        app_import_names=obj["APP_IMPORT_NAMES"],
+        extend_ignore=extend_ignore,
+        file_or_dir=file_or_dir or [pathlib.Path.cwd()],
         aggressive=aggressive,
     )
