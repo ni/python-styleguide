@@ -70,19 +70,7 @@ def _sort_imports(file: pathlib.Path):
     file.write_text(output)
 
 
-def _remove_unused_non_fist_party_imports(lines: str, *_, **__):
-    return lines
-
-
-CODE_TO_HANDLER_MAPPING = {
-    "I100": _sort_imports,
-    "I201": _sort_imports,
-    "F401": _remove_unused_non_fist_party_imports,
-    "E401": _split_imports,
-}
-
-
-def _handle_multiple_import_lines(bad_file, line_to_codes_mapping):
+def _handle_multiple_import_lines(bad_file):
     with fileinput.FileInput(files=[str(bad_file)], inplace=True) as f:
         for line in f:
             working_line = line
@@ -115,10 +103,9 @@ def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=Fa
             for error in errors_in_file:
                 # humans talk 1-based, enumerate is 0-based
                 line_to_codes_mapping[int(error.line) - 1].add(error.code)
-            # in_memory_file = deque(bad_file.read_text().splitlines())
             _sort_imports(bad_file)
             _format.format(bad_file)
-            _handle_multiple_import_lines(bad_file, line_to_codes_mapping)
+            _handle_multiple_import_lines(bad_file)
             _format.format(bad_file)
             remaining_lint_errors_in_file = (
                 _acknowledge_existing_errors._get_lint_errors_to_process(
