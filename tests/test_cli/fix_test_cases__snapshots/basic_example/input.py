@@ -4,6 +4,12 @@ import pytest
 import pathlib
 from os import path, access
 
+"""
+imports in multiline strings are left alone
+>>> import foo, bar
+import beef, chicken
+"""
+
 
 class Foo(object):  # comment should get moved
     o = 5

@@ -8,6 +8,7 @@ import isort
 
 from ni_python_styleguide import _acknowledge_existing_errors, _format
 from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
+from ni_python_styleguide import _utils
 
 
 _module_logger = logging.getLogger(__name__)
@@ -70,10 +71,16 @@ def _sort_imports(file: pathlib.Path):
     file.write_text(output)
 
 
-def _handle_multiple_import_lines(bad_file):
+def _handle_multiple_import_lines(bad_file: pathlib.Path):
+    multiline_string_checker = _utils.string_helpers.InMultiLineStringChecker(
+        lines=bad_file.read_text(encoding=_utils.DEFAULT_ENCODING).splitlines()
+    )
     with fileinput.FileInput(files=[str(bad_file)], inplace=True) as f:
-        for line in f:
+        for line_no, line in enumerate(f):
             working_line = line
+            if multiline_string_checker.in_multiline_string(line_no + 1):
+                print(working_line, end="")
+                continue
             working_line = _split_imports_line(working_line)
             print(working_line, end="")
 

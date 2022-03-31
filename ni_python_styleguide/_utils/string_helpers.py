@@ -1,4 +1,5 @@
 import pathlib
+from typing import List, Optional
 
 import ni_python_styleguide._utils
 
@@ -6,11 +7,19 @@ import ni_python_styleguide._utils
 class InMultiLineStringChecker:
     """Provide utility methods to decide if line is within a multiline string."""
 
-    def __init__(self, error_file):
+    def __init__(self, error_file: Optional[str] = None, *_, lines: Optional[List[str]] = None):
         """Cache off whether each line is in a multiline string or not."""
-        self._error_file = pathlib.Path(error_file)
         self._values = []
-        self._load_lines()
+        if error_file:
+            self._error_file = pathlib.Path(error_file)
+            self._load_lines()
+        else:
+            self._error_file = None
+            if not lines:
+                raise Exception(
+                    "Error, must provide either path to `error_file` or provide `lines`"
+                )
+            self._set_lines(lines)
 
     @property
     def values(self):
@@ -25,12 +34,9 @@ class InMultiLineStringChecker:
     def _count_multiline_string_endings_in_line(line):
         return line.count('"""'), line.count("'''")
 
-    def _load_lines(self):
-        in_file = self._error_file.read_text(
-            encoding=ni_python_styleguide._utils.DEFAULT_ENCODING
-        ).splitlines()
+    def _set_lines(self, lines):
         current_count = [0, 0]
-        for line in in_file:
+        for line in lines:
             type1, type2 = InMultiLineStringChecker._count_multiline_string_endings_in_line(line)
             current_count[0] += type1
             current_count[1] += type2
@@ -45,3 +51,7 @@ class InMultiLineStringChecker:
                 any([part % 2 == 1 for part in current_count])
                 or code_part_of_line.strip().endswith("\\")
             )
+
+    def _load_lines(self):
+        in_file = self._error_file.read_text(encoding=ni_python_styleguide._utils.DEFAULT_ENCODING)
+        self._set_lines(in_file.splitlines())
