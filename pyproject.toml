@@ -64,8 +64,8 @@ exclude = '''
 '''
 
 [tool.pytest.ini_options]
-# addopts = "--doctest-modules"
-# norecursedirs = "*__snapshots"
+addopts = "--doctest-modules"
+norecursedirs = "*__snapshots"
 
 [tool.ni-python-styleguide]
 extend_exclude = "*__snapshots/*/*input.py"
