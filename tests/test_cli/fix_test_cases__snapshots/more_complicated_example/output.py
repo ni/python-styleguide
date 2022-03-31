@@ -2,14 +2,14 @@ import fileinput
 import logging
 import pathlib
 from collections import defaultdict
-from typing import Iterable, List
+from typing import Iterable
+from typing import List
 
 import isort
-
-from ni_python_styleguide import _acknowledge_existing_errors, _format
-from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
+from ni_python_styleguide import _acknowledge_existing_errors
+from ni_python_styleguide import _format
 from ni_python_styleguide import _utils
-
+from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
 
 _module_logger = logging.getLogger(__name__)
 
@@ -42,13 +42,7 @@ def _split_imports_line(lines: str, *_, **__):
     result_parts = []
     for line in lines.splitlines(keepends=True):
         first, _, rest = line.partition(",")
-        if not all(
-            [
-                rest,
-                "import " in line,
-                line.strip().startswith("import ") or line.strip().startswith("from "),
-            ]
-        ):
+        if not rest or "import" not in line:
             result_parts.append(line)
             continue
         prefix, first = " ".join(first.split()[:-1]), first.split()[-1]
@@ -71,9 +65,11 @@ def _split_imports(file: pathlib.Path, offending_lines: Iterable[int]):
                 print(line)
 
 
-def _sort_imports(file: pathlib.Path, app_import_names):
+def _sort_imports(file: pathlib.Path):
     raw = file.read_text()
-    output = isort.code(raw, multi_line_output=3, line_length=1, known_first_party=app_import_names)
+    output = isort.code(
+        raw, multi_line_output=3, line_length=1, sections="STDLIB,THIRDPARTY,FIRSTPARTY"
+    )
     file.write_text(output)
 
 
@@ -116,7 +112,7 @@ def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=Fa
             for error in errors_in_file:
                 # humans talk 1-based, enumerate is 0-based
                 line_to_codes_mapping[int(error.line) - 1].add(error.code)
-            _sort_imports(bad_file, app_import_names=app_import_names)
+            _sort_imports(bad_file)
             _format.format(bad_file)
             _handle_multiple_import_lines(bad_file)
             _format.format(bad_file)
