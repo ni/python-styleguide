@@ -11,6 +11,7 @@ TEST_CASE_DIR = pathlib.Path(__file__).parent.absolute() / "fix_test_cases__snap
 
 @pytest.fixture()
 def example_pyproject_file(tmp_path):
+    """Provide the current projects pyproject.toml file to tests as an example."""
     in_file = next(
         (
             parent / "pyproject.toml"
