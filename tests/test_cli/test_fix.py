@@ -7,6 +7,8 @@ import pytest
 
 TEST_CASE_DIR = pathlib.Path(__file__).parent.absolute() / "fix_test_cases__snapshots"
 
+TEST_CASES = [x for x in TEST_CASE_DIR.iterdir() if x.is_dir() and (x / "input.py").is_file()]
+
 
 @pytest.fixture()
 def example_pyproject_file(tmp_path):
@@ -24,7 +26,7 @@ def example_pyproject_file(tmp_path):
     return out_file
 
 
-@pytest.mark.parametrize("test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()])
+@pytest.mark.parametrize("test_dir", TEST_CASES)
 def test_given_bad_input__fix__produces_expected_output_simple(
     test_dir, snapshot, tmp_path, styleguide_command, example_pyproject_file
 ):
@@ -41,10 +43,8 @@ def test_given_bad_input__fix__produces_expected_output_simple(
     snapshot.assert_match(result, "output.py")
 
 
-@pytest.mark.parametrize(  # noqa F811: redefinition of unused 'test_given_bad_input__fix__produces_expected_output_simple' from line 27 (auto-generated noqa)
-    "test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()]
-)
-def test_given_bad_input__fix__produces_expected_output_simple(
+@pytest.mark.parametrize("test_dir", TEST_CASES)
+def test_given_bad_input__fix__produces_expected_output_aggressive(
     test_dir, snapshot, tmp_path, styleguide_command, example_pyproject_file
 ):
     """Test that suppresion yields expected_output file."""
@@ -52,7 +52,6 @@ def test_given_bad_input__fix__produces_expected_output_simple(
     test_file = tmp_path / "input.py"
     shutil.copyfile(in_file, test_file)
 
-    output = styleguide_command(command="fix")
     output = styleguide_command(command="fix", command_args=["--aggressive"])
 
     assert output.exit_code in (True, 0), f"Error in running:\n{output}"
