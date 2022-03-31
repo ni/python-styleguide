@@ -1,3 +1,4 @@
+"""Provide a more complex example with some corner cases."""
 import fileinput
 import logging
 import pathlib
@@ -115,14 +116,12 @@ def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=Fa
             _format.format(bad_file)
             _handle_multiple_import_lines(bad_file)
             _format.format(bad_file)
-            remaining_lint_errors_in_file = (
-                _acknowledge_existing_errors._get_lint_errors_to_process(
-                    exclude,
-                    app_import_names,
-                    extend_ignore,
-                    [bad_file],
-                    excluded_errors=[],  # we fix black errors, so we don't need to filter it.
-                )
+            _ = _acknowledge_existing_errors._get_lint_errors_to_process(
+                exclude,
+                app_import_names,
+                extend_ignore,
+                [bad_file],
+                excluded_errors=[],  # we fix black errors, so we don't need to filter it.
             )
         except AttributeError as e:
             failed_files.append((bad_file, e))

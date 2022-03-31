@@ -1,3 +1,4 @@
+"""Provide a more complex example with some corner cases."""
 from collections import defaultdict
 from ni_python_styleguide import _acknowledge_existing_errors, _format, _utils
 from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
@@ -110,7 +111,7 @@ def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=Fa
             _format.format(bad_file)
             _handle_multiple_import_lines(bad_file)
             _format.format(bad_file)
-            remaining_lint_errors_in_file = (
+            _ = (
                 _acknowledge_existing_errors._get_lint_errors_to_process(
                     exclude,
                     app_import_names,

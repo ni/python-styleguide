@@ -12,6 +12,8 @@ import beef, chicken
 
 
 class Foo(object):  # comment should get moved
+    """Provide dummy code."""
+
     o = 5
     i = 1
 
@@ -19,7 +21,13 @@ class Foo(object):  # comment should get moved
         """Test class."""
         this_method = 1
 
-        seperator = path.sep
+        self.seperator = path.sep * this_method
 
-        has_a_lot_of_empty_lines = 2
+
         pass
+
+    @pytest.mark.skip(reason="not a test")
+    def method_to_use_everything(self, x: Iterable[List[Hashable]], p: pathlib.Path):
+        "Strange method."
+        x = access(p)
+        return x
