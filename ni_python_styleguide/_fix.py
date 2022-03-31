@@ -61,17 +61,6 @@ def _split_imports_line(lines: str, *_, **__):
     return result
 
 
-def _split_imports(file: pathlib.Path, offending_lines: Iterable[int]):
-    _module_logger("Splitting import lines in file: %s", file)
-    hashed_offending_lines = set(offending_lines)
-    with fileinput.input(file, inplace=True) as py_file:
-        for line_no, line in py_file:
-            if line_no in hashed_offending_lines:
-                print(_split_imports_line(line))
-            else:
-                print(line)
-
-
 def _sort_imports(file: pathlib.Path, app_import_names):
     raw = file.read_text()
     output = isort.code(
