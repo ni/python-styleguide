@@ -126,7 +126,7 @@ def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=Fa
                 # humans talk 1-based, enumerate is 0-based
                 line_to_codes_mapping[int(error.line) - 1].add(error.code)
             _sort_imports(bad_file, app_import_names=app_import_names)
-            _format.format(bad_file)
+            _format.format(bad_file, "--line-length=300")  # condense any split lines
             _handle_multiple_import_lines(bad_file)
             _format.format(bad_file)
             remaining_lint_errors_in_file = (
