@@ -75,39 +75,57 @@ def acknowledge_lint_errors(
 
     failed_files = []
     for bad_file, errors_in_file in lint_errors_by_file.items():
-        _suppress_errors_in_file(bad_file, errors_in_file, encoding=_utils.DEFAULT_ENCODING)
-
-        if aggressive:
-
-            # some cases are expected to take up to 4 passes, making this 2x rounded
-            per_file_format_iteration_limit = 10
-            for _ in range(per_file_format_iteration_limit):
-                # format the files - this may move the suppression off the correct lines
-                #  Note: due to Github pycodestyle#868, we have to format, change, format
-                #   (check if that time made changes)
-                # -  else we wind up with lambda's going un-suppressed
-                # and/or not re-formatted (to fail later)
-                _format.format(bad_file)
-
-                # re-apply suppressions on correct lines
-                remove_auto_suppressions_from_file(bad_file)
-                current_lint_errors = _get_lint_errors_to_process(
-                    exclude, app_import_names, extend_ignore, [bad_file]
-                )
-                _suppress_errors_in_file(
-                    bad_file, current_lint_errors, encoding=_utils.DEFAULT_ENCODING
-                )
-
-                changed = _format.format_check(bad_file)
-                if not changed:  # are we done?
-                    break
-            else:
-                failed_files.append(
-                    f"Could not handle suppressions/formatting of file {bad_file} after maximum number of tries ({per_file_format_iteration_limit})"
-                )
-                _module_logger.warning("Max tries reached on %s", bad_file)
+        try:
+            suppress_errors_in_single_file(
+                exclude,
+                app_import_names,
+                extend_ignore,
+                aggressive,
+                bad_file,
+                errors_in_file,
+            )
+        except RuntimeError:
+            failed_files.append(bad_file)
     if failed_files:
         raise RuntimeError("Could not handle some files:\n" + "\n\n".join(failed_files) + "\n\n\n")
+
+
+def suppress_errors_in_single_file(
+    exclude, app_import_names, extend_ignore, aggressive, bad_file, errors_in_file
+):
+    """Suppress `errors_in_file` in `bad_file`.
+
+    if `aggressive` try repeatedly to suppress and format until stable state is reached.
+    """
+    _suppress_errors_in_file(bad_file, errors_in_file, encoding=_utils.DEFAULT_ENCODING)
+
+    if aggressive:
+        # some cases are expected to take up to 4 passes, making this 2x rounded
+        per_file_format_iteration_limit = 10
+        for _ in range(per_file_format_iteration_limit):
+            # format the files - this may move the suppression off the correct lines
+            #  Note: due to Github pycodestyle#868, we have to format, change, format
+            #   (check if that time made changes)
+            # -  else we wind up with lambda's going un-suppressed
+            # and/or not re-formatted (to fail later)
+            _format.format(bad_file)
+
+            # re-apply suppressions on correct lines
+            remove_auto_suppressions_from_file(bad_file)
+            current_lint_errors = _get_lint_errors_to_process(
+                exclude, app_import_names, extend_ignore, [bad_file]
+            )
+            _suppress_errors_in_file(
+                bad_file, current_lint_errors, encoding=_utils.DEFAULT_ENCODING
+            )
+
+            changed = _format.format_check(bad_file)
+            if not changed:  # are we done?
+                break
+        else:
+            raise RuntimeError(
+                f"Could not suppress/format {bad_file} after {per_file_format_iteration_limit} tries"
+            )
 
 
 def remove_auto_suppressions_from_file(file: pathlib.Path):
