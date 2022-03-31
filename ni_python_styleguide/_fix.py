@@ -98,13 +98,23 @@ def _handle_multiple_import_lines(bad_file: pathlib.Path):
 
 def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=False, diff=False):
     """Fix basic linter errors and format."""
+    file_or_dir = file_or_dir or ["."]
     if aggressive:
-        raise Exception("--aggressive is not implemented yet")
+        all_files = []
+        for file_or_dir_ in file_or_dir:
+            if pathlib.Path(file_or_dir).is_dir():
+                all_files.extend(_utils.git.get_tracked_files(file_or_dir, filter="*.py"))
+            else:
+                all_files.append(pathlib.Path(file_or_dir))
+        for file in all_files:
+            if not file.is_file():  # doesn't really exist...
+                continue
+            _acknowledge_existing_errors.remove_auto_suppressions_from_file(file)
     lint_errors_to_process = _acknowledge_existing_errors._get_lint_errors_to_process(
         exclude,
         app_import_names,
         extend_ignore,
-        [pathlib.Path(file_or_dir_) for file_or_dir_ in file_or_dir or "."],
+        [pathlib.Path(file_or_dir_) for file_or_dir_ in file_or_dir],
         excluded_errors=[],  # we fix black errors, so we don't need to filter it.
     )
 
@@ -131,9 +141,17 @@ def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=Fa
                     app_import_names,
                     extend_ignore,
                     [bad_file],
-                    excluded_errors=[],  # we fix black errors, so we don't need to filter it.
                 )
             )
+            if remaining_lint_errors_in_file:
+                _acknowledge_existing_errors.suppress_errors_in_single_file(
+                    exclude=exclude,
+                    app_import_names=app_import_names,
+                    extend_ignore=extend_ignore,
+                    aggressive=aggressive,
+                    bad_file=bad_file,
+                    errors_in_file=remaining_lint_errors_in_file,
+                )
         except AttributeError as e:
             failed_files.append((bad_file, e))
     if failed_files:
