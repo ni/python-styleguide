@@ -6,6 +6,7 @@ from typing import Iterable
 from typing import List
 
 import isort
+
 from ni_python_styleguide import _acknowledge_existing_errors
 from ni_python_styleguide import _format
 from ni_python_styleguide import _utils
