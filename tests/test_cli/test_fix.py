@@ -8,9 +8,17 @@ import pytest
 
 TEST_CASE_DIR = pathlib.Path(__file__).parent.absolute() / "fix_test_cases__snapshots"
 
+
 @pytest.fixture()
 def example_pyproject_file(tmp_path):
-    in_file = next((parent / "pyproject.toml" for parent in TEST_CASE_DIR.parents if (parent / "pyproject.toml").is_file()), "pyproject.toml")
+    in_file = next(
+        (
+            parent / "pyproject.toml"
+            for parent in TEST_CASE_DIR.parents
+            if (parent / "pyproject.toml").is_file()
+        ),
+        "pyproject.toml",
+    )
     out_file = tmp_path / "pyproject.toml"
     shutil.copyfile(in_file, out_file)
     return out_file
