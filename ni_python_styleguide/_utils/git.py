@@ -2,7 +2,15 @@ import fnmatch
 import os
 import pathlib
 
-from git import repo
+from git import GitError, repo
+
+
+def find_repo_root(cwd: os.PathLike):
+    try:
+        _repo = repo.Repo(str(cwd), search_parent_directories=True)
+    except GitError:
+        return None
+    return _repo.git_dir
 
 
 def get_tracked_files(cwd: os.PathLike, *_, branch: str = "main", filter: str = "*.*"):
