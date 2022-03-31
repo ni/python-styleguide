@@ -42,7 +42,13 @@ def _split_imports_line(lines: str, *_, **__):
     result_parts = []
     for line in lines.splitlines(keepends=True):
         first, _, rest = line.partition(",")
-        if not rest or "import" not in line:
+        if not all(
+            [
+                rest,
+                "import " in line,
+                line.strip().startswith("import ") or line.strip().startswith("from "),
+            ]
+        ):
             result_parts.append(line)
             continue
         prefix, first = " ".join(first.split()[:-1]), first.split()[-1]
