@@ -8,10 +8,17 @@ import pytest
 
 TEST_CASE_DIR = pathlib.Path(__file__).parent.absolute() / "fix_test_cases__snapshots"
 
+@pytest.fixture()
+def example_pyproject_file(tmp_path):
+    in_file = next((parent / "pyproject.toml" for parent in TEST_CASE_DIR.parents if (parent / "pyproject.toml").is_file()), "pyproject.toml")
+    out_file = tmp_path / "pyproject.toml"
+    shutil.copyfile(in_file, out_file)
+    return out_file
+
 
 @pytest.mark.parametrize("test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()])
 def test_given_bad_input__fix__produces_expected_output_simple(
-    test_dir, snapshot, tmp_path, styleguide_command
+    test_dir, snapshot, tmp_path, styleguide_command, example_pyproject_file
 ):
     """Test that suppresion yields expected_output file."""
     in_file = test_dir / "input.py"
