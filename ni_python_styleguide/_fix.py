@@ -144,7 +144,7 @@ def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=Fa
                     [bad_file],
                 )
             )
-            if remaining_lint_errors_in_file:
+            if remaining_lint_errors_in_file and aggressive:
                 _acknowledge_existing_errors.suppress_errors_in_single_file(
                     exclude=exclude,
                     app_import_names=app_import_names,
