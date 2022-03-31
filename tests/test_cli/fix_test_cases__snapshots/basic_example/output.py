@@ -2,7 +2,9 @@
 import pathlib
 from os import access
 from os import path
-from typing import Hashable
+from typing import (
+    Hashable,
+)  # noqa F401: un-used import comment that is actually used, should get removed in --aggressive (auto-generated noqa)
 from typing import Iterable
 from typing import List
 
