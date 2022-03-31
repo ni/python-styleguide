@@ -2,7 +2,6 @@ import fileinput
 import logging
 import pathlib
 from collections import defaultdict
-from typing import Iterable
 from typing import List
 
 import isort
@@ -42,20 +41,25 @@ def _split_imports_line(lines: str, *_, **__):
     """  # noqa W505: long lines...
     result_parts = []
     for line in lines.splitlines(keepends=True):
-        first, _, rest = line.partition(",")
+        code_portion_of_line, *non_code = line.split("#", maxsplit=1)
+        first, _, rest = code_portion_of_line.partition(",")
         if not all(
             [
                 rest,
-                "import " in line,
-                line.strip().startswith("import ") or line.strip().startswith("from "),
+                "import " in code_portion_of_line,
+                code_portion_of_line.strip().startswith("import ")
+                or code_portion_of_line.strip().startswith("from "),
             ]
         ):
-            result_parts.append(line)
+            result_parts.append(code_portion_of_line)
             continue
         prefix, first = " ".join(first.split()[:-1]), first.split()[-1]
         split_up = [first] + rest.split(",")
         result_parts.extend([prefix + " " + part.strip() for part in split_up])
-    result = "\n".join(result_parts)
+    suffix = ""
+    if non_code:
+        suffix = "#" + "".join(non_code)
+    result = "\n".join(result_parts) + suffix
     if result.strip():
         return result.rstrip() + "\n"
     return result
