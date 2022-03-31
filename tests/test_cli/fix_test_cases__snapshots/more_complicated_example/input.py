@@ -63,7 +63,7 @@ def _split_imports(file: pathlib.Path, offending_lines: Iterable[int]):
 
 def _sort_imports(file: pathlib.Path):
     raw = file.read_text()
-    output = isort.code(raw, multi_line_output=3, line_length=1, sections="STDLIB,THIRDPARTY,FIRSTPARTY")
+    output = isort.code(raw, multi_line_output=3, line_length=1)
     file.write_text(output)
 
 
