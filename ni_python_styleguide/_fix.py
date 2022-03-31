@@ -92,10 +92,14 @@ def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=Fa
     if aggressive:
         all_files = []
         for file_or_dir_ in file_or_dir:
-            if pathlib.Path(file_or_dir_).is_dir():
-                all_files.extend(_utils.git.get_tracked_files(file_or_dir_, filter="*.py"))
+            file_path = pathlib.Path(file_or_dir_)
+            if file_path.is_dir():
+                if _utils.git.find_repo_root(file_or_dir_):
+                    all_files.extend(_utils.git.get_tracked_files(file_or_dir_, filter="*.py"))
+                else:
+                    all_files.extend(file_path.rglob("*.py"))
             else:
-                all_files.append(pathlib.Path(file_or_dir_))
+                all_files.append(file_path)
         for file in all_files:
             if not file.is_file():  # doesn't really exist...
                 continue
