@@ -5,7 +5,6 @@ import shutil
 
 import pytest
 
-
 TEST_CASE_DIR = pathlib.Path(__file__).parent.absolute() / "fix_test_cases__snapshots"
 
 
@@ -40,3 +39,23 @@ def test_given_bad_input__fix__produces_expected_output_simple(
     result = test_file.read_text(encoding="UTF-8")
     snapshot.snapshot_dir = test_dir
     snapshot.assert_match(result, "output.py")
+
+
+@pytest.mark.parametrize(  # noqa F811: redefinition of unused 'test_given_bad_input__fix__produces_expected_output_simple' from line 27 (auto-generated noqa)
+    "test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()]
+)
+def test_given_bad_input__fix__produces_expected_output_simple(
+    test_dir, snapshot, tmp_path, styleguide_command, example_pyproject_file
+):
+    """Test that suppresion yields expected_output file."""
+    in_file = test_dir / "input.py"
+    test_file = tmp_path / "input.py"
+    shutil.copyfile(in_file, test_file)
+
+    output = styleguide_command(command="fix")
+    output = styleguide_command(command="fix", command_args=["--aggressive"])
+
+    assert output.exit_code in (True, 0), f"Error in running:\n{output}"
+    result = test_file.read_text(encoding="UTF-8")
+    snapshot.snapshot_dir = test_dir
+    snapshot.assert_match(result, "output__aggressive.py")
