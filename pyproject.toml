@@ -23,10 +23,14 @@ black = ">=21.10b0"
 click = ">=7.1.2"
 toml = ">=0.10.1"
 GitPython = [
-  {version=">=3.1", python=">=3.7"},
-  {version="<=3.0", python=">=3.6,<3.7"}
+  {version=">=3.0", python=">=3.7"},
+  {version="<3.0", python=">=3.6,<3.7"}
 ]
-gitdb2 = {version="^2.0.0", python=">=3.6,<3.7"} # for py 3.6, pin this down
+gitdb2 = {version="^2.0.6", python=">=3.6,<3.7"} # for py 3.6, pin this down
+gitdb = [
+  {version="^0.6", python=">=3.6,<3.7"},
+  {version="^4.0.1", python=">=3.7"},
+]
 isort = {version=">=5.10", python=">=3.6,<4"}
 
 
