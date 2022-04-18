@@ -150,7 +150,7 @@ def lint(obj, format, extend_ignore, file_or_dir):
 )
 @click.pass_obj
 def acknowledge_existing_violations(obj, extend_ignore, file_or_dir, aggressive):
-    """Lint existing violations and suppress.
+    """Lint existing violations and acknowledge.
 
     Use this command to acknowledge violations in existing code to allow for enforcing new code.
     """
@@ -173,7 +173,7 @@ def acknowledge_existing_violations(obj, extend_ignore, file_or_dir, aggressive)
 @click.option(
     "--aggressive",
     is_flag=True,
-    help="Remove any existing suppressions, fix what can be fixed, and suppress remaining.",
+    help="Remove any existing acknowledgments, fix what can be fixed, and re-acknowledges remaining.",
 )
 @click.pass_obj
 def fix(obj, extend_ignore, file_or_dir, aggressive):
