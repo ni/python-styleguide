@@ -6,7 +6,6 @@ from collections import defaultdict
 from ni_python_styleguide import _format
 from ni_python_styleguide import _lint
 from ni_python_styleguide import _utils
-from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
 
 _module_logger = logging.getLogger(__name__)
 

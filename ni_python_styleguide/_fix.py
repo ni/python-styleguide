@@ -10,7 +10,6 @@ import isort
 from ni_python_styleguide import _acknowledge_existing_errors
 from ni_python_styleguide import _format
 from ni_python_styleguide import _utils
-from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
 
 _module_logger = logging.getLogger(__name__)
 
@@ -143,11 +142,12 @@ def fix(
             _handle_multiple_import_lines(bad_file)
             _format.format(bad_file)
             remaining_lint_errors_in_file = (
-                _acknowledge_existing_errors._get_lint_errors_to_process(
+                _utils.lint.get_lint_errors_to_process(
                     exclude,
                     app_import_names,
                     extend_ignore,
                     [bad_file],
+                    exclude=[],
                 )
             )
             if remaining_lint_errors_in_file and aggressive:

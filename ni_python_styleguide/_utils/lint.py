@@ -1,7 +1,6 @@
 import logging
-import ni_python_styleguide
 
-from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
+import ni_python_styleguide
 from ni_python_styleguide import _lint
 
 
