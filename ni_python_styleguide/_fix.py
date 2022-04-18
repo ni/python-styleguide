@@ -141,12 +141,12 @@ def fix(exclude: str, app_import_names: str, extend_ignore, file_or_dir, *_, agg
                 )
             )
             if remaining_lint_errors_in_file and aggressive:
-                _acknowledge_existing_errors.suppress_errors_in_single_file(
+                _acknowledge_existing_errors.acknowledge_lint_errors(
                     exclude=exclude,
                     app_import_names=app_import_names,
                     extend_ignore=extend_ignore,
                     aggressive=aggressive,
-                    bad_file=bad_file,
+                    file_or_dir=[bad_file],
                     errors_in_file=remaining_lint_errors_in_file,
                 )
         except AttributeError as e:
