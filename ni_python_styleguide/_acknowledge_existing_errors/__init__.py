@@ -75,29 +75,7 @@ def acknowledge_lint_errors(
 
     failed_files = []
     for bad_file, errors_in_file in lint_errors_by_file.items():
-        try:
-            suppress_errors_in_single_file(
-                exclude,
-                app_import_names,
-                extend_ignore,
-                aggressive,
-                bad_file,
-                errors_in_file,
-            )
-        except RuntimeError:
-            failed_files.append(bad_file)
-    if failed_files:
-        raise RuntimeError("Could not handle some files:\n" + "\n\n".join(failed_files) + "\n\n\n")
-
-
-def suppress_errors_in_single_file(
-    exclude, app_import_names, extend_ignore, aggressive, bad_file, errors_in_file
-):
-    """Suppress `errors_in_file` in `bad_file`.
-
-    if `aggressive` try repeatedly to suppress and format until stable state is reached.
-    """
-    _suppress_errors_in_file(bad_file, errors_in_file, encoding=_utils.DEFAULT_ENCODING)
+        _suppress_errors_in_file(bad_file, errors_in_file, encoding=_utils.DEFAULT_ENCODING)
 
     if aggressive:
         # some cases are expected to take up to 4 passes, making this 2x rounded
@@ -123,9 +101,12 @@ def suppress_errors_in_single_file(
             if not changed:  # are we done?
                 break
         else:
-            raise RuntimeError(
-                f"Could not suppress/format {bad_file} after {per_file_format_iteration_limit} tries"
+            failed_files.append(
+                f"Could not handle suppressions/formatting of file {bad_file} after maximum number of tries ({per_file_format_iteration_limit})"
             )
+            _module_logger.warning("Max tries reached on %s", bad_file)
+    if failed_files:
+        raise RuntimeError("Could not handle some files:\n" + "\n\n".join(failed_files) + "\n\n\n")
 
 
 def remove_auto_suppressions_from_file(file: pathlib.Path):
