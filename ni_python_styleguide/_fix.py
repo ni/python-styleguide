@@ -130,7 +130,7 @@ def fix(
 
     failed_files = []
     for bad_file, errors_in_file in lint_errors_by_file.items():
-        errors_in_file: List[_lint_errors_parser.LintError]
+        errors_in_file: List[_utils.lint.LintError]
         try:
             _format.format(bad_file)
             line_to_codes_mapping = defaultdict(set)
