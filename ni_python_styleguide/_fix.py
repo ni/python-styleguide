@@ -147,7 +147,7 @@ def fix(
                     app_import_names,
                     extend_ignore,
                     [bad_file],
-                    exclude=[],
+                    excluded_errors=[],
                 )
             )
             if remaining_lint_errors_in_file and aggressive:
