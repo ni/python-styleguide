@@ -34,14 +34,6 @@ def _filter_suppresion_from_line(line: str):
         return line
 
 
-def _get_lint_errors_to_process(
-    exclude, app_import_names, extend_ignore, file_or_dir, *_, excluded_errors=None
-):
-    if excluded_errors is None:
-        excluded_errors = EXCLUDED_ERRORS
-    return _utils.lint.get_lint_errors_to_process(exclude, app_import_names, extend_ignore, file_or_dir, excluded_errors)
-
-
 def acknowledge_lint_errors(
     exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=False
 ):
@@ -50,7 +42,7 @@ def acknowledge_lint_errors(
     Excluded error (reason):
     BLK100 - run black
     """
-    lint_errors_to_process = _utils.lint.get_errors_to_process(
+    lint_errors_to_process = _utils.lint.get_lint_errors_to_process(
         exclude,
         app_import_names,
         extend_ignore,
@@ -79,9 +71,14 @@ def acknowledge_lint_errors(
 
             # re-apply suppressions on correct lines
             remove_auto_suppressions_from_file(bad_file)
-            current_lint_errors = _get_lint_errors_to_process(
-                exclude, app_import_names, extend_ignore, [bad_file]
+            current_lint_errors = _utils.lint.get_lint_errors_to_process(
+                exclude=exclude,
+                app_import_names=app_import_names,
+                extend_ignore=extend_ignore,
+                file_or_dir=file_or_dir,
+                excluded_errors=EXCLUDED_ERRORS,
             )
+
             _suppress_errors_in_file(
                 bad_file, current_lint_errors, encoding=_utils.DEFAULT_ENCODING
             )
