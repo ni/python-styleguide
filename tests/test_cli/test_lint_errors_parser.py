@@ -2,7 +2,6 @@
 
 import pytest
 
-import ni_python_styleguide._acknowledge_existing_errors._lint_errors_parser
 import ni_python_styleguide._utils.lint
 
 EXAMPLE_LINT_ERROR_LINES = [  # noqa W505
