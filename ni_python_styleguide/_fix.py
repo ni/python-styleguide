@@ -91,7 +91,15 @@ def _handle_multiple_import_lines(bad_file: pathlib.Path):
             print(working_line, end="")
 
 
-def fix(exclude: str, app_import_names: str, extend_ignore, file_or_dir, *_, aggressive=False, diff=False):
+def fix(
+    exclude: str,
+    app_import_names: str,
+    extend_ignore,
+    file_or_dir,
+    *_,
+    aggressive=False,
+    diff=False,
+):
     """Fix basic linter errors and format."""
     file_or_dir = file_or_dir or ["."]
     if aggressive:
@@ -102,12 +110,14 @@ def fix(exclude: str, app_import_names: str, extend_ignore, file_or_dir, *_, agg
                 all_files.extend(file_path.rglob("*.py"))
             else:
                 all_files.append(file_path)
-        all_files = filter(lambda o: not any([fnmatch(o, exclude_) for exclude_ in exclude.split(",")]), all_files)
+        all_files = filter(
+            lambda o: not any([fnmatch(o, exclude_) for exclude_ in exclude.split(",")]), all_files
+        )
         for file in all_files:
             if not file.is_file():  # doesn't really exist...
                 continue
             _acknowledge_existing_errors.remove_auto_suppressions_from_file(file)
-    lint_errors_to_process = _acknowledge_existing_errors._get_lint_errors_to_process(
+    lint_errors_to_process = _acknowledge_existing_errors._utils.lint.get_lint_errors_to_process(
         exclude,
         app_import_names,
         extend_ignore,

@@ -1,7 +1,10 @@
 from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
 from ni_python_styleguide import _lint
 
-def get_lint_errors_to_process(exclude, app_import_names, extend_ignore, file_or_dir, excluded_errors):
+
+def get_lint_errors_to_process(
+    exclude, app_import_names, extend_ignore, file_or_dir, excluded_errors
+):
     lint_errors = _lint.get_lint_output(
         format=None,
         qs_or_vs=None,
