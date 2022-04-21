@@ -2,8 +2,7 @@
 
 import pytest
 
-import ni_python_styleguide._acknowledge_existing_errors._lint_errors_parser
-
+import ni_python_styleguide._utils.lint
 
 EXAMPLE_LINT_ERROR_LINES = [  # noqa W505
     r".\source\lorem.py:158:101: W505 doc line too long (186 > 100 characters)",
@@ -30,6 +29,6 @@ EXAMPLE_LINT_ERROR_LINES = [  # noqa W505
 @pytest.mark.parametrize("input_line", EXAMPLE_LINT_ERROR_LINES)
 def test_lint_errors_parser_handles_example_line_without_error(input_line):
     """Test parser yields expected metadata."""
-    assert ni_python_styleguide._acknowledge_existing_errors._lint_errors_parser.parse(
+    assert ni_python_styleguide._utils.lint.parse(
         input_line
     ), "should parse without error and return object"

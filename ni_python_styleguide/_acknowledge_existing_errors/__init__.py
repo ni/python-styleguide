@@ -4,53 +4,13 @@ import re
 from collections import defaultdict
 
 from ni_python_styleguide import _format
-from ni_python_styleguide import _lint
-from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
+from ni_python_styleguide import _utils
 
 _module_logger = logging.getLogger(__name__)
 
 EXCLUDED_ERRORS = {
     "BLK100",
 }
-
-DEFAULT_ENCODING = "UTF-8"
-
-
-class _InMultiLineStringChecker:
-    def __init__(self, error_file):
-        self._error_file = pathlib.Path(error_file)
-        self._values = []
-        self._load_lines()
-
-    @property
-    def values(self):
-        return self._values
-
-    def in_multiline_string(self, lineno):
-        return self._values[lineno - 1]  # 0 indexed, but we number files 1 indexed
-
-    @staticmethod
-    def _count_multiline_string_endings_in_line(line):
-        return line.count('"""'), line.count("'''")
-
-    def _load_lines(self):
-        in_file = self._error_file.read_text(encoding=DEFAULT_ENCODING).splitlines()
-        current_count = [0, 0]
-        for line in in_file:
-            type1, type2 = _InMultiLineStringChecker._count_multiline_string_endings_in_line(line)
-            current_count[0] += type1
-            current_count[1] += type2
-
-            code_part_of_line = line
-            if "#" in line:
-                code_part_of_line = line.split("#", maxsplit=1)[0]
-
-            # if occurrences of multiline string markers is odd, this must be in a multiline
-            #  or, if line continuation token is on the ending, assume in a multiline statement
-            self._values.append(
-                any([part % 2 == 1 for part in current_count])
-                or code_part_of_line.strip().endswith("\\")
-            )
 
 
 def _add_noqa_to_line(lineno, code_lines, error_code, explanation):
@@ -72,21 +32,6 @@ def _filter_suppresion_from_line(line: str):
         return line
 
 
-def _get_lint_errors_to_process(exclude, app_import_names, extend_ignore, file_or_dir):
-    lint_errors = _lint.get_lint_output(
-        format=None,
-        qs_or_vs=None,
-        exclude=exclude,
-        app_import_names=app_import_names,
-        extend_ignore=extend_ignore,
-        file_or_dir=file_or_dir,
-    ).splitlines()
-    parsed_errors = map(_lint_errors_parser.parse, lint_errors)
-    parsed_errors = filter(None, parsed_errors)
-    lint_errors_to_process = [error for error in parsed_errors if error.code not in EXCLUDED_ERRORS]
-    return lint_errors_to_process
-
-
 def acknowledge_lint_errors(
     exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=False
 ):
@@ -95,11 +40,12 @@ def acknowledge_lint_errors(
     Excluded error (reason):
     BLK100 - run black
     """
-    lint_errors_to_process = _get_lint_errors_to_process(
+    lint_errors_to_process = _utils.lint.get_lint_errors_to_process(
         exclude,
         app_import_names,
         extend_ignore,
         [pathlib.Path(file_or_dir_) for file_or_dir_ in file_or_dir or "."],
+        excluded_errors=EXCLUDED_ERRORS,
     )
 
     lint_errors_by_file = defaultdict(list)
@@ -108,42 +54,52 @@ def acknowledge_lint_errors(
 
     failed_files = []
     for bad_file, errors_in_file in lint_errors_by_file.items():
-        _suppress_errors_in_file(bad_file, errors_in_file, encoding=DEFAULT_ENCODING)
+        _suppress_errors_in_file(bad_file, errors_in_file, encoding=_utils.DEFAULT_ENCODING)
 
-        if aggressive:
-            # some cases are expected to take up to 4 passes, making this 2x rounded
-            per_file_format_iteration_limit = 10
-            for _ in range(per_file_format_iteration_limit):
-                # format the files - this may move the suppression off the correct lines
-                #  Note: due to Github pycodestyle#868, we have to format, change, format
-                #   (check if that time made changes)
-                # -  else we wind up with lambda's going un-suppressed
-                # and/or not re-formatted (to fail later)
-                _format.format(bad_file)
+        if not aggressive:
+            continue
 
-                # re-apply suppressions on correct lines
-                _remove_auto_suppressions_from_file(bad_file)
-                current_lint_errors = _get_lint_errors_to_process(
-                    exclude, app_import_names, extend_ignore, [bad_file]
-                )
-                _suppress_errors_in_file(bad_file, current_lint_errors, encoding=DEFAULT_ENCODING)
+        # some cases are expected to take up to 4 passes, making this 2x rounded
+        per_file_format_iteration_limit = 10
+        for _ in range(per_file_format_iteration_limit):
+            # format the files - this may move the suppression off the correct lines
+            #  Note: due to Github pycodestyle#868, we have to format, change, format
+            #   (check if that time made changes)
+            # -  else we wind up with lambda's going un-suppressed
+            # and/or not re-formatted (to fail later)
+            _format.format(bad_file)
 
-                changed = _format.format_check(bad_file)
-                if not changed:  # are we done?
-                    break
-            else:
-                failed_files.append(
-                    f"Could not handle suppressions/formatting of file {bad_file} after maximum number of tries ({per_file_format_iteration_limit})"
-                )
-                _module_logger.warning("Max tries reached on %s", bad_file)
+            # re-apply suppressions on correct lines
+            remove_auto_suppressions_from_file(bad_file)
+            current_lint_errors = _utils.lint.get_lint_errors_to_process(
+                exclude=exclude,
+                app_import_names=app_import_names,
+                extend_ignore=extend_ignore,
+                file_or_dir=file_or_dir,
+                excluded_errors=EXCLUDED_ERRORS,
+            )
+
+            _suppress_errors_in_file(
+                bad_file, current_lint_errors, encoding=_utils.DEFAULT_ENCODING
+            )
+
+            changed = _format.format_check(bad_file)
+            if not changed:  # are we done?
+                break
+        else:
+            failed_files.append(
+                f"Could not handle suppressions/formatting of file {bad_file} after maximum number of tries ({per_file_format_iteration_limit})"
+            )
+            _module_logger.warning("Max tries reached on %s", bad_file)
     if failed_files:
         raise RuntimeError("Could not handle some files:\n" + "\n\n".join(failed_files) + "\n\n\n")
 
 
-def _remove_auto_suppressions_from_file(file):
-    lines = file.read_text(encoding=DEFAULT_ENCODING).splitlines()
+def remove_auto_suppressions_from_file(file: pathlib.Path):
+    """Remove auto-suppressions from file."""
+    lines = file.read_text(encoding=_utils.DEFAULT_ENCODING).splitlines()
     stripped_lines = [_filter_suppresion_from_line(line) for line in lines]
-    file.write_text("\n".join(stripped_lines) + "\n", encoding=DEFAULT_ENCODING)
+    file.write_text("\n".join(stripped_lines) + "\n", encoding=_utils.DEFAULT_ENCODING)
 
 
 def _suppress_errors_in_file(bad_file, errors_in_file, encoding):
@@ -153,7 +109,7 @@ def _suppress_errors_in_file(bad_file, errors_in_file, encoding):
     # to make suppressions work for those cases, add an empty line.
     if len(lines) == 0:
         lines = ["\n"]
-    multiline_checker = _InMultiLineStringChecker(error_file=bad_file)
+    multiline_checker = _utils.string_helpers.InMultiLineStringChecker(error_file=bad_file)
 
     # to avoid double marking a line with the same code, keep track of lines and codes
     handled_lines = defaultdict(list)
