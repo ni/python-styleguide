@@ -5,9 +5,7 @@ from collections import namedtuple
 from ni_python_styleguide import _lint
 
 
-def get_errors_to_process(
-    exclude, app_import_names, extend_ignore, file_or_dir, excluded_errors
-):
+def get_errors_to_process(exclude, app_import_names, extend_ignore, file_or_dir, excluded_errors):
     """Get lint errors to process."""
     lint_errors = _lint.get_lint_output(
         format=None,
