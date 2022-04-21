@@ -1,4 +1,6 @@
 import logging
+import re
+from collections import namedtuple
 
 from ni_python_styleguide import _lint
 
@@ -20,9 +22,6 @@ def get_lint_errors_to_process(
     lint_errors_to_process = [error for error in parsed_errors if error.code not in excluded_errors]
     return lint_errors_to_process
 
-
-import re
-from collections import namedtuple
 
 LintError = namedtuple("LintError", ["file", "line", "column", "code", "explanation"])
 
