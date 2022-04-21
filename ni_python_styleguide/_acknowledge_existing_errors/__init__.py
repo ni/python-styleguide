@@ -57,39 +57,39 @@ def acknowledge_lint_errors(
     for bad_file, errors_in_file in lint_errors_by_file.items():
         _suppress_errors_in_file(bad_file, errors_in_file, encoding=_utils.DEFAULT_ENCODING)
 
-    if aggressive:
-        # some cases are expected to take up to 4 passes, making this 2x rounded
-        per_file_format_iteration_limit = 10
-        for _ in range(per_file_format_iteration_limit):
-            # format the files - this may move the suppression off the correct lines
-            #  Note: due to Github pycodestyle#868, we have to format, change, format
-            #   (check if that time made changes)
-            # -  else we wind up with lambda's going un-suppressed
-            # and/or not re-formatted (to fail later)
-            _format.format(bad_file)
+        if aggressive:
+            # some cases are expected to take up to 4 passes, making this 2x rounded
+            per_file_format_iteration_limit = 10
+            for _ in range(per_file_format_iteration_limit):
+                # format the files - this may move the suppression off the correct lines
+                #  Note: due to Github pycodestyle#868, we have to format, change, format
+                #   (check if that time made changes)
+                # -  else we wind up with lambda's going un-suppressed
+                # and/or not re-formatted (to fail later)
+                _format.format(bad_file)
 
-            # re-apply suppressions on correct lines
-            remove_auto_suppressions_from_file(bad_file)
-            current_lint_errors = _utils.lint.get_lint_errors_to_process(
-                exclude=exclude,
-                app_import_names=app_import_names,
-                extend_ignore=extend_ignore,
-                file_or_dir=file_or_dir,
-                excluded_errors=EXCLUDED_ERRORS,
-            )
+                # re-apply suppressions on correct lines
+                remove_auto_suppressions_from_file(bad_file)
+                current_lint_errors = _utils.lint.get_lint_errors_to_process(
+                    exclude=exclude,
+                    app_import_names=app_import_names,
+                    extend_ignore=extend_ignore,
+                    file_or_dir=file_or_dir,
+                    excluded_errors=EXCLUDED_ERRORS,
+                )
 
-            _suppress_errors_in_file(
-                bad_file, current_lint_errors, encoding=_utils.DEFAULT_ENCODING
-            )
+                _suppress_errors_in_file(
+                    bad_file, current_lint_errors, encoding=_utils.DEFAULT_ENCODING
+                )
 
-            changed = _format.format_check(bad_file)
-            if not changed:  # are we done?
-                break
-        else:
-            failed_files.append(
-                f"Could not handle suppressions/formatting of file {bad_file} after maximum number of tries ({per_file_format_iteration_limit})"
-            )
-            _module_logger.warning("Max tries reached on %s", bad_file)
+                changed = _format.format_check(bad_file)
+                if not changed:  # are we done?
+                    break
+            else:
+                failed_files.append(
+                    f"Could not handle suppressions/formatting of file {bad_file} after maximum number of tries ({per_file_format_iteration_limit})"
+                )
+                _module_logger.warning("Max tries reached on %s", bad_file)
     if failed_files:
         raise RuntimeError("Could not handle some files:\n" + "\n\n".join(failed_files) + "\n\n\n")
 
