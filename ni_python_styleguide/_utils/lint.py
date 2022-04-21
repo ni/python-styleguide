@@ -1,6 +1,5 @@
 import logging
 
-import ni_python_styleguide
 from ni_python_styleguide import _lint
 
 

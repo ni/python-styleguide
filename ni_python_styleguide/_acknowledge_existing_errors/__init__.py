@@ -4,7 +4,6 @@ import re
 from collections import defaultdict
 
 from ni_python_styleguide import _format
-from ni_python_styleguide import _lint
 from ni_python_styleguide import _utils
 
 _module_logger = logging.getLogger(__name__)
