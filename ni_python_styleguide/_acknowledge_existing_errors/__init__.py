@@ -40,7 +40,7 @@ def acknowledge_lint_errors(
     Excluded error (reason):
     BLK100 - run black
     """
-    lint_errors_to_process = _utils.lint.get_lint_errors_to_process(
+    lint_errors_to_process = _utils.lint.get_errors_to_process(
         exclude,
         app_import_names,
         extend_ignore,
@@ -56,8 +56,7 @@ def acknowledge_lint_errors(
     for bad_file, errors_in_file in lint_errors_by_file.items():
         _suppress_errors_in_file(bad_file, errors_in_file, encoding=_utils.DEFAULT_ENCODING)
 
-        if not aggressive:
-            continue
+        if aggressive:
 
         # some cases are expected to take up to 4 passes, making this 2x rounded
         per_file_format_iteration_limit = 10
@@ -71,7 +70,7 @@ def acknowledge_lint_errors(
 
             # re-apply suppressions on correct lines
             remove_auto_suppressions_from_file(bad_file)
-            current_lint_errors = _utils.lint.get_lint_errors_to_process(
+                current_lint_errors = _utils.lint.get_errors_to_process(
                 exclude=exclude,
                 app_import_names=app_import_names,
                 extend_ignore=extend_ignore,
