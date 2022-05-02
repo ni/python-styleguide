@@ -71,7 +71,7 @@ def acknowledge_lint_errors(
 
             # re-apply suppressions on correct lines
             remove_auto_suppressions_from_file(bad_file)
-                current_lint_errors = _utils.lint.get_errors_to_process(
+            current_lint_errors = _utils.lint.get_errors_to_process(
                 exclude=exclude,
                 app_import_names=app_import_names,
                 extend_ignore=extend_ignore,

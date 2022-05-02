@@ -116,7 +116,7 @@ def fix(
             if not file.is_file():  # doesn't really exist...
                 continue
             _acknowledge_existing_errors.remove_auto_suppressions_from_file(file)
-    lint_errors_to_process = _acknowledge_existing_errors._utils.lint.get_lint_errors_to_process(
+    lint_errors_to_process = _acknowledge_existing_errors._utils.lint.get_errors_to_process(
         exclude,
         app_import_names,
         extend_ignore,
