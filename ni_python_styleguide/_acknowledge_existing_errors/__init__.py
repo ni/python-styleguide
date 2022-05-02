@@ -57,7 +57,6 @@ def acknowledge_lint_errors(
         _suppress_errors_in_file(bad_file, errors_in_file, encoding=_utils.DEFAULT_ENCODING)
 
         if aggressive:
-
             # some cases are expected to take up to 4 passes, making this 2x rounded
             per_file_format_iteration_limit = 10
             for _ in range(per_file_format_iteration_limit):

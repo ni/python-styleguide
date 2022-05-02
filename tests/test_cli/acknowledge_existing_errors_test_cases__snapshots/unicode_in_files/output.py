@@ -13,6 +13,7 @@ class Foo:
         """Return stored string with a unicode char."""
         return self._problem_chars
 
+
 def method_withBadName_andParams(my_normal_param, myBadlyNamedParam, my_other_Bad_param):  # noqa N802: function name 'method_withBadName_andParams' should be lowercase (auto-generated noqa)  # noqa N803: argument name 'myBadlyNamedParam' should be lowercase (auto-generated noqa)
     """Provide example where black will want to split out result."""
     return 5 + 7
