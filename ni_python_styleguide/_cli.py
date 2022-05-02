@@ -173,7 +173,7 @@ def acknowledge_existing_violations(obj, extend_ignore, file_or_dir, aggressive)
 @click.option(
     "--aggressive",
     is_flag=True,
-    help="Remove any existing acknowledgments, fix what can be fixed, and re-acknowledges remaining.",
+    help="Remove any existing acknowledgments, fix what can be fixed, and re-acknowledge remaining.",
 )
 @click.pass_obj
 def fix(obj, extend_ignore, file_or_dir, aggressive):
