@@ -97,7 +97,6 @@ def fix(
     file_or_dir,
     *_,
     aggressive=False,
-    diff=False,
 ):
     """Fix basic linter errors and format."""
     file_or_dir = file_or_dir or ["."]
