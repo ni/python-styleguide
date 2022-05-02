@@ -141,7 +141,7 @@ def fix(
             _format.format(bad_file, "--line-length=300")  # condense any split lines
             _handle_multiple_import_lines(bad_file)
             _format.format(bad_file)
-            remaining_lint_errors_in_file = _utils.lint.get_lint_errors_to_process(
+            remaining_lint_errors_in_file = _utils.lint.get_errors_to_process(
                 exclude,
                 app_import_names,
                 extend_ignore,

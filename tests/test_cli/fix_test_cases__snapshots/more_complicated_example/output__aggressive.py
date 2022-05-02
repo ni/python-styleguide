@@ -91,7 +91,7 @@ def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=Fa
     """Fix basic linter errors and format."""
     if aggressive:
         raise Exception("--aggressive is not implemented yet")
-    lint_errors_to_process = _utils.lint.get_lint_errors_to_process(
+    lint_errors_to_process = _utils.lint.get_errors_to_process(
         exclude,
         app_import_names,
         extend_ignore,
@@ -116,7 +116,7 @@ def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=Fa
             _format.format(bad_file)
             _handle_multiple_import_lines(bad_file)
             _format.format(bad_file)
-            _ = _utils.lint.get_lint_errors_to_process(
+            _ = _utils.lint.get_errors_to_process(
                 exclude,
                 app_import_names,
                 extend_ignore,
