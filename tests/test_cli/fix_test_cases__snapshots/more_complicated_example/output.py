@@ -8,6 +8,7 @@ from typing import List
 
 import isort
 
+from ni_python_styleguide import _acknowledge_existing_errors
 from ni_python_styleguide import _format
 from ni_python_styleguide import _utils
 from ni_python_styleguide._acknowledge_existing_errors import _lint_errors_parser
