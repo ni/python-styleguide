@@ -2,6 +2,7 @@ import ast
 import pathlib
 from typing import Tuple
 
+
 def find_import_region(file: pathlib.Path) -> Tuple[int, int]:
     """Return the index of the first import line and the last import line that precedes any other code.
 
@@ -13,7 +14,7 @@ def find_import_region(file: pathlib.Path) -> Tuple[int, int]:
     file_contents = file.read_text()
     tree = ast.parse(file_contents)
     end = start = 0
-    for node in tree.body: # only walk top level items
+    for node in tree.body:  # only walk top level items
         if isinstance(node, ast.Expr) and isinstance(node.value, ast.Str):
             continue
         if isinstance(node, ast.Import) or isinstance(node, ast.ImportFrom):
