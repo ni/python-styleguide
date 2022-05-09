@@ -146,6 +146,7 @@ def fix(
     failed_files = []
     for bad_file, errors_in_file in lint_errors_by_file.items():
         try:
+            _format.format(bad_file)
             _format_imports(file=bad_file, app_import_names=app_import_names)
             remaining_lint_errors_in_file = _utils.lint.get_errors_to_process(
                 exclude,
