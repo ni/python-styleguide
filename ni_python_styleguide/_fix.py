@@ -90,6 +90,13 @@ def _handle_multiple_import_lines(bad_file: pathlib.Path):
             print(working_line, end="")
 
 
+def _format_imports(file: pathlib.Path, app_import_names: Iterable[str]) -> None:
+    _sort_imports(file, app_import_names=app_import_names)
+    _format.format(file, "--line-length=300")  # condense any split lines
+    _handle_multiple_import_lines(file)
+    _format.format(file)
+
+
 def fix(
     exclude: str,
     app_import_names: str,
@@ -130,11 +137,7 @@ def fix(
     failed_files = []
     for bad_file, errors_in_file in lint_errors_by_file.items():
         try:
-            _format.format(bad_file)
-            _sort_imports(bad_file, app_import_names=app_import_names)
-            _format.format(bad_file, "--line-length=300")  # condense any split lines
-            _handle_multiple_import_lines(bad_file)
-            _format.format(bad_file)
+            _format_imports(file=bad_file, app_import_names=app_import_names)
             remaining_lint_errors_in_file = _utils.lint.get_errors_to_process(
                 exclude,
                 app_import_names,
