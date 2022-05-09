@@ -129,13 +129,8 @@ def fix(
 
     failed_files = []
     for bad_file, errors_in_file in lint_errors_by_file.items():
-        errors_in_file: List[_utils.lint.LintError]
         try:
             _format.format(bad_file)
-            line_to_codes_mapping = defaultdict(set)
-            for error in errors_in_file:
-                # humans talk 1-based, enumerate is 0-based
-                line_to_codes_mapping[int(error.line) - 1].add(error.code)
             _sort_imports(bad_file, app_import_names=app_import_names)
             _format.format(bad_file, "--line-length=300")  # condense any split lines
             _handle_multiple_import_lines(bad_file)
@@ -154,7 +149,6 @@ def fix(
                     extend_ignore=extend_ignore,
                     aggressive=aggressive,
                     file_or_dir=[bad_file],
-                    errors_in_file=remaining_lint_errors_in_file,
                 )
         except AttributeError as e:
             failed_files.append((bad_file, e))
