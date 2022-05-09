@@ -3,7 +3,7 @@ import logging
 import pathlib
 from collections import defaultdict
 from fnmatch import fnmatch
-from typing import List
+from typing import Iterable
 
 import isort
 
@@ -90,6 +90,22 @@ def _handle_multiple_import_lines(bad_file: pathlib.Path):
             print(working_line, end="")
 
 
+def _format_imports(file: pathlib.Path, app_import_names: Iterable[str]) -> None:
+    _sort_imports(file, app_import_names=app_import_names)
+    start_line, end_line = _utils.code_analysis.find_import_region(file)
+    file_lines = file.read_text().splitlines()
+    before = file_lines[:start_line]
+    import_lines = file_lines[start_line:end_line]
+    after = file_lines[end_line:]
+    with _utils.temp_file.multi_access_tempfile(suffix=".py") as temp_py_file:
+        temp_py_file.write_text("\n".join(import_lines))
+        _format.format(temp_py_file, "--line-length=300")  # condense any split lines
+        _handle_multiple_import_lines(temp_py_file)
+        handled_import_region = temp_py_file.read_text().splitlines()
+    file.write_text("\n".join(before + handled_import_region + after))
+    _format.format(file)
+
+
 def fix(
     exclude: str,
     app_import_names: str,
@@ -129,17 +145,9 @@ def fix(
 
     failed_files = []
     for bad_file, errors_in_file in lint_errors_by_file.items():
-        errors_in_file: List[_utils.lint.LintError]
         try:
             _format.format(bad_file)
-            line_to_codes_mapping = defaultdict(set)
-            for error in errors_in_file:
-                # humans talk 1-based, enumerate is 0-based
-                line_to_codes_mapping[int(error.line) - 1].add(error.code)
-            _sort_imports(bad_file, app_import_names=app_import_names)
-            _format.format(bad_file, "--line-length=300")  # condense any split lines
-            _handle_multiple_import_lines(bad_file)
-            _format.format(bad_file)
+            _format_imports(file=bad_file, app_import_names=app_import_names)
             remaining_lint_errors_in_file = _utils.lint.get_errors_to_process(
                 exclude,
                 app_import_names,
@@ -154,9 +162,8 @@ def fix(
                     extend_ignore=extend_ignore,
                     aggressive=aggressive,
                     file_or_dir=[bad_file],
-                    errors_in_file=remaining_lint_errors_in_file,
                 )
-        except AttributeError as e:
+        except Exception as e:
             failed_files.append((bad_file, e))
     if failed_files:
         raise Exception(
