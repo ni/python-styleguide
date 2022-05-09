@@ -125,3 +125,12 @@ def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=Fa
             "Failed to format files:\n"
             + "\n".join([f"{file}: {error}" for file, error in failed_files])
         )
+
+
+class ExceptionClassWithBadName(  # noqa N818: exception name 'ExceptionClassWithBadName' should be named with an Error suffix (auto-generated noqa)
+    Exception
+):
+
+    """Error class with a bad name."""
+
+    pass
