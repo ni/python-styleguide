@@ -79,20 +79,6 @@ def _sort_imports(file: pathlib.Path, app_import_names):
     file.write_text(output)
 
 
-def _handle_multiple_import_lines(bad_file: pathlib.Path):
-    multiline_string_checker = _utils.string_helpers.InMultiLineStringChecker(
-        lines=bad_file.read_text(encoding=_utils.DEFAULT_ENCODING).splitlines()
-    )
-    with fileinput.FileInput(files=[str(bad_file)], inplace=True) as f:
-        for line_no, line in enumerate(f):
-            working_line = line
-            if multiline_string_checker.in_multiline_string(line_no + 1):
-                print(working_line, end="")
-                continue
-            working_line = _split_imports_line(working_line)
-            print(working_line, end="")
-
-
 def _format_imports(file: pathlib.Path, app_import_names: Iterable[str]) -> None:
     _sort_imports(file, app_import_names=app_import_names)
     _format.format(file)
