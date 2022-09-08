@@ -7,8 +7,8 @@ from typing import Iterable
 
 import isort
 
-from ni_python_styleguide import _config_constants
 from ni_python_styleguide import _acknowledge_existing_errors
+from ni_python_styleguide import _config_constants
 from ni_python_styleguide import _format
 from ni_python_styleguide import _utils
 
