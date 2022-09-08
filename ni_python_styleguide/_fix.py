@@ -1,4 +1,3 @@
-import fileinput
 import logging
 import pathlib
 from collections import defaultdict
