@@ -63,10 +63,9 @@ def test_bad_codeblocks_document_lint_errors(lint_codeblock, bad_codeblock):
 
         error_codes = set(code.strip("'") for code in result.output.splitlines())
         assert error_codes
-        error_codes_not_expected = set(bad_codeblock.rule.error_codes) - error_codes
-        assert error_codes.issubset(
-            set(bad_codeblock.rule.error_codes)
-        ), f'"Bad" codeblock caused unexpected lint error - {error_codes_not_expected}'
+        expected_error_codes = set(bad_codeblock.rule.error_codes)
+        error_codes_not_expected = error_codes - expected_error_codes
+        assert error_codes.issubset(expected_error_codes), f'"Bad" codeblock caused unexpected lint error - {error_codes_not_expected}'
     else:
         # "Bad" codeblock caused a lint error, but isn't marked as automatically enforced
         result = lint_codeblock(bad_codeblock)
