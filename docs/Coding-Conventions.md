@@ -1194,6 +1194,43 @@ def sell(self, type_):
     self._do_transaction(type_)
 ```
 
+
+### [D.1.14] ❌ **DO NOT** Put a blank line after section headers 💻
+
+> 💻 This rule is enforced by error code D412
+
+```python
+# Bad - will produce D412
+class CheeseShop(object):
+    def sell(self, type_):
+        """Sell the specified type of cheese.
+
+        Args:
+
+            type_: the desired type
+        """
+        self._do_transaction(type_)
+```
+
+```python
+# Good
+class CheeseShop(object):
+    def sell(self, type_: str):
+        """Sell the specified type of cheese.
+
+        Args:
+            type_: the desired cheese type
+        """
+        self._do_transaction(type_)
+```
+
+```python
+# Best
+class CheeseShop(object):
+    def sell(self, type_: str):
+        """Sell the specified type of cheese."""
+        self._do_transaction(type_)
+```
 ---
 
 # [C] Comments
