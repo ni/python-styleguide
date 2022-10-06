@@ -17,9 +17,29 @@ jobs:
     runs-on: ubuntu-latest
     needs: org-check
     steps:
-      - uses: actions/checkout@master
-      - uses: harupy/comment-on-pr@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@main
+      - name: Comment on PR
+        uses: thollander/actions-comment-pull-request@v1
         with:
-          filename: Notify-Convention-Change.md
+          message: |
+            Thank you for contributing! :wave:
+
+            Since this changes the Coding Conventions, I'll @-mention the appropriate NI engineers.
+            @alejandro5042
+            @alexweav
+            @DavidCurtiss
+            @irwand
+            @jryckman
+            @kcuzner
+            @mshafer-NI
+            @neilvana
+            @nethrasuresh
+            @pakdev
+            @rick-morrow
+            @rtzoeller
+            @sbethur
+            @stick152
+            @Adithyak1998
+            @innagarc
+            @ShibaniRout
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
