@@ -4,6 +4,11 @@ on:
   release:
     types: [released]
 
+env:
+  # Versions are also listed in PR.yml
+  POETRY_VERSION: 1.1.6
+  PYTHON_VERSION: 3.9  # Use latest
+
 jobs:
   publish_package:
     name: Publish Package
@@ -11,40 +16,31 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: ${{ github.event.release.target_commitish }} # This is the branch the release was created from. Normally main/master, but can be a dev branch
+          ref: ${{ github.event.release.target_commitish }} # This is the branch the release was created from. Normally main, but can be a dev branch
           persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
       - uses: actions/setup-python@v2
         with:
-          python-version: 3.6
-
-      - name: Set up Poetry cache for Python dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pypoetry
-          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: ${{ runner.os }}-poetry-
-
+          python-version: ${{ env.PYTHON_VERSION }}
       - uses: Gr1N/setup-poetry@v4
         with:
-          poetry-version: 1.0.0
-
+          poetry-version: ${{ env.POETRY_VERSION }}
       # @TODO: This is a workaround for there not being a way to check the lock file
       #   See: https://github.com/python-poetry/poetry/issues/453
-      #   NOTE: This isn't ideal as it using the system Python and dirtying the system
-      #     Python libraries.
       - name: Check for lock changes
         run: |
-          PYTHONPATH="${PYTHONPATH}:${HOME}/.poetry/lib" \
+          PYTHONPATH="${PYTHONPATH}:${HOME}/.poetry/lib:${HOME}/.poetry/lib/poetry/_vendor/py${{ env.PYTHON_VERSION }}" \
           python -c "from poetry.factory import Factory; \
             locker = Factory().create_poetry('.').locker; \
             exit(0) if locker.is_locked() and locker.is_fresh() else exit(1)" \
             && echo 'OK'
-
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
       - name: Install the Package
         run: poetry install
-
       - name: Lint the Code
         run: poetry run ni-python-styleguide lint
 
@@ -57,7 +53,7 @@ jobs:
           poetry version patch
 
       - name: Build Python package and publish to PyPI
-        if: ${{ github.event.release.target_commitish == 'master' }}
+        if: ${{ github.event.release.target_commitish == 'main' }}
         run: |
           poetry publish --build --username __token__ --password ${{ secrets.PYPI_TOKEN}}
 
@@ -66,7 +62,7 @@ jobs:
           poetry version prepatch
 
       - name: Commit files
-        if: ${{ github.event.release.target_commitish == 'master' }}
+        if: ${{ github.event.release.target_commitish == 'main' }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -74,7 +70,7 @@ jobs:
           git commit -m "Bump package version" -a
 
       - name: Push changes
-        if: ${{ github.event.release.target_commitish == 'master' }}
+        if: ${{ github.event.release.target_commitish == 'main' }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.ADMIN_PAT }}

@@ -6,8 +6,16 @@ on:
       - docs/Coding-Conventions.md
 
 jobs:
+  org-check:
+    name: Check GitHub Organization
+    if: github.repository_owner == 'ni'
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Noop
+        run: "true"
   notify:
     runs-on: ubuntu-latest
+    needs: org-check
     steps:
       - uses: actions/checkout@master
       - uses: harupy/comment-on-pr@master

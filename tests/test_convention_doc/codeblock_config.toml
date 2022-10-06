@@ -1,0 +1,3 @@
+# ni-python-styleguide config used for the codeblock tests
+[tool.ni-python-styleguide]
+application-import-names = "my_app"
