@@ -6,7 +6,6 @@ NOTE: This guide is a Work In Progress!
 
 # Purpose of coding conventions
 
-
 Coding conventions serve the following purposes:
 
 - They create a consistent look to the code, so that readers can focus on content, not layout.
