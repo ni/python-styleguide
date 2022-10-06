@@ -8,7 +8,7 @@ import re
 class _Region(object):
     @classmethod
     def from_text(cls, text, *, parent=None, header_depth=1):
-        """Returns the region from the given convention text.
+        """Return the region from the given convention text.
 
         Args:
             text: (forwarded to the object constructor)
@@ -28,7 +28,7 @@ class _Region(object):
         )
 
     def __init__(self, text, *, parent=None):
-        """Constructs the region from the given convention text.
+        """Construct the region from the given convention text.
 
         Args:
             text: The textual contents of the region.
@@ -72,7 +72,7 @@ class SubSection(_Region):
     """
 
     def __init__(self, text, **kwargs):
-        """Constructs the subsection.
+        """Construct the subsection.
 
         See help(_Region.__init__) for argument information.
         """
@@ -91,7 +91,7 @@ class Rule(_Region):
     """
 
     def __init__(self, text, **kwargs):
-        """Constructs the rule.
+        """Construct the rule.
 
         See help(_Region.__init__) for argument information.
         """
@@ -106,7 +106,7 @@ class Rule(_Region):
 
     @staticmethod
     def _find_codeblocks(text):
-        r"""Finds codeblocks in given text, yielding match objects.
+        r"""Find codeblocks in given text, yielding match objects.
 
         >>> [match.groupdict() for match in Rule._find_codeblocks('```x=5```')]
         [{'language': None, 'description': None, 'body': 'x=5'}]
@@ -136,7 +136,7 @@ class Rule(_Region):
 
     @property
     def error_codes(self):
-        """Returns the error codes this rule is enforced by if any, None otherwise."""
+        """Return the error codes this rule is enforced by if any, None otherwise."""
         match = re.search(r"\n> 💻 This rule is enforced by error codes? (.*?)\n", self.body_text)
         if match:
             return [error_code.strip("` ") for error_code in match[1].split(",")]
@@ -147,7 +147,7 @@ class Codeblock(object):
     """A codeblock in the convention document."""
 
     def __init__(self, rule, language, description, contents):
-        """Constructs the codeblock.
+        """Construct the codeblock.
 
         `rule` should be the Rule this codeblock is under.
         `language` should be the programming language specified for the codeblock.

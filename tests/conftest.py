@@ -9,14 +9,14 @@ from ni_python_styleguide.__main__ import main as styleguide_main
 
 
 def pytest_collection_modifyitems(items):
-    """Ignores deprecation warnings in all tests."""
+    """Ignore deprecation warnings in all tests."""
     for item in items:
         item.add_marker(pytest.mark.filterwarnings("ignore::DeprecationWarning"))
 
 
 @pytest.fixture
 def styleguide(monkeypatch, cli_runner):
-    """Runs the styleguide when executed.
+    """Fixture which runs the styleguide when executed.
 
     Args passed to the function are equivalent to CLI args,
     and are automatically stringified.
@@ -55,7 +55,7 @@ def styleguide_command(styleguide, chdir, tmp_path):
 
 @pytest.fixture
 def chdir():
-    """Changes the current working directory when executed."""
+    """Fixture which changes the current working directory when executed."""
     cwd = os.getcwd()
     yield os.chdir
     os.chdir(cwd)
