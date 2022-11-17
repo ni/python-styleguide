@@ -986,6 +986,8 @@ def go_shopping():
 
 We recommend (and internally use) the [Google docstring format](https://google.github.io/styleguide/pyguide.html#383-functions-and-methods) but you can choose any format so long as you are consistent.
 
+**Note**: Through the use of the [Sphinx napoleon](https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html#getting-started) extension, Sphinx docs generation can interpret [Google style docstrings](https://google.github.io/styleguide/pyguide.html#383-functions-and-methods).
+
 ### [D.1.2] ✔️ **DO** List exported modules and subpackages in a package's docstring
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
