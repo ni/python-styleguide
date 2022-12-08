@@ -22,7 +22,7 @@ black = ">=22.3"
 # These dependencies were selected because they are already used by black.
 click = ">=7.1.2"
 toml = ">=0.10.1"
-isort = {version=">=5.10", python=">=3.6,<4"}
+isort = ">=5.10"
 
 
 # flake8 plugins should be listed here (in alphabetical order)
