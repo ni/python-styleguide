@@ -15,7 +15,7 @@ _module_logger = logging.getLogger(__name__)
 
 
 def _split_imports_line(lines: str, *_, **__):
-    r"""Split multi-import lines to multiple lines.
+    r"""Splits multi-import lines to multiple lines.
 
     >>> _split_imports_line("import os, collections\n")
     'import os\nimport collections\n'

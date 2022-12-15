@@ -38,7 +38,7 @@ def _read_pyproject_toml(ctx, param, value):
 
 
 def _get_application_import_names(pyproject):
-    """Return the application package name the config."""
+    """Returns the application package name the config."""
     # Otherwise override with what was specified
     app_name = (
         pyproject.get("tool", {})

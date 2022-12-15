@@ -6,7 +6,7 @@ from ni_python_styleguide import _lint
 
 
 def get_errors_to_process(exclude, app_import_names, extend_ignore, file_or_dir, excluded_errors):
-    """Get lint errors to process."""
+    """Gets lint errors to process."""
     lint_errors = _lint.get_lint_output(
         format=None,
         qs_or_vs=None,
@@ -26,7 +26,7 @@ LintError = namedtuple("LintError", ["file", "line", "column", "code", "explanat
 
 def parse(line):
     r"""
-    Parse line into :class:`LintError`.
+    Parses line into :class:`LintError`.
 
     >>> parse(r'source\arfile.py:55:16: BLK100 Black would make changes.')
     LintError(file='source\\arfile.py', line=55, column=16, code='BLK100', explanation='Black would make changes.')
@@ -63,7 +63,7 @@ class Parser:
         )
 
     def parse(self, line):
-        """Parse `line` and return a :class:`LintError`.
+        """Parses `line` and return a :class:`LintError`.
 
         :param line: the line to parse
         :return: lint error as metada object

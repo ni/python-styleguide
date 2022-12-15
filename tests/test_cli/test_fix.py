@@ -12,7 +12,7 @@ TEST_CASES = [x for x in TEST_CASE_DIR.iterdir() if x.is_dir() and (x / "input.p
 
 @pytest.fixture()
 def example_pyproject_file(tmp_path):
-    """Provide the current projects pyproject.toml file to tests as an example."""
+    """Provides the current project's pyproject.toml file to tests as an example."""
     in_file = next(
         (
             parent / "pyproject.toml"
@@ -30,7 +30,7 @@ def example_pyproject_file(tmp_path):
 def test_given_bad_input__fix__produces_expected_output_simple(
     test_dir, snapshot, tmp_path, styleguide_command, example_pyproject_file
 ):
-    """Test that suppresion yields expected_output file."""
+    """Tests that suppresion yields expected_output file."""
     in_file = test_dir / "input.py"
     test_file = tmp_path / "input.py"
     shutil.copyfile(in_file, test_file)
@@ -47,7 +47,7 @@ def test_given_bad_input__fix__produces_expected_output_simple(
 def test_given_bad_input__fix__produces_expected_output_aggressive(
     test_dir, snapshot, tmp_path, styleguide_command, example_pyproject_file
 ):
-    """Test that suppresion yields expected_output file."""
+    """Tests that suppresion yields expected_output file."""
     in_file = test_dir / "input.py"
     test_file = tmp_path / "input.py"
     shutil.copyfile(in_file, test_file)
