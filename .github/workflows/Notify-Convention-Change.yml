@@ -4,7 +4,10 @@ on:
   pull_request_target:
     paths:
       - docs/Coding-Conventions.md
-
+    types:
+      - opened
+      - reopened
+      
 jobs:
   org-check:
     name: Check GitHub Organization
