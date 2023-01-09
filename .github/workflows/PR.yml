@@ -12,7 +12,7 @@ on:
       - .github/workflows/PR.yml
 
 env:
-  POETRY_VERSION: 1.1.15
+  POETRY_VERSION: 1.2.2
 
 jobs:
   checks:
@@ -31,11 +31,7 @@ jobs:
       #   See: https://github.com/python-poetry/poetry/issues/453
       - name: Check for lock changes
         run: |
-          PYTHONPATH="${PYTHONPATH}:${HOME}/.poetry/lib:${HOME}/.poetry/lib/poetry/_vendor/py${{ env.PYTHON_VERSION }}" \
-          python -c "from poetry.factory import Factory; \
-            locker = Factory().create_poetry('.').locker; \
-            exit(0) if locker.is_locked() and locker.is_fresh() else exit(1)" \
-            && echo 'OK'
+          poetry lock --check
       - uses: actions/cache@v2
         with:
           path: ~/.cache/pypoetry/virtualenvs
