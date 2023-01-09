@@ -50,14 +50,9 @@ ni-python-styleguide = 'ni_python_styleguide._cli:main'
 
 [tool.black]
 line-length = 100
-exclude = '''
+extend-exclude = '''
 (
-  /(
-      \.eggs         # exclude a few common directories in the
-    | \.git          # root of the project
-    | \.venv
-  )/
-  | /.*__snapshots/.*output\.py # exclude the simple snapshot outputs
+/.*__snapshots/.*output\.py # exclude the simple snapshot outputs
 )
 '''
 
