@@ -7,14 +7,16 @@ from ni_python_styleguide import _lint
 
 def get_errors_to_process(exclude, app_import_names, extend_ignore, file_or_dir, excluded_errors):
     """Get lint errors to process."""
-    lint_errors = _lint.get_lint_output(
-        format=None,
-        qs_or_vs=None,
-        exclude=exclude,
-        app_import_names=app_import_names,
-        extend_ignore=extend_ignore,
-        file_or_dir=file_or_dir,
-    ).splitlines()
+    lint_errors = sorted(
+        _lint.get_lint_output(
+            format=None,
+            qs_or_vs=None,
+            exclude=exclude,
+            app_import_names=app_import_names,
+            extend_ignore=extend_ignore,
+            file_or_dir=file_or_dir,
+        ).splitlines()
+    )
     parsed_errors = map(parse, lint_errors)
     parsed_errors = list(filter(None, parsed_errors))
     lint_errors_to_process = [error for error in parsed_errors if error.code not in excluded_errors]

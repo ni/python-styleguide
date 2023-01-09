@@ -3,7 +3,7 @@ name = "ni-python-styleguide"
 # The -alpha.0 here denotes a source based version
 # This is removed when released through the Publish-Package.yml GitHub action
 # Official PyPI releases follow Major.Minor.Patch
-version = "0.2.0-alpha.0"
+version = "0.3.0-alpha.0"
 description = "NI's internal and external Python linter rules and plugins"
 authors = ["NI <opensource@ni.com>"]
 readme = "README.md" # apply the repo readme to the package as well
@@ -15,7 +15,7 @@ include = ["ni_python_styleguide/config.toml"]
 python = "^3.7"
 
 # Tools we aggregate
-flake8 = "^3.8"  # flake8 4.x broke the test
+flake8 = "^5.0"
 black = ">=22.3, !=22.10.0"  # https://github.com/psf/black/issues/3312
 
 # Additional support libraries
@@ -50,14 +50,9 @@ ni-python-styleguide = 'ni_python_styleguide._cli:main'
 
 [tool.black]
 line-length = 100
-exclude = '''
+extend-exclude = '''
 (
-  /(
-      \.eggs         # exclude a few common directories in the
-    | \.git          # root of the project
-    | \.venv
-  )/
-  | /.*__snapshots/.*output\.py # exclude the simple snapshot outputs
+/.*__snapshots/.*output\.py # exclude the simple snapshot outputs
 )
 '''
 
