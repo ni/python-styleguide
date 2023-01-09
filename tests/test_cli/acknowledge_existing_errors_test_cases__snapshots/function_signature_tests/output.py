@@ -70,7 +70,7 @@ def method_withBadName_with_parameters_on_multiple_lines(x, y):  # noqa N802: fu
     return x + y
 
 
-def method_withBadName_with_bad_params_on_single_line(myBadlyNamedParam, my_other_Bad_name):  # noqa N802: function name 'method_withBadName_with_bad_params_on_single_line' should be lowercase (auto-generated noqa)  # noqa N803: argument name 'myBadlyNamedParam' should be lowercase (auto-generated noqa)
+def method_withBadName_with_bad_params_on_single_line(myBadlyNamedParam, my_other_Bad_name):  # noqa N803: argument name 'myBadlyNamedParam' should be lowercase (auto-generated noqa)  # noqa N802: function name 'method_withBadName_with_bad_params_on_single_line' should be lowercase (auto-generated noqa)
     """Provide parameters with bad names on single line."""
     return myBadlyNamedParam + my_other_Bad_name
 
@@ -90,7 +90,7 @@ def method_withBadName_with_bad_params_on_multiple_lines_2(  # noqa N802: functi
     return myBadlyNamedParam + my_other_Bad_name
 
 
-def method_withBadName_andParams(my_normal_param, myBadlyNamedParam, my_other_Bad_param):  # noqa N802: function name 'method_withBadName_andParams' should be lowercase (auto-generated noqa)  # noqa N803: argument name 'myBadlyNamedParam' should be lowercase (auto-generated noqa)
+def method_withBadName_andParams(my_normal_param, myBadlyNamedParam, my_other_Bad_param):  # noqa N803: argument name 'myBadlyNamedParam' should be lowercase (auto-generated noqa)  # noqa N802: function name 'method_withBadName_andParams' should be lowercase (auto-generated noqa)
     """Provide example where black will want to split out result."""
     return 5 + 7
 
