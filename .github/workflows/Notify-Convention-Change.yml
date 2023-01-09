@@ -7,7 +7,7 @@ on:
     types:
       - opened
       - reopened
-      
+
 jobs:
   org-check:
     name: Check GitHub Organization
