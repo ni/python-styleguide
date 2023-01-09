@@ -1,6 +1,6 @@
 """Linting methods."""
 import contextlib
-from io import StringIO
+import io
 
 import flake8.main.application
 
@@ -33,9 +33,11 @@ def lint(qs_or_vs, exclude, app_import_names, format, extend_ignore, file_or_dir
 #  - but VSCode did not properly identify the wrapped method's signature :(
 def get_lint_output(qs_or_vs, exclude, app_import_names, format, extend_ignore, file_or_dir) -> str:
     "Return the output from running the linter."
-    capture = StringIO()
+    capture = io.TextIOWrapper(io.BytesIO())
     with contextlib.redirect_stdout(capture):
         try:
             lint(qs_or_vs, exclude, app_import_names, format, extend_ignore, file_or_dir)
         except _Flake8Error:
             pass
+    capture.seek(0)
+    return capture.read()
