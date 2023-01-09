@@ -6,8 +6,9 @@ import toml
 
 from ni_python_styleguide import _acknowledge_existing_errors
 from ni_python_styleguide import _fix
-from ni_python_styleguide import _lint
 from ni_python_styleguide import _Flake8Error
+from ni_python_styleguide import _lint
+
 
 def _qs_or_vs(verbosity):
     if verbosity != 0:
@@ -129,15 +130,15 @@ def lint(obj, format, extend_ignore, file_or_dir):
     """Lint the file(s)/directory(s) given."""  # noqa: D4
     try:
         _lint.lint(
-                qs_or_vs=_qs_or_vs(obj["VERBOSITY"]),
-                exclude=obj["EXCLUDE"],
-                app_import_names=obj["APP_IMPORT_NAMES"],
-                format=format,
-                extend_ignore=extend_ignore,
-                file_or_dir=file_or_dir,
-            )
+            qs_or_vs=_qs_or_vs(obj["VERBOSITY"]),
+            exclude=obj["EXCLUDE"],
+            app_import_names=obj["APP_IMPORT_NAMES"],
+            format=format,
+            extend_ignore=extend_ignore,
+            file_or_dir=file_or_dir,
+        )
     except _Flake8Error:
-        sys.exit(-1) # exit without additional output
+        sys.exit(-1)  # exit without additional output
 
 
 @main.command()
