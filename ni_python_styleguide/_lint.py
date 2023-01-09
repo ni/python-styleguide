@@ -5,6 +5,7 @@ from io import StringIO
 import flake8.main.application
 
 from ni_python_styleguide import _config_constants
+from ni_python_styleguide import _Flake8Error
 
 
 def lint(qs_or_vs, exclude, app_import_names, format, extend_ignore, file_or_dir):
@@ -24,7 +25,8 @@ def lint(qs_or_vs, exclude, app_import_names, format, extend_ignore, file_or_dir
         *[str(p) for p in file_or_dir],
     ]
     app.run(list(filter(bool, args)))
-    app.exit()
+    if app.exit_code() != 0:
+        raise _Flake8Error(app.exit_code())
 
 
 # Note: tried to use functools.wraps
@@ -35,9 +37,5 @@ def get_lint_output(qs_or_vs, exclude, app_import_names, format, extend_ignore, 
     with contextlib.redirect_stdout(capture):
         try:
             lint(qs_or_vs, exclude, app_import_names, format, extend_ignore, file_or_dir)
-        except SystemExit as e:
-            if e.code in (True, 0):
-                pass  # the flake8 app wants to always SystemExit :(
-            else:
-                raise
-    return capture.getvalue()
+        except _Flake8Error:
+            pass
