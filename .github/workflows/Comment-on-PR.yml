@@ -1,8 +1,9 @@
 on:
   pull_request_target:
     paths:
-      - '*'
-      - '!docs/Coding-Conventions.md'
+    types:
+      - opened
+      - reopened
 
 jobs:
   comment_on_pr:
