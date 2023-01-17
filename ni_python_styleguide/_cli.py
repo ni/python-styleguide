@@ -1,10 +1,12 @@
 import pathlib
+import sys
 
 import click
 import toml
 
 from ni_python_styleguide import _acknowledge_existing_errors
 from ni_python_styleguide import _fix
+from ni_python_styleguide import _Flake8Error
 from ni_python_styleguide import _lint
 
 
@@ -126,14 +128,17 @@ def main(ctx, verbose, quiet, config, exclude, extend_exclude):
 @click.pass_obj
 def lint(obj, format, extend_ignore, file_or_dir):
     """Lint the file(s)/directory(s) given."""  # noqa: D4
-    _lint.lint(
-        qs_or_vs=_qs_or_vs(obj["VERBOSITY"]),
-        exclude=obj["EXCLUDE"],
-        app_import_names=obj["APP_IMPORT_NAMES"],
-        format=format,
-        extend_ignore=extend_ignore,
-        file_or_dir=file_or_dir,
-    )
+    try:
+        _lint.lint(
+            qs_or_vs=_qs_or_vs(obj["VERBOSITY"]),
+            exclude=obj["EXCLUDE"],
+            app_import_names=obj["APP_IMPORT_NAMES"],
+            format=format,
+            extend_ignore=extend_ignore,
+            file_or_dir=file_or_dir,
+        )
+    except _Flake8Error:
+        sys.exit(-1)  # exit without additional output
 
 
 @main.command()

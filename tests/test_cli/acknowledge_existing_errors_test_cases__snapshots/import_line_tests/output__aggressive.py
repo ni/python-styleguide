@@ -1,7 +1,7 @@
 """example of a python file with linter errors.
 """
 
-import pathlib, glob  # noqa F401: 'pathlib' imported but unused (auto-generated noqa)  # noqa E401: multiple imports on one line (auto-generated noqa)
+import pathlib, glob  # noqa E401: multiple imports on one line (auto-generated noqa)  # noqa F401: 'glob' imported but unused (auto-generated noqa)
 import os  # noqa I100: Import statements are in the wrong order. 'import os' should be before 'import pathlib, glob' (auto-generated noqa)
 from os import path  # noqa F401: 'os.path' imported but unused (auto-generated noqa)
 from os.path import *  # noqa F403: 'from os.path import *' used; unable to detect undefined names (auto-generated noqa)

@@ -4,6 +4,9 @@ on:
   pull_request_target:
     paths:
       - docs/Coding-Conventions.md
+    types:
+      - opened
+      - reopened
 
 jobs:
   org-check:
@@ -26,7 +29,6 @@ jobs:
 
             Since this changes the Coding Conventions, I'll @-mention the appropriate NI engineers.
             @alejandro5042
-            @alexweav
             @DavidCurtiss
             @irwand
             @jryckman
@@ -38,6 +40,7 @@ jobs:
             @rtzoeller
             @sbethur
             @stick152
+            @tkrebes
             @Adithyak1998
             @innagarc
             @ShibaniRout
