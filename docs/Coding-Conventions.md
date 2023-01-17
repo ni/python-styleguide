@@ -1076,7 +1076,7 @@ The summary line should be on the same line as the opening quotes.
 ```python
 # Bad - will produce D205
 def sell(type_):
-    """Sell the specified type of cheese.
+    """Sells the specified type of cheese.
     Will throw an OutOfStockException if the specified type of cheese is out of stock.
     """
 ```
@@ -1085,7 +1085,7 @@ def sell(type_):
 # Bad - will produce D212
 def sell(type_):
     """
-    Sell the specified type of cheese.
+    Sells the specified type of cheese.
 
     Will throw an OutOfStockException if the specified type of cheese is out of stock.
     """
@@ -1094,7 +1094,7 @@ def sell(type_):
 ```python
 # Good
 def sell(type_):
-    """Sell the specified type of cheese.
+    """Sells the specified type of cheese.
 
     Will throw an OutOfStockException if the specified type of cheese is out of stock.
     """
@@ -1106,7 +1106,7 @@ class CheeseShop(object):
     """Finest cheese shop in the district, offering a wide variety of cheeses."""
 
     def sell(self, type_):
-        """Sell the specified type of cheese."""
+        """Sells the specified type of cheese."""
 ```
 
 ### [D.1.11] ✔️ **DO** Put closing `"""` on its own line for multiline docstrings 💻
@@ -1123,7 +1123,7 @@ class CheeseShop(object):
     Cheeses are sold first-come-first-served, and can run out of stock rather quickly."""
 
     def sell(self, type_):
-        """Sell the specified type of cheese.
+        """Sells the specified type of cheese.
 
         Will throw an OutOfStockException if the specified type of cheese is out of stock."""
 ```
@@ -1137,7 +1137,7 @@ class CheeseShop(object):
     """
 
     def sell(self, type_):
-        """Sell the specified type of cheese.
+        """Sells the specified type of cheese.
 
         Will throw an OutOfStockException if the specified type of cheese is out of stock.
         """
@@ -1163,7 +1163,7 @@ class CheeseShop(object):
 class CheeseShop(object):
     def sell(self, type_):
 
-        """Sell the specified type of cheese."""
+        """Sells the specified type of cheese."""
 ```
 
 ```python
@@ -1172,7 +1172,7 @@ class CheeseShop(object):
     """Finest cheese shop in the district, offering a wide variety of cheeses."""
 
     def sell(self, type_):
-        """Sell the specified type of cheese."""
+        """Sells the specified type of cheese."""
 ```
 
 ### [D.1.13] ❌ **DO NOT** Put a blank line after a one line function docstring 💻
@@ -1184,7 +1184,7 @@ class CheeseShop(object):
 ```python
 # Bad
 def sell(self, type_):
-    """Sell the specified type of cheese."""
+    """Sells the specified type of cheese."""
 
     self._do_transaction(type_)
 ```
@@ -1192,7 +1192,7 @@ def sell(self, type_):
 ```python
 # Good
 def sell(self, type_):
-    """Sell the specified type of cheese."""
+    """Sells the specified type of cheese."""
     self._do_transaction(type_)
 ```
 
@@ -1205,7 +1205,7 @@ def sell(self, type_):
 # Bad - will produce D412
 class CheeseShop(object):
     def sell(self, type_):
-        """Sell the specified type of cheese.
+        """Sells the specified type of cheese.
 
         Args:
 
@@ -1218,7 +1218,7 @@ class CheeseShop(object):
 # Good
 class CheeseShop(object):
     def sell(self, type_: str):
-        """Sell the specified type of cheese.
+        """Sells the specified type of cheese.
 
         Args:
             type_: the desired cheese type
@@ -1230,7 +1230,7 @@ class CheeseShop(object):
 # Best
 class CheeseShop(object):
     def sell(self, type_: str):
-        """Sell the specified type of cheese."""
+        """Sells the specified type of cheese."""
         self._do_transaction(type_)
 ```
 ---
