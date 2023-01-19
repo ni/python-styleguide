@@ -4,7 +4,7 @@ from typing import Tuple
 
 
 def find_import_region(file: pathlib.Path) -> Tuple[int, int]:
-    """Return the index of the first last import line that precedes any other code.
+    """Returns the index of the first last import line that precedes any other code.
 
     Note: will not handle try/except imports
 
