@@ -1,7 +1,7 @@
 on:
   pull_request:
     paths-ignore:
-      - "!docs/Coding-Conventions.md"
+      - "docs/Coding-Conventions.md"
     types:
       - opened
       - reopened
