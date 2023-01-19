@@ -23,11 +23,11 @@ class InMultiLineStringChecker:
 
     @property
     def values(self):
-        """Return the values for the file."""
+        """The values for the file."""
         return self._values
 
     def in_multiline_string(self, lineno):
-        """Check if lineno is in a multiline string."""
+        """Checks if lineno is in a multiline string."""
         return self._values[lineno - 1]  # 0 indexed, but we number files 1 indexed
 
     @staticmethod

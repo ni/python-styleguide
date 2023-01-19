@@ -35,7 +35,7 @@ def _filter_suppresion_from_line(line: str):
 def acknowledge_lint_errors(
     exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=False
 ):
-    """Add a "noqa" comment for each of existing errors (unless excluded).
+    """Adds a "noqa" comment for each of existing errors (unless excluded).
 
     Excluded error (reason):
     BLK100 - run black
@@ -94,7 +94,7 @@ def acknowledge_lint_errors(
 
 
 def remove_auto_suppressions_from_file(file: pathlib.Path):
-    """Remove auto-suppressions from file."""
+    """Removes auto-suppressions from file."""
     lines = file.read_text(encoding=_utils.DEFAULT_ENCODING).splitlines()
     stripped_lines = [_filter_suppresion_from_line(line) for line in lines]
     file.write_text("\n".join(stripped_lines) + "\n", encoding=_utils.DEFAULT_ENCODING)

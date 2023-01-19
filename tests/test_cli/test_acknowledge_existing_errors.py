@@ -14,7 +14,7 @@ TEST_CASE_DIR = (
 def test_given_bad_input_produces_expected_output_simple(
     test_dir, snapshot, tmp_path, styleguide_command
 ):
-    """Test that suppresion yields expected_output file."""
+    """Tests that suppresion yields expected_output file."""
     in_file = test_dir / "input.py"
     test_file = tmp_path / "input.py"
     shutil.copyfile(in_file, test_file)
@@ -31,7 +31,7 @@ def test_given_bad_input_produces_expected_output_simple(
 def test_given_bad_input_produces_expected_output_aggressive(
     test_dir, snapshot, tmp_path, styleguide_command
 ):
-    """Test that suppresion yields expected_output file."""
+    """Tests that suppresion yields expected_output file."""
     in_file = test_dir / "input.py"
     test_file = tmp_path / "input.py"
     shutil.copyfile(in_file, test_file)
@@ -60,7 +60,7 @@ def test_given_bad_input_produces_expected_output_aggressive(
 def test_given_suppressed_file_linter_does_not_error(
     test_dir, test_file, additional_args, styleguide_command, chdir
 ):
-    """Test linter does not error on output from suppresion."""
+    """Tests linter does not error on output from suppresion."""
     chdir(test_dir)
 
     output = styleguide_command(command="lint", command_args=[test_file, *additional_args])

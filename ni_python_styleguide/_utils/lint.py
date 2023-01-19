@@ -28,7 +28,7 @@ LintError = namedtuple("LintError", ["file", "line", "column", "code", "explanat
 
 def parse(line):
     r"""
-    Parse line into :class:`LintError`.
+    Parses line into :class:`LintError`.
 
     >>> parse(r'source\arfile.py:55:16: BLK100 Black would make changes.')
     LintError(file='source\\arfile.py', line=55, column=16, code='BLK100', explanation='Black would make changes.')
@@ -65,7 +65,7 @@ class Parser:
         )
 
     def parse(self, line):
-        """Parse `line` and return a :class:`LintError`.
+        """Parses `line` and return a :class:`LintError`.
 
         :param line: the line to parse
         :return: lint error as metada object

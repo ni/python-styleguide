@@ -8,10 +8,12 @@ import re
 class _Region(object):
     @classmethod
     def from_text(cls, text, *, parent=None, header_depth=1):
-        """Return the region from the given convention text.
+        """Returns the region from the given convention text.
 
-        `parent` is forwarded to the constructor.
-        `header_depth` specifies which Markdown header depth to identify the section by.
+        Args:
+            text: (forwarded to the object constructor)
+            parent: (forwarded to the object constructor)
+            header_depth: specifies which Markdown header depth to identify the section by.
         """
         header_marker = f"\\n{'#'* header_depth} \\["
 
@@ -25,9 +27,11 @@ class _Region(object):
         )
 
     def __init__(self, text, *, parent=None):
-        """Construct the region from the given convention text.
+        """Constructs the region from the given convention text.
 
-        `parent` can be optionally specified and should be a region which this region is a child of.
+        Args:
+            text: The textual contents of the region.
+            parent: Optional; A region which this region is a child of.
         """
         if parent:
             self.parent = parent
@@ -46,7 +50,7 @@ class Section(_Region):
     """
 
     def __init__(self, text, **kwargs):
-        """Construct the section.
+        """Constructs the section.
 
         See help(_Region.__init__) for argument information.
         """
@@ -66,7 +70,7 @@ class SubSection(_Region):
     """
 
     def __init__(self, text, **kwargs):
-        """Construct the subsection.
+        """Constructs the subsection.
 
         See help(_Region.__init__) for argument information.
         """
@@ -85,7 +89,7 @@ class Rule(_Region):
     """
 
     def __init__(self, text, **kwargs):
-        """Construct the rule.
+        """Constructs the rule.
 
         See help(_Region.__init__) for argument information.
         """
@@ -100,7 +104,7 @@ class Rule(_Region):
 
     @staticmethod
     def _find_codeblocks(text):
-        r"""Find codeblocks in given text, yielding match objects.
+        r"""Finds codeblocks in given text, yielding match objects.
 
         >>> [match.groupdict() for match in Rule._find_codeblocks('```x=5```')]
         [{'language': None, 'description': None, 'body': 'x=5'}]
@@ -118,6 +122,8 @@ class Rule(_Region):
         >>> [match.groupdict() for match in Rule._find_codeblocks('```\n# Bad\nx=5```')]
         [{'language': None, 'description': 'Bad', 'body': 'x=5'}]
 
+        Args:
+            text: The text to find codeblocks in.
         """
         yield from re.finditer(
             r"```((?P<language>[a-z]+)\n)?(\n?# (?P<description>.*?)\n)?(?P<body>.*?)```",
@@ -127,7 +133,7 @@ class Rule(_Region):
 
     @property
     def error_codes(self):
-        """Return the error codes this rule is enforced by if any, None otherwise."""
+        """Returns the error codes this rule is enforced by if any, None otherwise."""
         match = re.search(r"\n> 💻 This rule is enforced by error codes? (.*?)\n", self.body_text)
         if match:
             return [error_code.strip("` ") for error_code in match[1].split(",")]
@@ -138,7 +144,7 @@ class Codeblock(object):
     """A codeblock in the convention document."""
 
     def __init__(self, rule, language, description, contents):
-        """Construct the codeblock.
+        """Constructs the codeblock.
 
         `rule` should be the Rule this codeblock is under.
         `language` should be the programming language specified for the codeblock.
