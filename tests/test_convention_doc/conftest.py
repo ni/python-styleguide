@@ -7,19 +7,19 @@ from tests.test_convention_doc import doctypes
 
 @pytest.fixture
 def sections():
-    """Fixture with each convention section."""
+    """All convention sections."""
     return doctypes.SECTIONS
 
 
 @pytest.fixture
 def subsections():
-    """Fixture with each convention subsection."""
+    """All convention subsections."""
     return doctypes.SUBSECTIONS
 
 
 @pytest.fixture
 def rules():
-    """Fixture with each convention rule."""
+    """All convention rules."""
     return doctypes.RULES
 
 
@@ -28,7 +28,7 @@ def rules():
     params=[pytest.param(section, id=section.identifier) for section in doctypes.SECTIONS],
 )
 def section(request):
-    """Parametrized fixture of each convention section."""
+    """Each convention section."""
     return request.param
 
 
@@ -39,7 +39,7 @@ def section(request):
     ],
 )
 def subsection(request):
-    """Parametrized fixture of each convention subsection."""
+    """Each convention subsection."""
     return request.param
 
 
@@ -48,7 +48,7 @@ def subsection(request):
     params=[pytest.param(rule, id=rule.identifier) for rule in doctypes.RULES],
 )
 def rule(request):
-    """Parametrized fixture of each convention rule."""
+    """Each convention rule."""
     return request.param
 
 
@@ -61,7 +61,7 @@ def rule(request):
     ],
 )
 def codeblock(request):
-    """Parametrized fixture of each convention codeblock."""
+    """Each convention codeblock."""
     return request.param
 
 
@@ -75,7 +75,7 @@ def codeblock(request):
     ],
 )
 def bad_codeblock(request):
-    """Parametrized fixture of each convention codeblock marked "Bad"."""
+    """Each convention codeblock marked "Bad"."""
     return request.param
 
 
@@ -89,7 +89,7 @@ def bad_codeblock(request):
     ],
 )
 def good_codeblock(request):
-    """Parametrized fixture of each convention codeblock marked "Good"."""
+    """Each convention codeblock marked "Good"."""
     return request.param
 
 
@@ -103,5 +103,5 @@ def good_codeblock(request):
     ],
 )
 def best_codeblock(request):
-    """Parametrized fixture of each convention codeblock marked "Best"."""
+    """Each convention codeblock marked "Best"."""
     return request.param

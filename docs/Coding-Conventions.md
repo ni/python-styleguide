@@ -982,6 +982,12 @@ def go_shopping():
 
 ℹ️ You can document a package by documenting the module docstring of the package directory's `__init__.py`
 
+### Which docstring format should I follow?
+
+We recommend (and internally use) the [Google docstring format](https://google.github.io/styleguide/pyguide.html#383-functions-and-methods) but you can choose any format so long as you are consistent.
+
+**Note**: Through the use of the [Sphinx napoleon](https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html#getting-started) extension, Sphinx docs generation can interpret [Google style docstrings](https://google.github.io/styleguide/pyguide.html#383-functions-and-methods).
+
 ### [D.1.2] ✔️ **DO** List exported modules and subpackages in a package's docstring
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
@@ -1070,7 +1076,7 @@ The summary line should be on the same line as the opening quotes.
 ```python
 # Bad - will produce D205
 def sell(type_):
-    """Sell the specified type of cheese.
+    """Sells the specified type of cheese.
     Will throw an OutOfStockException if the specified type of cheese is out of stock.
     """
 ```
@@ -1079,7 +1085,7 @@ def sell(type_):
 # Bad - will produce D212
 def sell(type_):
     """
-    Sell the specified type of cheese.
+    Sells the specified type of cheese.
 
     Will throw an OutOfStockException if the specified type of cheese is out of stock.
     """
@@ -1088,7 +1094,7 @@ def sell(type_):
 ```python
 # Good
 def sell(type_):
-    """Sell the specified type of cheese.
+    """Sells the specified type of cheese.
 
     Will throw an OutOfStockException if the specified type of cheese is out of stock.
     """
@@ -1100,7 +1106,7 @@ class CheeseShop(object):
     """Finest cheese shop in the district, offering a wide variety of cheeses."""
 
     def sell(self, type_):
-        """Sell the specified type of cheese."""
+        """Sells the specified type of cheese."""
 ```
 
 ### [D.1.11] ✔️ **DO** Put closing `"""` on its own line for multiline docstrings 💻
@@ -1117,7 +1123,7 @@ class CheeseShop(object):
     Cheeses are sold first-come-first-served, and can run out of stock rather quickly."""
 
     def sell(self, type_):
-        """Sell the specified type of cheese.
+        """Sells the specified type of cheese.
 
         Will throw an OutOfStockException if the specified type of cheese is out of stock."""
 ```
@@ -1131,7 +1137,7 @@ class CheeseShop(object):
     """
 
     def sell(self, type_):
-        """Sell the specified type of cheese.
+        """Sells the specified type of cheese.
 
         Will throw an OutOfStockException if the specified type of cheese is out of stock.
         """
@@ -1157,7 +1163,7 @@ class CheeseShop(object):
 class CheeseShop(object):
     def sell(self, type_):
 
-        """Sell the specified type of cheese."""
+        """Sells the specified type of cheese."""
 ```
 
 ```python
@@ -1166,7 +1172,7 @@ class CheeseShop(object):
     """Finest cheese shop in the district, offering a wide variety of cheeses."""
 
     def sell(self, type_):
-        """Sell the specified type of cheese."""
+        """Sells the specified type of cheese."""
 ```
 
 ### [D.1.13] ❌ **DO NOT** Put a blank line after a one line function docstring 💻
@@ -1178,7 +1184,7 @@ class CheeseShop(object):
 ```python
 # Bad
 def sell(self, type_):
-    """Sell the specified type of cheese."""
+    """Sells the specified type of cheese."""
 
     self._do_transaction(type_)
 ```
@@ -1186,10 +1192,47 @@ def sell(self, type_):
 ```python
 # Good
 def sell(self, type_):
-    """Sell the specified type of cheese."""
+    """Sells the specified type of cheese."""
     self._do_transaction(type_)
 ```
 
+
+### [D.1.14] ❌ **DO NOT** Put a blank line after section headers 💻
+
+> 💻 This rule is enforced by error code D412
+
+```python
+# Bad - will produce D412
+class CheeseShop(object):
+    def sell(self, type_):
+        """Sells the specified type of cheese.
+
+        Args:
+
+            type_: the desired type
+        """
+        self._do_transaction(type_)
+```
+
+```python
+# Good
+class CheeseShop(object):
+    def sell(self, type_: str):
+        """Sells the specified type of cheese.
+
+        Args:
+            type_: the desired cheese type
+        """
+        self._do_transaction(type_)
+```
+
+```python
+# Best
+class CheeseShop(object):
+    def sell(self, type_: str):
+        """Sells the specified type of cheese."""
+        self._do_transaction(type_)
+```
 ---
 
 # [C] Comments

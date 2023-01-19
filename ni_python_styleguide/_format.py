@@ -8,7 +8,7 @@ from ni_python_styleguide import _config_constants
 
 
 def format(file_or_dir, *additional_formatter_args):
-    """Format the specified file or directory using the builtin config."""
+    """Formats the specified file or directory using the builtin config."""
     try:
         black.main(
             [
@@ -25,7 +25,7 @@ def format(file_or_dir, *additional_formatter_args):
 
 
 def format_check(file_or_dir):
-    """Perform format and return True if changes were made (False otherwise)."""
+    """Formats and returns True if changes were made (False otherwise)."""
     capture = StringIO()
     with contextlib.redirect_stderr(capture):
         format(file_or_dir)
