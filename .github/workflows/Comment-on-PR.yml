@@ -1,7 +1,6 @@
 on:
   pull_request:
-    paths:
-      - "*"
+    paths-ignore:
       - "!docs/Coding-Conventions.md"
     types:
       - opened
