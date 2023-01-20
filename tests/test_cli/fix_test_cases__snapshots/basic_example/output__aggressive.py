@@ -1,10 +1,7 @@
 """Provide example cases of imports that need sorting and a file that needs formatted."""
 import pathlib
-from os import access
-from os import path
-from typing import Hashable
-from typing import Iterable
-from typing import List
+from os import access, path
+from typing import Hashable, Iterable, List
 
 import pytest
 
