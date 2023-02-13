@@ -10,9 +10,17 @@ env:
   PYTHON_VERSION: 3.9  # Use latest
 
 jobs:
+  org-check:
+    name: Check GitHub Organization
+    if: github.repository_owner == 'ni'
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Noop
+        run: "true"
   update_poetry_lock:
     name: Update Poetry Lock
     runs-on: ubuntu-latest
+    needs: org-check
     steps:
       - uses: actions/checkout@v2
         with:
