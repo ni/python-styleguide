@@ -1,0 +1,8 @@
+-   id: ni-python-styleguide
+    name: ni-python-styleguide
+    description: Enforces NI's internal and external Python conventions.
+    entry: ni-python-styleguide
+    language: python
+    types: [python]
+    args: [lint]
+    pass_filenames: false
