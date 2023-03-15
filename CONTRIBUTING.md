@@ -23,6 +23,16 @@ Please follow these steps to have your contribution considered by the maintainer
 
 ## ⭐️ Common Contributing Workflows ⭐️
 
+## Install Git `pre-commit` Hook Scripts
+
+This project uses [pre-commit](https://pre-commit.com/) to automatically run checks
+when you commit changes to the code. Install the `pre-commit` hook scripts in
+your local copy of the repo by running:
+
+```cmd
+poetry run pre-commit install
+```
+
 ### Adding a new plugin
 
 If you want to add a plugin to the list of plugins, here's how:
