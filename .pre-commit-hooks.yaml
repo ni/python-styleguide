@@ -5,4 +5,3 @@
     language: python
     types: [python]
     args: [lint]
-    pass_filenames: false
