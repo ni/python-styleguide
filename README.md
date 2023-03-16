@@ -69,3 +69,20 @@ line-length = 100
 ### Editor Integration
 
 (This section to come!)
+
+### Git `pre-commit` Hook Integration
+
+To use [pre-commit](https://pre-commit.com/) to automatically run `ni-python-styleguide` when you commit changes:
+- Add a dev-dependency on `pre-commit`.
+- Add this to your repo's `.pre-commit-config.yaml`:
+
+```yaml
+repos:
+-   repo: https://github.com/ni/python-styleguide/
+    rev: v0.4.1
+    hooks:
+    -   id: ni-python-styleguide
+```
+
+- Install the `pre-commit` hook scripts in your local copy of the repo by running `pre-commit install`. If your
+  project uses Poetry, run `poetry run pre-commit install` to use the virtualenv managed by Poetry.
