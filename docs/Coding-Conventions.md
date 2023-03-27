@@ -1149,17 +1149,17 @@ class CheeseShop(object):
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
-> 💻 This rule is enforced by error codes D201, D211
+> 💻 This rule is enforced by error codes D201, D211, BLK100
 
 ```python
-# Bad - will produce D211
+# Bad - will produce D211, BLK100
 class CheeseShop(object):
 
     """Finest cheese shop in the district, offering a wide variety of cheeses."""
 ```
 
 ```python
-# Bad - will produce D201
+# Bad - will produce D201, BLK100
 class CheeseShop(object):
     def sell(self, type_):
 

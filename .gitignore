@@ -7,3 +7,6 @@ dist/
 
 # Can show up during `poetry install`
 setup.py
+
+# If the user uses Visual Studio
+/.vs
