@@ -16,7 +16,7 @@ python = "^3.7"
 
 # Tools we aggregate
 flake8 = "^5.0"
-black = ">=22.3, !=22.10.0"  # https://github.com/psf/black/issues/3312
+black = ">=23.1"
 
 # Additional support libraries
 # These dependencies were selected because they are already used by black.
