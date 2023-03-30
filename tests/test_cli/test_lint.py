@@ -2,6 +2,7 @@
 
 import itertools
 import textwrap
+
 import pytest
 import toml
 
@@ -165,9 +166,17 @@ def test_lint__ignores_venv_by_default(styleguide_lint, tmp_path):
 
 
 def test_lint__ignores_missing_docstrings_in_tests_dir(styleguide_lint, tmp_path):
-    """Tests that we ingore 'public methods must have docstrings' in tests dir."""
+    (tmp_path / "tests" / "test_spam").mkdir(parents=True)
+    (tmp_path / "tests" / "test_spam" / "test_spam.py").write_text(NO_DOC_STRING)
+
+    result = styleguide_lint()
+
+    assert result, result.output
+
+
+def test_lint__checks_docstrings_tests_dir_conftest(styleguide_lint, tmp_path):
     (tmp_path / "tests").mkdir()
-    (tmp_path / "tests" / "test_spam.py").write_text(NO_DOC_STRING)
+    (tmp_path / "tests" / "conftest.py").write_text(NO_DOC_STRING)
 
     result = styleguide_lint()
 
