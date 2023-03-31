@@ -1145,37 +1145,8 @@ class CheeseShop(object):
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
-### [D.1.12] ❌ **DO NOT** Put a blank line before a docstring 💻
 
-> 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
-
-> 💻 This rule is enforced by error codes D201, D211, BLK100
-
-```python
-# Bad - will produce D211, BLK100
-class CheeseShop(object):
-
-    """Finest cheese shop in the district, offering a wide variety of cheeses."""
-```
-
-```python
-# Bad - will produce D201, BLK100
-class CheeseShop(object):
-    def sell(self, type_):
-
-        """Sells the specified type of cheese."""
-```
-
-```python
-# Good
-class CheeseShop(object):
-    """Finest cheese shop in the district, offering a wide variety of cheeses."""
-
-    def sell(self, type_):
-        """Sells the specified type of cheese."""
-```
-
-### [D.1.13] ❌ **DO NOT** Put a blank line after a one line function docstring 💻
+### [D.1.12] ❌ **DO NOT** Put a blank line after a one line function docstring 💻
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
@@ -1197,7 +1168,7 @@ def sell(self, type_):
 ```
 
 
-### [D.1.14] ❌ **DO NOT** Put a blank line after section headers 💻
+### [D.1.13] ❌ **DO NOT** Put a blank line after section headers 💻
 
 > 💻 This rule is enforced by error code D412
 
