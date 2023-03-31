@@ -174,13 +174,15 @@ def test_lint__ignores_missing_docstrings_in_tests_dir(styleguide_lint, tmp_path
     assert result, result.output
 
 
-def test_lint__checks_docstrings_tests_dir_conftest(styleguide_lint, tmp_path):
+def test_lint__checks_docstrings_in_test_helper_methods(styleguide_lint, tmp_path):
     (tmp_path / "tests").mkdir()
     (tmp_path / "tests" / "conftest.py").write_text(NO_DOC_STRING)
 
     result = styleguide_lint()
 
-    assert result, result.output
+    # D100: Missing docstring in public module
+    # D103: Missing docstring in public function
+    assert "D100" and "D103" in result.output, result.output
 
 
 def test_lint__exclude__excludes_file(styleguide_lint_with_options, tmp_path):
