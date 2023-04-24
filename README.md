@@ -44,6 +44,11 @@ The rules enforced are all rules documented in the written convention, which are
 `ni-python-styleguide` aims to keep the configuration to a bare minimum (none wherever possible).
 However there are some situations you might need to configure the tool.
 
+### Fix
+
+To `fix` issues `ni-python-styleguide` can generically fix, run with `fix` subcommand. This will run black and sort imports.
+Alternatively, you can run `fix` with the `--aggressive` option and it is the same as fix except it  is run multiple times...\<something about running multiple times and throwing in exclusions\>.
+
 #### When using `setup.py`
 
 If you're using `setup.py`, you'll need to set your app's import names for import sorting.

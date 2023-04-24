@@ -29,7 +29,7 @@ Additionally rules might be suffixed with one of the below:
 
 > 💻 - The convention is automatically enforced by `ni-python-styleguide` (By running `ni-python-styleguide lint ...`)
 >
-> ✨ - The convention is automatically fixed by `ni-python-stylgeuide` (`ni-python-styleguide` command doesn't exist yet)
+> ✨ - The convention is automatically fixed by `ni-python-stylgeuide` (By running `ni-python-styleguide fix ...`)
 
 # This vs. other guides (like PEPs)
 
