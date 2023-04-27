@@ -1,4 +1,4 @@
-def method1():  # noqa:  D100, D103 - Missing docstring in public module (auto-generated noqa), Missing docstring in public function (auto-generated noqa)
+def method1():  # noqa: D100, D103 - Missing docstring in public module (auto-generated noqa), Missing docstring in public function (auto-generated noqa)
     return 7
 
 

@@ -116,5 +116,5 @@ def method_withBadName_and_bad_param_with_long_name(  # noqa: N802 - function na
     myBadlyNamedParam,  # noqa: N803 - argument name 'myBadlyNamedParam' should be lowercase (auto-generated noqa)
     my_other_Bad_param,
 ):
-    """Provide example where black will want to split out result even more"""  # noqa:  D415, W505 - First line should end with a period, question mark, or exclamation point (auto-generated noqa), doc line too long (188 > 100 characters) (auto-generated noqa)
+    """Provide example where black will want to split out result even more"""  # noqa: D415, W505 - First line should end with a period, question mark, or exclamation point (auto-generated noqa), doc line too long (188 > 100 characters) (auto-generated noqa)
     return 5 + 7

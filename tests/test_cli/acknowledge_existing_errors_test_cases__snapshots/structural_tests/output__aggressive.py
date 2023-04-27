@@ -51,7 +51,7 @@ except:  # noqa: E722 - do not use bare 'except' (auto-generated noqa)
     pass
 
 
-class Cheese_Shop:  # noqa:  D101, N801 - Missing docstring in public class (auto-generated noqa), class name 'Cheese_Shop' should use CapWords convention (auto-generated noqa)
+class Cheese_Shop:  # noqa: D101, N801 - Missing docstring in public class (auto-generated noqa), class name 'Cheese_Shop' should use CapWords convention (auto-generated noqa)
     def RequestCheese(  # noqa: N802 - function name 'RequestCheese' should be lowercase (auto-generated noqa)
         self,
     ):

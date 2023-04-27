@@ -1,5 +1,5 @@
 some_string_with_line_continuation = f"{installPath}\\foo\\bar\\baz.exe \
-      --check --this-is-cool --bacon --ipsum"  # noqa:  D100, F821 - Missing docstring in public module (auto-generated noqa), undefined name 'installPath' (auto-generated noqa)
+      --check --this-is-cool --bacon --ipsum"  # noqa: D100, F821 - Missing docstring in public module (auto-generated noqa), undefined name 'installPath' (auto-generated noqa)
 
 # black, please leave these ridiculous line continuations in place for testing.
 # fmt: off
