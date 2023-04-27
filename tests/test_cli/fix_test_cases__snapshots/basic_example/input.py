@@ -2,7 +2,7 @@
 from typing import (
     Iterable,
     List,
-    Hashable,  # noqa F401: un-used import comment that is actually used, should get removed in --aggressive (auto-generated noqa)
+    Hashable,  # noqa: F401 - un-used import comment that is actually used, should get removed in --aggressive (auto-generated noqa)
 )
 import pytest
 import pathlib
