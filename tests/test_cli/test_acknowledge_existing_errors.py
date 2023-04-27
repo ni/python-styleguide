@@ -56,11 +56,12 @@ def test_given_bad_input_produces_expected_output_aggressive(
 @pytest.mark.parametrize(
     "test_file,additional_args",
     [
-        (
+        pytest.param(
             "output.py",
             ["--extend-ignore=BLK100"],
+            id="output_ignore_black",
         ),  # we don't suppress BLK100, so it's not one we expect to pass
-        ("output__aggressive.py", []),
+        pytest.param("output__aggressive.py", [], id="output_aggressive"),
     ],
 )
 def test_given_suppressed_file_linter_does_not_error(
