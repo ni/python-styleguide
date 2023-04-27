@@ -50,11 +50,7 @@ ni-python-styleguide = 'ni_python_styleguide._cli:main'
 
 [tool.black]
 line-length = 100
-extend-exclude = '''
-(
-/.*__snapshots/.*output\.py # exclude the simple snapshot outputs
-)
-'''
+
 
 [tool.pytest.ini_options]
 addopts = "--doctest-modules"
