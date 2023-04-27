@@ -3,8 +3,7 @@ import pathlib
 import re
 from collections import defaultdict
 
-from ni_python_styleguide import _format
-from ni_python_styleguide import _utils
+from ni_python_styleguide import _format, _utils
 
 _module_logger = logging.getLogger(__name__)
 
