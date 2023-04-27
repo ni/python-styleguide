@@ -1,6 +1,6 @@
 import logging
 import re
-from collections import namedtuple
+import typing
 
 from ni_python_styleguide import _lint
 
@@ -23,7 +23,12 @@ def get_errors_to_process(exclude, app_import_names, extend_ignore, file_or_dir,
     return lint_errors_to_process
 
 
-LintError = namedtuple("LintError", ["file", "line", "column", "code", "explanation"])
+class LintError(typing.NamedTuple):
+    file: str
+    line: int
+    column: int
+    code: str
+    explanation: str
 
 
 def parse(line):
