@@ -10,7 +10,9 @@ TEST_CASE_DIR = (
 )
 
 
-@pytest.mark.parametrize("test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()])
+@pytest.mark.parametrize(
+    "test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()], ids=lambda o: o.name
+)
 def test_given_bad_input_produces_expected_output_simple(
     test_dir, snapshot, tmp_path, styleguide_command
 ):
@@ -27,7 +29,9 @@ def test_given_bad_input_produces_expected_output_simple(
     snapshot.assert_match(result, "output.py")
 
 
-@pytest.mark.parametrize("test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()])
+@pytest.mark.parametrize(
+    "test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()], ids=lambda o: o.name
+)
 def test_given_bad_input_produces_expected_output_aggressive(
     test_dir, snapshot, tmp_path, styleguide_command
 ):
@@ -46,7 +50,9 @@ def test_given_bad_input_produces_expected_output_aggressive(
     snapshot.assert_match(result, "output__aggressive.py")
 
 
-@pytest.mark.parametrize("test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()])
+@pytest.mark.parametrize(
+    "test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()], ids=lambda o: o.name
+)
 @pytest.mark.parametrize(
     "test_file,additional_args",
     [
