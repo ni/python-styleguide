@@ -1,8 +1,8 @@
 """Provide example cases of imports that need sorting and a file that needs formatted."""
 from typing import (
     Iterable,
-    List,
-    Hashable,  # noqa F401: un-used import comment that is actually used, should get removed in --aggressive (auto-generated noqa)
+    List,  # noqa F401: un-used import comment that is actually used, should get removed in --aggressive, used to test transition of comment. (auto-generated noqa)
+    Hashable,  # noqa: F401 - un-used import comment that is actually used, should get removed in --aggressive (auto-generated noqa)
 )
 import pytest
 import pathlib

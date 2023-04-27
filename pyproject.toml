@@ -3,13 +3,14 @@ name = "ni-python-styleguide"
 # The -alpha.0 here denotes a source based version
 # This is removed when released through the Publish-Package.yml GitHub action
 # Official PyPI releases follow Major.Minor.Patch
-version = "0.4.0-alpha.0"
+version = "0.4.1-alpha.0"
 description = "NI's internal and external Python linter rules and plugins"
 authors = ["NI <opensource@ni.com>"]
 readme = "README.md" # apply the repo readme to the package as well
 repository = "https://github.com/ni/python-styleguide"
 license = "MIT"
 include = ["ni_python_styleguide/config.toml"]
+
 
 [tool.poetry.dependencies]
 python = "^3.7"
@@ -23,7 +24,6 @@ black = ">=23.1"
 click = ">=7.1.2"
 toml = ">=0.10.1"
 isort = ">=5.10"
-
 
 # flake8 plugins should be listed here (in alphabetical order)
 flake8-black = ">=0.2.1"
@@ -40,28 +40,29 @@ pep8-naming = ">=0.11.1"
 # Tooling that we're locking so our tool can run
 importlib-metadata = {version= "<5.0", python="<3.8"}
 
+
 [tool.poetry.dev-dependencies]
 pytest = ">=6.0.1"
 pytest_click = ">=1.0.2"
 pytest-snapshot = ">=0.6.3"
 
+
 [tool.poetry.scripts]
 ni-python-styleguide = 'ni_python_styleguide._cli:main'
 
+
 [tool.black]
 line-length = 100
-extend-exclude = '''
-(
-/.*__snapshots/.*output\.py # exclude the simple snapshot outputs
-)
-'''
+
 
 [tool.pytest.ini_options]
 addopts = "--doctest-modules"
 norecursedirs = "*__snapshots"
 
+
 [tool.ni-python-styleguide]
 extend_exclude = "*__snapshots/*/*input.py"
+
 
 [build-system]
 requires = ["poetry>=0.12"]

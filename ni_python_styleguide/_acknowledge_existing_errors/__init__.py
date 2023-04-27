@@ -3,8 +3,7 @@ import pathlib
 import re
 from collections import defaultdict
 
-from ni_python_styleguide import _format
-from ni_python_styleguide import _utils
+from ni_python_styleguide import _format, _utils
 
 _module_logger = logging.getLogger(__name__)
 
@@ -18,16 +17,25 @@ def _add_noqa_to_line(lineno, code_lines, error_code, explanation):
     old_line_ending = "\n" if line.endswith("\n") else ""
     line = line.rstrip("\n")
 
-    if f"noqa {error_code}" not in line:
+    if f"noqa: {error_code}" not in line:
         prefix = "  " if line.strip() else ""
-        line += f"{prefix}# noqa {error_code}: {explanation} (auto-generated noqa)"
+        code, _, existing = line.partition("# noqa:")
+
+        existing_codes, _, existing_explanations = existing.partition(" - ")
+        if existing_codes:
+            error_code = existing_codes + ", " + error_code
+            explanation = f"{existing_explanations}, {explanation} (auto-generated noqa)"
+        else:
+            explanation = explanation + " (auto-generated noqa)"
+
+        line = f"{code.rstrip()}{prefix}# noqa: {error_code.lstrip()} - {explanation}"
 
     code_lines[lineno] = line + old_line_ending
 
 
 def _filter_suppresion_from_line(line: str):
     if "(auto-generated noqa)" in line:
-        return re.sub(r"# noqa .+\(auto-generated noqa\)", "", line).rstrip()
+        return re.sub(r"# noqa:? .+\(auto-generated noqa\)$", "", line).rstrip()
     else:
         return line
 
@@ -56,6 +64,8 @@ def acknowledge_lint_errors(
     for bad_file, errors_in_file in lint_errors_by_file.items():
         _suppress_errors_in_file(bad_file, errors_in_file, encoding=_utils.DEFAULT_ENCODING)
 
+        _handle_emergent_violations(exclude, app_import_names, extend_ignore, file_or_dir, bad_file)
+
         if aggressive:
             # some cases are expected to take up to 4 passes, making this 2x rounded
             per_file_format_iteration_limit = 10
@@ -81,8 +91,16 @@ def acknowledge_lint_errors(
                     bad_file, current_lint_errors, encoding=_utils.DEFAULT_ENCODING
                 )
 
+                remaining_errors = _handle_emergent_violations(
+                    exclude=exclude,
+                    app_import_names=app_import_names,
+                    extend_ignore=extend_ignore,
+                    file_or_dir=file_or_dir,
+                    bad_file=bad_file,
+                )
+
                 changed = _format.format_check(bad_file)
-                if not changed:  # are we done?
+                if not changed and not remaining_errors:  # are we done?
                     break
             else:
                 failed_files.append(
@@ -91,6 +109,27 @@ def acknowledge_lint_errors(
                 _module_logger.warning("Max tries reached on %s", bad_file)
     if failed_files:
         raise RuntimeError("Could not handle some files:\n" + "\n\n".join(failed_files) + "\n\n\n")
+
+
+def _handle_emergent_violations(exclude, app_import_names, extend_ignore, file_or_dir, bad_file):
+    """Some errors can be created by adding the acknowledge comments handle those now.
+
+    Example emergent violations:
+      W505 -> due to adding comment to docstring
+    """
+    current_lint_errors = set(
+        _utils.lint.get_errors_to_process(
+            exclude=exclude,
+            app_import_names=app_import_names,
+            extend_ignore=extend_ignore,
+            file_or_dir=file_or_dir,
+            excluded_errors=EXCLUDED_ERRORS,
+        )
+    )
+    errors_to_process_now = set(filter(lambda o: o.code in {"W505"}, current_lint_errors))
+    _suppress_errors_in_file(bad_file, errors_to_process_now, encoding=_utils.DEFAULT_ENCODING)
+    remaining_errors = current_lint_errors - errors_to_process_now
+    return remaining_errors
 
 
 def remove_auto_suppressions_from_file(file: pathlib.Path):
