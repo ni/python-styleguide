@@ -20,6 +20,14 @@ def _add_noqa_to_line(lineno, code_lines, error_code, explanation):
 
     if f"noqa: {error_code}" not in line:
         prefix = "  " if line.strip() else ""
+        code, _, existing = line.partition("# noqa:")
+
+        existing_codes, _, existing_explanations = existing.partition(" - ")
+        if existing_codes:
+            error_code = existing_codes + ", " + error_code
+            explanation = f"{existing_explanations}, {explanation} (auto-generated noqa)"
+        else:
+            explanation = explanation + " (auto-generated noqa)"
 
         line = f"{code.rstrip()}{prefix}# noqa: {error_code} - {explanation}"
 
