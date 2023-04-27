@@ -65,6 +65,8 @@ def acknowledge_lint_errors(
     for bad_file, errors_in_file in lint_errors_by_file.items():
         _suppress_errors_in_file(bad_file, errors_in_file, encoding=_utils.DEFAULT_ENCODING)
 
+        _handle_emergent_violations(exclude, app_import_names, extend_ignore, file_or_dir, bad_file)
+
         if aggressive:
             # some cases are expected to take up to 4 passes, making this 2x rounded
             per_file_format_iteration_limit = 10
@@ -90,8 +92,16 @@ def acknowledge_lint_errors(
                     bad_file, current_lint_errors, encoding=_utils.DEFAULT_ENCODING
                 )
 
+                remaining_errors = _handle_emergent_violations(
+                    exclude=exclude,
+                    app_import_names=app_import_names,
+                    extend_ignore=extend_ignore,
+                    file_or_dir=file_or_dir,
+                    bad_file=bad_file,
+                )
+
                 changed = _format.format_check(bad_file)
-                if not changed:  # are we done?
+                if not changed and not remaining_errors:  # are we done?
                     break
             else:
                 failed_files.append(
@@ -100,6 +110,23 @@ def acknowledge_lint_errors(
                 _module_logger.warning("Max tries reached on %s", bad_file)
     if failed_files:
         raise RuntimeError("Could not handle some files:\n" + "\n\n".join(failed_files) + "\n\n\n")
+
+
+def _handle_emergent_violations(exclude, app_import_names, extend_ignore, file_or_dir, bad_file):
+    """Some errors can be created by adding the acknowledge comments (e.g., W505), handle those now."""
+    current_lint_errors = set(
+        _utils.lint.get_errors_to_process(
+            exclude=exclude,
+            app_import_names=app_import_names,
+            extend_ignore=extend_ignore,
+            file_or_dir=file_or_dir,
+            excluded_errors=EXCLUDED_ERRORS,
+        )
+    )
+    errors_to_process_now = set(filter(lambda o: o.code in {"W505"}, current_lint_errors))
+    _suppress_errors_in_file(bad_file, errors_to_process_now, encoding=_utils.DEFAULT_ENCODING)
+    remaining_errors = current_lint_errors - errors_to_process_now
+    return remaining_errors
 
 
 def remove_auto_suppressions_from_file(file: pathlib.Path):
