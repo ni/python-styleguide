@@ -4,7 +4,10 @@ from os import access, path
 from typing import (  # noqa: F401 - un-used import comment that is actually used, should get removed in --aggressive (auto-generated noqa)
     Hashable,
 )
-from typing import Iterable, List
+from typing import (  # noqa F401: un-used import comment that is actually used, should get removed in --aggressive, used to test transition of comment. (auto-generated noqa)
+    List,
+)
+from typing import Iterable
 
 import pytest
 

@@ -35,7 +35,7 @@ def _add_noqa_to_line(lineno, code_lines, error_code, explanation):
 
 def _filter_suppresion_from_line(line: str):
     if "(auto-generated noqa)" in line:
-        return re.sub(r"# noqa: .+\(auto-generated noqa\)$", "", line).rstrip()
+        return re.sub(r"# noqa:? .+\(auto-generated noqa\)$", "", line).rstrip()
     else:
         return line
 

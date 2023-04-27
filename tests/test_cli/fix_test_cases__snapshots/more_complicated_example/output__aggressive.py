@@ -129,7 +129,7 @@ def fix(exclude, app_import_names, extend_ignore, file_or_dir, *_, aggressive=Fa
         )
 
 
-class ExceptionClassWithBadName(  # noqa N818: exception name 'ExceptionClassWithBadName' should be named with an Error suffix (auto-generated noqa)
+class ExceptionClassWithBadName(  # noqa: N818 - exception name 'ExceptionClassWithBadName' should be named with an Error suffix (auto-generated noqa)
     Exception
 ):
     """Error class with a bad name."""
