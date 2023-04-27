@@ -26,7 +26,7 @@ def test_given_bad_input_produces_expected_output_simple(
     assert output.exit_code in (True, 0), f"Error in running:\n{output}"
     result = test_file.read_text(encoding="UTF-8")
     snapshot.snapshot_dir = test_dir
-    snapshot.assert_match(result, "output.py")
+    snapshot.assert_match(result, "output.py.txt")
 
 
 @pytest.mark.parametrize(
@@ -57,7 +57,7 @@ def test_given_bad_input_produces_expected_output_aggressive(
     "test_file,additional_args",
     [
         pytest.param(
-            "output.py",
+            "output.py.txt",
             ["--extend-ignore=BLK100"],
             id="output_ignore_black",
         ),  # we don't suppress BLK100, so it's not one we expect to pass
