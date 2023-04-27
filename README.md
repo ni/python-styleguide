@@ -46,8 +46,10 @@ However there are some situations you might need to configure the tool.
 
 ### Fix
 
-To `fix` issues `ni-python-styleguide` can generically fix, run with `fix` subcommand. This will run black and sort imports.
-Alternatively, you can run `fix` with the `--aggressive` option and it is the same as fix except it  is run multiple times...\<something about running multiple times and throwing in exclusions\>.
+`ni-python-styleguide` has a subcommand `fix` which will run [black](https://pypi.org/project/black/) and [isort](https://pycqa.github.io/isort/).
+
+Additionally, you can run `fix` with the `--aggressive` option and it will add exclusions (# noqa) for the linting errors
+it cannot fix, in addition to running black and isort. 
 
 #### When using `setup.py`
 
