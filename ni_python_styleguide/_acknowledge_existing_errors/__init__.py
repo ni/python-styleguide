@@ -112,7 +112,11 @@ def acknowledge_lint_errors(
 
 
 def _handle_emergent_violations(exclude, app_import_names, extend_ignore, file_or_dir, bad_file):
-    """Some errors can be created by adding the acknowledge comments (e.g., W505), handle those now."""
+    """Some errors can be created by adding the acknowledge comments handle those now.
+
+    Example emergent violations:
+      W505 -> due to adding comment to docstring
+    """
     current_lint_errors = set(
         _utils.lint.get_errors_to_process(
             exclude=exclude,

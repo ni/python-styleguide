@@ -24,6 +24,8 @@ def get_errors_to_process(exclude, app_import_names, extend_ignore, file_or_dir,
 
 
 class LintError(typing.NamedTuple):
+    """Class defining a lint error."""
+
     file: str
     line: int
     column: int
