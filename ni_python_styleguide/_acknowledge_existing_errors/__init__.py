@@ -18,16 +18,17 @@ def _add_noqa_to_line(lineno, code_lines, error_code, explanation):
     old_line_ending = "\n" if line.endswith("\n") else ""
     line = line.rstrip("\n")
 
-    if f"noqa {error_code}" not in line:
+    if f"noqa: {error_code}" not in line:
         prefix = "  " if line.strip() else ""
-        line += f"{prefix}# noqa {error_code}: {explanation} (auto-generated noqa)"
+
+        line = f"{code.rstrip()}{prefix}# noqa: {error_code} - {explanation}"
 
     code_lines[lineno] = line + old_line_ending
 
 
 def _filter_suppresion_from_line(line: str):
     if "(auto-generated noqa)" in line:
-        return re.sub(r"# noqa .+\(auto-generated noqa\)", "", line).rstrip()
+        return re.sub(r"# noqa: .+\(auto-generated noqa\)$", "", line).rstrip()
     else:
         return line
 
