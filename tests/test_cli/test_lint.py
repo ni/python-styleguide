@@ -1,12 +1,19 @@
 """Tests for the "lint" subcommand of ni-python-styleguide."""
 
 import itertools
+import textwrap
 
 import pytest
 import toml
 
 
 TOO_LONG_LINE = "a_really_long_order = [" + ", ".join(itertools.repeat('"spam"', 10)) + "]\n"
+NO_DOC_STRING = textwrap.dedent(
+    f"""\
+    def my_method():
+        assert True
+    """
+)
 
 
 @pytest.fixture
@@ -148,7 +155,7 @@ def test_lint__no_args_lints_subdirs(styleguide_lint, tmp_path):
     assert "subdir/spam.py" in result.output.replace("\\", "/")
 
 
-def test_lint__lignores_venv_by_default(styleguide_lint, tmp_path):
+def test_lint__ignores_venv_by_default(styleguide_lint, tmp_path):
     """Tests that we exclude ".venv" dir by default."""
     (tmp_path / ".venv").mkdir()
     (tmp_path / ".venv" / "spam.py").write_text(TOO_LONG_LINE)
@@ -156,6 +163,26 @@ def test_lint__lignores_venv_by_default(styleguide_lint, tmp_path):
     result = styleguide_lint()
 
     assert result, result.output
+
+
+def test_lint__ignores_missing_docstrings_in_tests_dir(styleguide_lint, tmp_path):
+    (tmp_path / "tests" / "test_spam").mkdir(parents=True)
+    (tmp_path / "tests" / "test_spam" / "test_spam.py").write_text(NO_DOC_STRING)
+
+    result = styleguide_lint()
+
+    assert result, result.output
+
+
+def test_lint__checks_docstrings_in_test_helper_methods(styleguide_lint, tmp_path):
+    (tmp_path / "tests").mkdir()
+    (tmp_path / "tests" / "conftest.py").write_text(NO_DOC_STRING)
+
+    result = styleguide_lint()
+
+    # D100: Missing docstring in public module
+    # D103: Missing docstring in public function
+    assert "D100" and "D103" in result.output, result.output
 
 
 def test_lint__exclude__excludes_file(styleguide_lint_with_options, tmp_path):

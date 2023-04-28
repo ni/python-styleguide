@@ -10,7 +10,9 @@ TEST_CASE_DIR = (
 )
 
 
-@pytest.mark.parametrize("test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()])
+@pytest.mark.parametrize(
+    "test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()], ids=lambda o: o.name
+)
 def test_given_bad_input_produces_expected_output_simple(
     test_dir, snapshot, tmp_path, styleguide_command
 ):
@@ -24,10 +26,12 @@ def test_given_bad_input_produces_expected_output_simple(
     assert output.exit_code in (True, 0), f"Error in running:\n{output}"
     result = test_file.read_text(encoding="UTF-8")
     snapshot.snapshot_dir = test_dir
-    snapshot.assert_match(result, "output.py")
+    snapshot.assert_match(result, "output.py.txt")
 
 
-@pytest.mark.parametrize("test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()])
+@pytest.mark.parametrize(
+    "test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()], ids=lambda o: o.name
+)
 def test_given_bad_input_produces_expected_output_aggressive(
     test_dir, snapshot, tmp_path, styleguide_command
 ):
@@ -46,15 +50,18 @@ def test_given_bad_input_produces_expected_output_aggressive(
     snapshot.assert_match(result, "output__aggressive.py")
 
 
-@pytest.mark.parametrize("test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()])
+@pytest.mark.parametrize(
+    "test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()], ids=lambda o: o.name
+)
 @pytest.mark.parametrize(
     "test_file,additional_args",
     [
-        (
-            "output.py",
+        pytest.param(
+            "output.py.txt",
             ["--extend-ignore=BLK100"],
+            id="output_ignore_black",
         ),  # we don't suppress BLK100, so it's not one we expect to pass
-        ("output__aggressive.py", []),
+        pytest.param("output__aggressive.py", [], id="output_aggressive"),
     ],
 )
 def test_given_suppressed_file_linter_does_not_error(
