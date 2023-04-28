@@ -1010,7 +1010,7 @@ Each documented object should have a one-line summary (with less detail than the
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
 
-ℹ️ An exception is made for tests
+ℹ️ An exception is made for tests as they should already have a very descriptive name
 
 This includes (if applicable) the function's:
 
