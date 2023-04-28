@@ -63,7 +63,7 @@ This document is applicable to all Python versions which are not end-of-life.
 
 > 💻 This rule is enforced by error code BLK100
  
-> ✨ This rule is covered by running `ni-python-stylgeuide fix`
+> ✨ This is automatically fixed by running `ni-python-styleguide fix`
 
 `black`'s style is well-documented and can be found [here](https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html).
 
@@ -692,7 +692,7 @@ This includes packages, modules, classes, functions, attributes and other names.
 
 > 💻 This rule is enforced by error code E401
 
-> ✨ This rule is covered by running `ni-python-stylgeuide fix`
+> ✨ This is automatically fixed by running `ni-python-styleguide fix`
 
 ```python
 # Bad
@@ -736,7 +736,7 @@ URL = "http://python.org"
 
 > 💻 This rule is enforced by error codes I201, I202
 
-> ✨ This rule is covered by running `ni-python-stylgeuide fix`
+> ✨ This is automatically fixed by running `ni-python-styleguide fix`
 
 Additionally, you should put a single blank line between each group of imports.
 
@@ -771,7 +771,7 @@ import my_app.utils
 
 > 💻 This rule is enforced by error code I100
 
-> ✨ This rule is covered by running `ni-python-stylgeuide fix`
+> ✨ This is automatically fixed by running `ni-python-styleguide fix`
 
 `from X import Y` imports should follow `import X` imports and be alphabetized by module name.
 
@@ -1256,7 +1256,7 @@ class CheeseShop(object):
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-> ✨ This rule is covered by running `ni-python-stylgeuide fix`
+> ✨ This is automatically fixed by running `ni-python-styleguide fix`
 
 ```python
 # Good
