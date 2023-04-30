@@ -44,6 +44,13 @@ The rules enforced are all rules documented in the written convention, which are
 `ni-python-styleguide` aims to keep the configuration to a bare minimum (none wherever possible).
 However there are some situations you might need to configure the tool.
 
+### Fix
+
+`ni-python-styleguide` has a subcommand `fix` which will run [black](https://pypi.org/project/black/) and [isort](https://pycqa.github.io/isort/).
+
+Additionally, you can run `fix` with the `--aggressive` option and it will add acknowledgements (# noqa) for the remaining linting errors
+it cannot fix, in addition to running black and isort. 
+
 #### When using `setup.py`
 
 If you're using `setup.py`, you'll need to set your app's import names for import sorting.

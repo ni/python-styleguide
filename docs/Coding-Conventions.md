@@ -29,7 +29,7 @@ Additionally rules might be suffixed with one of the below:
 
 > 💻 - The convention is automatically enforced by `ni-python-styleguide` (By running `ni-python-styleguide lint ...`)
 >
-> ✨ - The convention is automatically fixed by `ni-python-stylgeuide` (`ni-python-styleguide` command doesn't exist yet)
+> ✨ - The convention is automatically fixed by `ni-python-styleguide` (By running `ni-python-styleguide fix ...`)
 
 # This vs. other guides (like PEPs)
 
@@ -62,6 +62,8 @@ This document is applicable to all Python versions which are not end-of-life.
 ### [F.1.1] ✔️ **DO** Use `black` to format your code 💻
 
 > 💻 This rule is enforced by error code BLK100
+ 
+> ✨ This is automatically fixed by running `ni-python-styleguide fix`
 
 `black`'s style is well-documented and can be found [here](https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html).
 
@@ -690,6 +692,8 @@ This includes packages, modules, classes, functions, attributes and other names.
 
 > 💻 This rule is enforced by error code E401
 
+> ✨ This is automatically fixed by running `ni-python-styleguide fix`
+
 ```python
 # Bad
 import sys, os
@@ -732,6 +736,8 @@ URL = "http://python.org"
 
 > 💻 This rule is enforced by error codes I201, I202
 
+> ✨ This is automatically fixed by running `ni-python-styleguide fix`
+
 Additionally, you should put a single blank line between each group of imports.
 
 ```python
@@ -764,6 +770,8 @@ import my_app.utils
 ### [O.1.4] ✔️ **DO** List imports in alphabetical order 💻
 
 > 💻 This rule is enforced by error code I100
+
+> ✨ This is automatically fixed by running `ni-python-styleguide fix`
 
 `from X import Y` imports should follow `import X` imports and be alphabetized by module name.
 
@@ -1001,6 +1009,8 @@ Each documented object should have a one-line summary (with less detail than the
 ### [D.1.4] ✔️ **DO** Fully document a function in its docstring
 
 > 🐍 This rule stems from [PEP 257](https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings)
+
+ℹ️ An exception is made for tests as they should already have a very descriptive name
 
 This includes (if applicable) the function's:
 
@@ -1245,6 +1255,8 @@ class CheeseShop(object):
 ### [C.3.2] ✔️ **DO** Separate statements and inline comments by two spaces
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
+
+> ✨ This is automatically fixed by running `ni-python-styleguide fix`
 
 ```python
 # Good
