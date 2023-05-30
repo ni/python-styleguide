@@ -3,6 +3,7 @@ name: Update Poetry lock on a regular basis
 on:
   schedule:
     - cron: '0 4 * * 0' # weekly at 04:00 on Sunday -> https://crontab.guru/#0_4_*_*_0
+  workflow_dispatch:
 
 env:
   # Versions are also listed in PR.yml
