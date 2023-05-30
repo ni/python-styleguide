@@ -6,7 +6,7 @@ on:
 
 env:
   # Versions are also listed in PR.yml
-  POETRY_VERSION: 1.1.15  # keeping this one back for now until 1.2 becomes the standard for devs
+  POETRY_VERSION: 1.2.2
   PYTHON_VERSION: 3.9  # Use latest
 
 jobs:
