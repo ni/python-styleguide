@@ -11,6 +11,7 @@ on:
       - docs/Coding-Conventions.md
       - .github/workflows/PR.yml
     types:
+      - opened
       - synchronize
 
 env:
