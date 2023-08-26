@@ -10,9 +10,6 @@ on:
       - pyproject.toml
       - docs/Coding-Conventions.md
       - .github/workflows/PR.yml
-    types:
-      - opened
-      - synchronize
 
 env:
   POETRY_VERSION: 1.2.2
