@@ -67,4 +67,4 @@ jobs:
           \-\-\-
             Created by Github action'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.ADMIN_PAT }}
