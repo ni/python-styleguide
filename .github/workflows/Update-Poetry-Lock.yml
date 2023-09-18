@@ -63,7 +63,14 @@ jobs:
           branch: aotumated-updates/update-poetry-lock
           branch-suffix: short-commit-hash
           body: |
-              # Update Poetry Lock
-              Ran poetry lock, install, then ni-python-styleguide fix to reformat any changes.
+            # Update Poetry Lock
+  
+            Ran:
+            * `poetry lock`,
+            * `poetry install`, then
+            * `ni-python-styleguide fix` to reformat any changes.
+  
+            \-\-\-
+              Created by Github action'
           base: main
           delete-branch: true
