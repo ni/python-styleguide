@@ -56,16 +56,14 @@ jobs:
           git push --force --set-upstream origin ${{ steps.vars.outputs.branch_name }}
       # based on https://stackoverflow.com/a/73340290/8100990
       - name: Create Pull Request
-        run: | 
-          gh auth login
-          gh pr create -B main -H ${{ steps.vars.outputs.branch_name }} --title 'Update poetry lock and reformat' --body '# Update Poetry Lock
-
-          Ran:
-          * `poetry lock`,
-          * `poetry install`, then
-          * `ni-python-styleguide fix` to reformat any changes.
-
-          \-\-\-
-            Created by Github action'
-        env:
-          GH_TOKEN: ${{ secrets.ADMIN_PAT }}
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: Update poetry lock and reformat
+          title: Update Poetry Lock
+          branch: aotumated-updates/update-poetry-lock
+          branch-suffix: short-commit-hash
+          body: |
+              # Update Poetry Lock
+              Ran poetry lock, install, then ni-python-styleguide fix to reformat any changes.
+          base: main
+          delete-branch: true
