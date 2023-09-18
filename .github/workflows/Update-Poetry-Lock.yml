@@ -56,7 +56,7 @@ jobs:
           git push --force --set-upstream origin ${{ steps.vars.outputs.branch_name }}
       # based on https://stackoverflow.com/a/73340290/8100990
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v5
         with:
           commit-message: Update poetry lock and reformat
           title: Update Poetry Lock
@@ -64,12 +64,12 @@ jobs:
           branch-suffix: short-commit-hash
           body: |
             # Update Poetry Lock
-  
+
             Ran:
             * `poetry lock`,
             * `poetry install`, then
             * `ni-python-styleguide fix` to reformat any changes.
-  
+
             \-\-\-
               Created by Github action'
           base: main
