@@ -74,3 +74,4 @@ jobs:
               Created by Github action'
           base: main
           delete-branch: true
+          token: ${{ secrets.ADMIN_PAT }}
