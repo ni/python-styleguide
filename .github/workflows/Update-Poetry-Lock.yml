@@ -23,11 +23,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: org-check
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: main # This is the branch the PR is to be created from
-          persist-credentials: false # otherwise the token that is used the GITHUB_TOKEN, instead of your personal token
-          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
       - name: Store vars
         id: vars
         run: |
