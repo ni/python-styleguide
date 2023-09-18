@@ -57,7 +57,7 @@ jobs:
         with:
           commit-message: Update poetry lock and reformat
           title: Update Poetry Lock
-          branch: aotumated-updates/update-poetry-lock
+          branch: automated-updates/update-poetry-lock
           branch-suffix: short-commit-hash
           body: |
             # Update Poetry Lock
