@@ -47,10 +47,8 @@ jobs:
       - name: Check for lock changes
         run: |
           poetry lock
-          git commit -am "Update poetry lock file" || exit 0
           poetry install
           poetry run ni-python-styleguide fix
-          git commit -am "Update formatting" || true
       # based on https://stackoverflow.com/a/73340290/8100990
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
