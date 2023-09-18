@@ -53,7 +53,6 @@ jobs:
           poetry install
           poetry run ni-python-styleguide fix
           git commit -am "Update formatting" || true
-          git push --force --set-upstream origin ${{ steps.vars.outputs.branch_name }}
       # based on https://stackoverflow.com/a/73340290/8100990
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
