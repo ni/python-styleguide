@@ -57,6 +57,7 @@ jobs:
       # based on https://stackoverflow.com/a/73340290/8100990
       - name: Create Pull Request
         run: | 
+          gh auth login
           gh pr create -B main -H ${{ steps.vars.outputs.branch_name }} --title 'Update poetry lock and reformat' --body '# Update Poetry Lock
 
           Ran:
