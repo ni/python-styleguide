@@ -388,7 +388,7 @@ if cheese is None:
 
 ```python
 # Bad
-if type(num_cheeses) is type(1):
+if type(num_cheeses) == type(1):
     buy(num_cheeses)
 ```
 
