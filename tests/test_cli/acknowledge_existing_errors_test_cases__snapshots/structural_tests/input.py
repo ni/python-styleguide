@@ -55,10 +55,9 @@ class Cheese_Shop:
         except:
             pass
 
-        l = 5
         i = 3
+        j = 5
 
-        if l == True:
-            return False
+        l = (i == True)
 
         return cheese_found
