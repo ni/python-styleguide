@@ -12,7 +12,7 @@ on:
       - .github/workflows/PR.yml
 
 env:
-  POETRY_VERSION: 1.1.6
+  POETRY_VERSION: 1.2.2
 
 jobs:
   checks:
@@ -24,18 +24,14 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - uses: Gr1N/setup-poetry@v4
+      - uses: Gr1N/setup-poetry@v8
         with:
           poetry-version: ${{ env.POETRY_VERSION }}
       # @TODO: This is a workaround for there not being a way to check the lock file
       #   See: https://github.com/python-poetry/poetry/issues/453
       - name: Check for lock changes
         run: |
-          PYTHONPATH="${PYTHONPATH}:${HOME}/.poetry/lib:${HOME}/.poetry/lib/poetry/_vendor/py${{ env.PYTHON_VERSION }}" \
-          python -c "from poetry.factory import Factory; \
-            locker = Factory().create_poetry('.').locker; \
-            exit(0) if locker.is_locked() and locker.is_fresh() else exit(1)" \
-            && echo 'OK'
+          poetry lock --check
       - uses: actions/cache@v2
         with:
           path: ~/.cache/pypoetry/virtualenvs
@@ -50,14 +46,14 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: [3.7, 3.8, 3.9, '3.10', '3.11']
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
 
-      - uses: Gr1N/setup-poetry@v4
+      - uses: Gr1N/setup-poetry@v8
         with:
           poetry-version: ${{ env.POETRY_VERSION }}
       - uses: actions/cache@v2

@@ -6,7 +6,7 @@ on:
 
 env:
   # Versions are also listed in PR.yml
-  POETRY_VERSION: 1.1.6
+  POETRY_VERSION: 1.2.2
   PYTHON_VERSION: 3.9  # Use latest
 
 jobs:
@@ -23,18 +23,14 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - uses: Gr1N/setup-poetry@v4
+      - uses: Gr1N/setup-poetry@v8
         with:
           poetry-version: ${{ env.POETRY_VERSION }}
       # @TODO: This is a workaround for there not being a way to check the lock file
       #   See: https://github.com/python-poetry/poetry/issues/453
       - name: Check for lock changes
         run: |
-          PYTHONPATH="${PYTHONPATH}:${HOME}/.poetry/lib:${HOME}/.poetry/lib/poetry/_vendor/py${{ env.PYTHON_VERSION }}" \
-          python -c "from poetry.factory import Factory; \
-            locker = Factory().create_poetry('.').locker; \
-            exit(0) if locker.is_locked() and locker.is_fresh() else exit(1)" \
-            && echo 'OK'
+          poetry lock --check
       - uses: actions/cache@v2
         with:
           path: ~/.cache/pypoetry/virtualenvs
@@ -71,7 +67,8 @@ jobs:
 
       - name: Push changes
         if: ${{ github.event.release.target_commitish == 'main' }}
-        uses: ad-m/github-push-action@master
+        uses: CasperWA/push-protected@v2
         with:
-          github_token: ${{ secrets.ADMIN_PAT }}
+          token: ${{ secrets.ADMIN_PAT }}
           branch: ${{ github.event.release.target_commitish }}
+          unprotect_reviews: true
