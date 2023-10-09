@@ -69,13 +69,12 @@ class Cheese_Shop:  # noqa: D101, N801 - Missing docstring in public class (auto
         except:  # noqa: E722 - do not use bare 'except' (auto-generated noqa)
             pass
 
-        l = 5  # noqa: E741 - ambiguous variable name 'l' (auto-generated noqa)
-        i = 3  # noqa: F841 - local variable 'i' is assigned to but never used (auto-generated noqa)
+        i = 3
+        j = 5  # noqa: F841 - local variable 'j' is assigned to but never used (auto-generated noqa)
 
-        if (
-            l
+        l = (  # noqa: E741, F841 - ambiguous variable name 'l' (auto-generated noqa), local variable 'l' is assigned to but never used (auto-generated noqa)
+            i
             == True  # noqa: E712 - comparison to True should be 'if cond is True:' or 'if cond:' (auto-generated noqa)
-        ):
-            return False
+        )
 
         return cheese_found
