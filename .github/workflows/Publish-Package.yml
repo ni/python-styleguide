@@ -57,15 +57,14 @@ jobs:
           poetry version prepatch
 
       - name: Commit files
-        if: ${{ github.event.release.target_commitish == 'main' }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git pull --tags -f
           git commit -m "Bump package version" -a
+          git config credential.helper '!f() { sleep 1; echo "username=oauth2"; echo "password=${GIT_PASSWORD}"; }; f'
 
       - name: Push changes
-        if: ${{ github.event.release.target_commitish == 'main' }}
         uses: CasperWA/push-protected@v2
         with:
           token: ${{ secrets.ADMIN_PAT }}
