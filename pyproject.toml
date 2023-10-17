@@ -3,7 +3,7 @@ name = "ni-python-styleguide"
 # The a.0 here denotes a source based version
 # This is removed when released through the Publish-Package.yml GitHub action
 # Official PyPI releases follow Major.Minor.Patch
-version = "0.4.3a0"
+version = "0.4.4a0"
 description = "NI's internal and external Python linter rules and plugins"
 authors = ["NI <opensource@ni.com>"]
 readme = "README.md" # apply the repo readme to the package as well
