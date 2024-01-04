@@ -2,6 +2,7 @@
 import pathlib
 import sys
 import textwrap
+
 import pytest
 from pytest_snapshot.plugin import Snapshot
 
@@ -95,5 +96,7 @@ def test_diff_returns_expected(str1: str, str2: str, expected: str):
         tofile="",
     )
 
-    print("\n".join(result), file=sys.stderr)  # let the raw output be captured and printed in event of failure.
+    print(
+        "\n".join(result), file=sys.stderr
+    )  # let the raw output be captured and printed in event of failure.
     assert "\n".join(result[3:]) == expected

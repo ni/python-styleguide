@@ -6,4 +6,3 @@ from . import temp_file  # noqa: F401
 from . import _constants
 
 DEFAULT_ENCODING = _constants.DEFAULT_ENCODING
-
