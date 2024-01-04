@@ -182,11 +182,29 @@ def acknowledge_existing_violations(obj, extend_ignore, file_or_dir, aggressive)
 )
 @click.pass_obj
 def fix(obj, extend_ignore, file_or_dir, aggressive):
-    """Fix basic linter/formatting errors in file(s)/directory(s) given."""  # noqa: D4
+    """Fix basic linter/formatting errors in file(s)/directory(s) given."""
     _fix.fix(
         exclude=obj["EXCLUDE"],
         app_import_names=obj["APP_IMPORT_NAMES"],
         extend_ignore=extend_ignore,
         file_or_dir=file_or_dir or [pathlib.Path.cwd()],
         aggressive=aggressive,
+    )
+
+
+@main.command()
+@click.option("--diff", is_flag=True, help="Show a diff of the changes that would be made")
+@click.option("--check", is_flag=True, help="Error if files would be changed")
+@click.argument("file_or_dir", nargs=-1)
+@click.pass_obj
+def format(obj, file_or_dir, check: bool, diff: bool):
+    """Fix basic linter/formatting errors in file(s)/directory(s) given."""
+    _fix.fix(
+        exclude=obj["EXCLUDE"],
+        app_import_names=obj["APP_IMPORT_NAMES"],
+        extend_ignore=[],
+        file_or_dir=file_or_dir or [pathlib.Path.cwd()],
+        aggressive=False,
+        check=check,
+        diff=diff,
     )

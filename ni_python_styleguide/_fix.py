@@ -6,12 +6,11 @@ from typing import Iterable
 import isort
 import pathspec
 
-from ni_python_styleguide import (
-    _acknowledge_existing_errors,
-    _config_constants,
-    _format,
-    _utils,
-)
+from ni_python_styleguide import _acknowledge_existing_errors
+from ni_python_styleguide import _config_constants
+from ni_python_styleguide import _format
+from ni_python_styleguide import _utils
+from ni_python_styleguide._utils import temp_file
 
 _module_logger = logging.getLogger(__name__)
 
@@ -92,11 +91,14 @@ def fix(
     file_or_dir,
     *_,
     aggressive=False,
+    diff=False,
+    check=False,
 ):
     """Fix basic linter errors and format."""
     file_or_dir = file_or_dir or ["."]
-    extend_ignore = extend_ignore or ""
-    exclude = exclude or ""
+    if diff or check:
+        if aggressive:
+            raise Exception("Cannot use --aggressive with --diff or --check")
     if aggressive:
         glob_spec = pathspec.PathSpec.from_lines(
             "gitwildmatch",
@@ -130,25 +132,40 @@ def fix(
         lint_errors_by_file[pathlib.Path(error.file)].append(error)
 
     failed_files = []
+    make_changes = not (diff or check)
     for bad_file, errors_in_file in lint_errors_by_file.items():
         try:
-            _format.format(bad_file)
-            _format_imports(file=bad_file, app_import_names=app_import_names)
-            remaining_lint_errors_in_file = _utils.lint.get_errors_to_process(
-                exclude,
-                app_import_names,
-                extend_ignore,
-                [bad_file],
-                excluded_errors=[],
-            )
-            if remaining_lint_errors_in_file and aggressive:
-                _acknowledge_existing_errors.acknowledge_lint_errors(
-                    exclude=exclude,
-                    app_import_names=app_import_names,
-                    extend_ignore=extend_ignore,
-                    aggressive=aggressive,
-                    file_or_dir=[bad_file],
+            if make_changes:
+                _format.format(bad_file)
+                _format_imports(file=bad_file, app_import_names=app_import_names)
+                remaining_lint_errors_in_file = _utils.lint.get_errors_to_process(
+                    exclude,
+                    app_import_names,
+                    extend_ignore,
+                    [bad_file],
+                    excluded_errors=[],
                 )
+                if remaining_lint_errors_in_file and aggressive:
+                    _acknowledge_existing_errors.acknowledge_lint_errors(
+                        exclude=exclude,
+                        app_import_names=app_import_names,
+                        extend_ignore=extend_ignore,
+                        aggressive=aggressive,
+                        file_or_dir=[bad_file],
+                    )
+            else:
+                with temp_file.multi_access_tempfile() as working_file:
+                    working_file.write_text(bad_file.read_text())
+                    _format.format(working_file)
+                    _format_imports(file=working_file, app_import_names=app_import_names)
+
+                    diff_lines = _utils.diff.diff(bad_file, working_file)
+                    if diff:
+                        print("\n".join(diff_lines))
+                    if check and diff_lines:
+                        print("Error: file would be changed:", str(bad_file))
+                        failed_files.append((bad_file, "File would be changed."))
+
         except Exception as e:
             failed_files.append((bad_file, e))
     if failed_files:
