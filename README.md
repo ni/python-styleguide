@@ -63,9 +63,9 @@ application-import-names = "<app_name>"
 
 ### Formatting
 
-`ni-python-styleguide` in the future will have a `format` command which we intend to fix as many lint issues as possible.
+`ni-python-styleguide` has a subcommand `fix` which will run [black](https://pypi.org/project/black/) and [isort](https://pycqa.github.io/isort/).
 
-Until then you'll want to set the following to get `black` formatting as the styleguide expects.
+If you wish to be able to invoke black directly, you'll want to set the following to get `black` formatting as the styleguide expects.
 
 ```toml
 # pyproject.toml
