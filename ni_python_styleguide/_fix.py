@@ -6,10 +6,12 @@ from typing import Iterable
 import isort
 import pathspec
 
-from ni_python_styleguide import _acknowledge_existing_errors
-from ni_python_styleguide import _config_constants
-from ni_python_styleguide import _format
-from ni_python_styleguide import _utils
+from ni_python_styleguide import (
+    _acknowledge_existing_errors,
+    _config_constants,
+    _format,
+    _utils,
+)
 from ni_python_styleguide._utils import temp_utils
 
 _module_logger = logging.getLogger(__name__)
@@ -161,7 +163,14 @@ def fix(
 
                     diff_lines = _utils.diff.diff(bad_file, working_file)
                     if diff:
-                        print("\n".join([line.replace(working_file.as_posix(), "formatted") for line in diff_lines]))
+                        print(
+                            "\n".join(
+                                [
+                                    line.replace(working_file.as_posix(), "formatted")
+                                    for line in diff_lines
+                                ]
+                            )
+                        )
                     if check and diff_lines:
                         print("Error: file would be changed:", str(bad_file))
                         failed_files.append((bad_file, "File would be changed."))
