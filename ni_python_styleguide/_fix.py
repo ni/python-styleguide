@@ -12,7 +12,7 @@ from ni_python_styleguide import (
     _format,
     _utils,
 )
-from ni_python_styleguide._utils import temp_utils
+from ni_python_styleguide._utils import temp_file
 
 _module_logger = logging.getLogger(__name__)
 
@@ -156,7 +156,7 @@ def fix(
                         file_or_dir=[bad_file],
                     )
             else:
-                with temp_utils.multi_access_tempfile() as working_file:
+                with temp_file.multi_access_tempfile() as working_file:
                     working_file.write_text(bad_file.read_text())
                     _format.format(working_file)
                     _format_imports(file=working_file, app_import_names=app_import_names)
