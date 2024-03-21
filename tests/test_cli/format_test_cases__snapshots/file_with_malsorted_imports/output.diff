@@ -1,0 +1,22 @@
+reformatted C:\Users\mshafer\AppData\Local\Temp\tmpblj3iadt.txt
+
+All done! ✨ 🍰 ✨
+1 file reformatted.
+All done! ✨ 🍰 ✨
+1 file left unchanged.
+--- C:\Users\mshafer\AppData\Local\Temp\pytest-of-mshafer\pytest-300\test_given_input_file__produce5\input.py
+
++++ C:\Users\mshafer\AppData\Local\Temp\tmpblj3iadt.txt
+
+@@ -1,6 +1,8 @@
+
++import logging
++import os
++
+ import ni_python_styleguide
+-import os
+-import logging
++
+ 
+ def _main():
+     logging.basicConfig(level=logging.INFO)

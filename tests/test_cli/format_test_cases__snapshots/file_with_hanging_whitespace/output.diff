@@ -1,0 +1,26 @@
+reformatted C:\Users\mshafer\AppData\Local\Temp\tmpcb98zihs.txt
+
+All done! ✨ 🍰 ✨
+1 file reformatted.
+All done! ✨ 🍰 ✨
+1 file left unchanged.
+--- C:\Users\mshafer\AppData\Local\Temp\pytest-of-mshafer\pytest-300\test_given_input_file__produce4\input.py
+
++++ C:\Users\mshafer\AppData\Local\Temp\tmpcb98zihs.txt
+
+@@ -1,7 +1,7 @@
+
+-"""This is a bad comment."""" " 
++"""This is a bad comment.""" " "
+ 
+-y = 3 
+?     ^
++y = 3
+ 
+-#             "This is a bad comment.", 
+?                                       ^
++#             "This is a bad comment.",
+ 
+-x = 5 
+?     ^
++x = 5

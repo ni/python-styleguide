@@ -161,7 +161,7 @@ def fix(
 
                     diff_lines = _utils.diff.diff(bad_file, working_file)
                     if diff:
-                        print("\n".join(diff_lines))
+                        print("\n".join([line.replace(working_file.as_posix(), "formatted") for line in diff_lines]))
                     if check and diff_lines:
                         print("Error: file would be changed:", str(bad_file))
                         failed_files.append((bad_file, "File would be changed."))
