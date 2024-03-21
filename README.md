@@ -63,7 +63,7 @@ application-import-names = "<app_name>"
 
 ### Formatting
 
-`ni-python-styleguide` has a subcommand `fix` which will run [black](https://pypi.org/project/black/) and [isort](https://pycqa.github.io/isort/).
+`ni-python-styleguide` has a subcommand `format` which will run [black](https://pypi.org/project/black/) and [isort](https://pycqa.github.io/isort/).
 
 If you wish to be able to invoke black directly, you'll want to set the following to get `black` formatting as the styleguide expects.
 
