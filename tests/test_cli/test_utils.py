@@ -4,7 +4,6 @@ import sys
 import textwrap
 
 import pytest
-from pytest_snapshot.plugin import Snapshot
 
 from ni_python_styleguide import _utils
 
