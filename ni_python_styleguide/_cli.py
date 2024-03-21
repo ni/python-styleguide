@@ -1,3 +1,4 @@
+import logging
 import pathlib
 import sys
 
@@ -9,6 +10,8 @@ from ni_python_styleguide import _fix
 from ni_python_styleguide import _Flake8Error
 from ni_python_styleguide import _lint
 
+_logger = logging.getLogger(__name__)
+_logger.addHandler(logging.NullHandler())
 
 def _qs_or_vs(verbosity):
     if verbosity != 0:
@@ -159,13 +162,17 @@ def acknowledge_existing_violations(obj, extend_ignore, file_or_dir, aggressive)
 
     Use this command to acknowledge violations in existing code to allow for enforcing new code.
     """
-    _acknowledge_existing_errors.acknowledge_lint_errors(
-        exclude=obj["EXCLUDE"],
-        app_import_names=obj["APP_IMPORT_NAMES"],
-        extend_ignore=extend_ignore,
-        file_or_dir=file_or_dir,
-        aggressive=aggressive,
-    )
+    try:
+        _acknowledge_existing_errors.acknowledge_lint_errors(
+            exclude=obj["EXCLUDE"],
+            app_import_names=obj["APP_IMPORT_NAMES"],
+            extend_ignore=extend_ignore,
+            file_or_dir=file_or_dir,
+            aggressive=aggressive,
+        )
+    except Exception as e:
+        _logger.debug(e, exc_info=True)
+        raise click.ClickException(f"Error occurred: {e}")
 
 
 @main.command()
@@ -183,13 +190,17 @@ def acknowledge_existing_violations(obj, extend_ignore, file_or_dir, aggressive)
 @click.pass_obj
 def fix(obj, extend_ignore, file_or_dir, aggressive):
     """Fix basic linter/formatting errors in file(s)/directory(s) given."""
-    _fix.fix(
+    try:
+        _fix.fix(
         exclude=obj["EXCLUDE"],
         app_import_names=obj["APP_IMPORT_NAMES"],
         extend_ignore=extend_ignore,
         file_or_dir=file_or_dir or [pathlib.Path.cwd()],
         aggressive=aggressive,
     )
+    except Exception as e:
+        _logger.debug(e, exc_info=True)
+        raise click.ClickException(f"Error occurred: {e}")
 
 
 @main.command()
@@ -198,13 +209,17 @@ def fix(obj, extend_ignore, file_or_dir, aggressive):
 @click.argument("file_or_dir", nargs=-1)
 @click.pass_obj
 def format(obj, file_or_dir, check: bool, diff: bool):
-    """Fix basic linter/formatting errors in file(s)/directory(s) given."""
-    _fix.fix(
-        exclude=obj["EXCLUDE"],
-        app_import_names=obj["APP_IMPORT_NAMES"],
-        extend_ignore=[],
-        file_or_dir=file_or_dir or [pathlib.Path.cwd()],
-        aggressive=False,
-        check=check,
-        diff=diff,
-    )
+    """Format the file(s)/directory(s) given."""
+    try:
+        _fix.fix(
+            exclude=obj["EXCLUDE"],
+            app_import_names=obj["APP_IMPORT_NAMES"],
+            extend_ignore=[],
+            file_or_dir=file_or_dir or [pathlib.Path.cwd()],
+            aggressive=False,
+            check=check,
+            diff=diff,
+        )
+    except Exception as e:
+        _logger.debug(e, exc_info=True)
+        raise click.ClickException(f"Error occurred: {e}")
