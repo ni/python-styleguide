@@ -860,10 +860,18 @@ import cheese_shop.brie
 
 > 💻 This rule is enforced by error code F401
 
+`__init__.py` files are an allowed exception because these are used to declare public APIs.
+
 ```python
 # Bad
 import os  # Assuming os is never used
 ```
+
+```python
+# Good - assuming we are in a __init__.py file
+from .mysubmodule import spam, eggs  # OK even if neither are used in this module
+```
+
 
 ### [O.1.9] ❌ **DO NOT** Change an imported object's case 💻
 
