@@ -869,7 +869,7 @@ import os  # Assuming os is never used
 
 ```python
 # Good - assuming we are in a __init__.py file
-from .mysubmodule import spam, eggs # OK even if neither are used in this module
+from .mysubmodule import spam, eggs  # OK even if neither are used in this module
 ```
 
 
