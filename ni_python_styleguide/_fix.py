@@ -101,9 +101,20 @@ def fix(
                 all_files.extend(file_path.rglob("*.py"))
             else:
                 all_files.append(file_path)
-        all_files = list(filter(
-            lambda o: not any([fnmatch(pathlib.Path(o).resolve().relative_to(pathlib.Path.cwd()).as_posix(), exclude_ + "/*") for exclude_ in exclude.split(",")]), all_files
-        ))
+        all_files = list(
+            filter(
+                lambda o: not any(
+                    [
+                        fnmatch(pathlib.Path(o).as_posix(), (exclude_ + "/*"))
+                        or fnmatch(pathlib.Path(o).as_posix(), (exclude_))
+                        or (not exclude.startswith("/") and fnmatch(pathlib.Path(o).as_posix(), ("*/" + exclude_)))
+                        or (not exclude.startswith("/") and fnmatch(pathlib.Path(o).as_posix(), ("*/" + exclude_ + "/*")))
+                        for exclude_ in exclude.split(",")
+                    ]
+                ),
+                all_files,
+            )
+        )
         for file in all_files:
             if not file.is_file():  # doesn't really exist...
                 continue
