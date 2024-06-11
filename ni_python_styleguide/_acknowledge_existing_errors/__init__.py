@@ -134,7 +134,11 @@ def _handle_emergent_violations(exclude, app_import_names, extend_ignore, file_o
 
 def remove_auto_suppressions_from_file(file: pathlib.Path):
     """Removes auto-suppressions from file."""
-    lines = file.read_text(encoding=_utils.DEFAULT_ENCODING).splitlines()
+    try:
+        lines = file.read_text(encoding=_utils.DEFAULT_ENCODING).splitlines()
+    except:
+        _module_logger.warning("Failed to read %s with encoding %s", file, _utils.DEFAULT_ENCODING)
+        raise
     stripped_lines = [_filter_suppresion_from_line(line) for line in lines]
     file.write_text("\n".join(stripped_lines) + "\n", encoding=_utils.DEFAULT_ENCODING)
 
