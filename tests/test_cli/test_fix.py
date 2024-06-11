@@ -57,6 +57,7 @@ def test_given_bad_input__fix__produces_expected_output_aggressive(
 
     output = styleguide_command(command="fix", command_args=["--aggressive"])
 
+    assert not output.exception, f"Error in running:\n{output.exception}"
     assert output.exit_code in (True, 0), f"Error in running:\n{output}"
     result = test_file.read_text(encoding="UTF-8")
     snapshot.snapshot_dir = test_dir
