@@ -136,7 +136,7 @@ def remove_auto_suppressions_from_file(file: pathlib.Path):
     """Removes auto-suppressions from file."""
     try:
         lines = file.read_text(encoding=_utils.DEFAULT_ENCODING).splitlines()
-    except:
+    except Exception:
         _module_logger.warning("Failed to read %s with encoding %s", file, _utils.DEFAULT_ENCODING)
         raise
     stripped_lines = [_filter_suppresion_from_line(line) for line in lines]
