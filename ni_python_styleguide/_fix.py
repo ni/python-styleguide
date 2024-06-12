@@ -1,15 +1,17 @@
 import logging
 import pathlib
 from collections import defaultdict
-from fnmatch import fnmatch
 from typing import Iterable
 
 import isort
+import pathspec
 
-from ni_python_styleguide import _acknowledge_existing_errors
-from ni_python_styleguide import _config_constants
-from ni_python_styleguide import _format
-from ni_python_styleguide import _utils
+from ni_python_styleguide import (
+    _acknowledge_existing_errors,
+    _config_constants,
+    _format,
+    _utils,
+)
 
 _module_logger = logging.getLogger(__name__)
 
@@ -93,17 +95,24 @@ def fix(
 ):
     """Fix basic linter errors and format."""
     file_or_dir = file_or_dir or ["."]
+    extend_ignore = extend_ignore or ""
+    exclude = exclude or ""
     if aggressive:
+        glob_spec = pathspec.PathSpec.from_lines(
+            "gitwildmatch",
+            ["*.py"]
+            + [f"!{exclude_}" for exclude_ in exclude.split(",") if exclude_]
+            + [f"!{ignore_}" for ignore_ in extend_ignore.split(",") if ignore_],
+        )
         all_files = []
         for file_or_dir_ in file_or_dir:
             file_path = pathlib.Path(file_or_dir_)
             if file_path.is_dir():
-                all_files.extend(file_path.rglob("*.py"))
+                all_files.extend(
+                    [pathlib.Path(o) for o in glob_spec.match_tree(str(file_path), negate=False)]
+                )
             else:
                 all_files.append(file_path)
-        all_files = filter(
-            lambda o: not any([fnmatch(o, exclude_) for exclude_ in exclude.split(",")]), all_files
-        )
         for file in all_files:
             if not file.is_file():  # doesn't really exist...
                 continue

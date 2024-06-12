@@ -14,6 +14,7 @@ include = ["ni_python_styleguide/config.toml"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
+pathspec = ">=0.11.1"
 
 # Tools we aggregate
 flake8 = [
