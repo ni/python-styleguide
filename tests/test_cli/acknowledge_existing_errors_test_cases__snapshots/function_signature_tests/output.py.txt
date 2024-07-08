@@ -49,7 +49,7 @@ def method_with_bad_names_on_multiple_lines_1(
 
 def method_with_bad_names_on_multiple_lines_2(
     myBadlyNamedParam,  # noqa: N803 - argument name 'myBadlyNamedParam' should be lowercase (auto-generated noqa)
-    my_other_Bad_name,
+    my_other_Bad_name,  # noqa: N803 - argument name 'my_other_Bad_name' should be lowercase (auto-generated noqa)
 ):
     """Provide parameters with bad names on multiple lines."""
     return myBadlyNamedParam + my_other_Bad_name
@@ -84,7 +84,7 @@ def method_withBadName_with_bad_params_on_multiple_lines_1(  # noqa: N802 - func
 
 def method_withBadName_with_bad_params_on_multiple_lines_2(  # noqa: N802 - function name 'method_withBadName_with_bad_params_on_multiple_lines_2' should be lowercase (auto-generated noqa)
     myBadlyNamedParam,  # noqa: N803 - argument name 'myBadlyNamedParam' should be lowercase (auto-generated noqa)
-    my_other_Bad_name,
+    my_other_Bad_name,  # noqa: N803 - argument name 'my_other_Bad_name' should be lowercase (auto-generated noqa)
 ):
     """Provide parameters with bad names on multiple lines."""
     return myBadlyNamedParam + my_other_Bad_name
