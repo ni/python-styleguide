@@ -37,7 +37,7 @@ def method_with_parameters_on_multiple_lines(x, y):
 
 def method_with_bad_names_on_single_line(
     myBadlyNamedParam,  # noqa: N803 - argument name 'myBadlyNamedParam' should be lowercase (auto-generated noqa)
-    my_other_Bad_name,
+    my_other_Bad_name,  # noqa: N803 - argument name 'my_other_Bad_name' should be lowercase (auto-generated noqa)
 ):
     """Provide parameters with bad names on single line."""
     return myBadlyNamedParam + my_other_Bad_name
@@ -52,7 +52,7 @@ def method_with_bad_names_on_multiple_lines_1(
 
 def method_with_bad_names_on_multiple_lines_2(
     myBadlyNamedParam,  # noqa: N803 - argument name 'myBadlyNamedParam' should be lowercase (auto-generated noqa)
-    my_other_Bad_name,
+    my_other_Bad_name,  # noqa: N803 - argument name 'my_other_Bad_name' should be lowercase (auto-generated noqa)
 ):
     """Provide parameters with bad names on multiple lines."""
     return myBadlyNamedParam + my_other_Bad_name
@@ -81,7 +81,7 @@ def method_withBadName_with_parameters_on_multiple_lines(  # noqa: N802 - functi
 
 def method_withBadName_with_bad_params_on_single_line(  # noqa: N802 - function name 'method_withBadName_with_bad_params_on_single_line' should be lowercase (auto-generated noqa)
     myBadlyNamedParam,  # noqa: N803 - argument name 'myBadlyNamedParam' should be lowercase (auto-generated noqa)
-    my_other_Bad_name,
+    my_other_Bad_name,  # noqa: N803 - argument name 'my_other_Bad_name' should be lowercase (auto-generated noqa)
 ):
     """Provide parameters with bad names on single line."""
     return myBadlyNamedParam + my_other_Bad_name
@@ -96,7 +96,7 @@ def method_withBadName_with_bad_params_on_multiple_lines_1(  # noqa: N802 - func
 
 def method_withBadName_with_bad_params_on_multiple_lines_2(  # noqa: N802 - function name 'method_withBadName_with_bad_params_on_multiple_lines_2' should be lowercase (auto-generated noqa)
     myBadlyNamedParam,  # noqa: N803 - argument name 'myBadlyNamedParam' should be lowercase (auto-generated noqa)
-    my_other_Bad_name,
+    my_other_Bad_name,  # noqa: N803 - argument name 'my_other_Bad_name' should be lowercase (auto-generated noqa)
 ):
     """Provide parameters with bad names on multiple lines."""
     return myBadlyNamedParam + my_other_Bad_name
@@ -105,7 +105,7 @@ def method_withBadName_with_bad_params_on_multiple_lines_2(  # noqa: N802 - func
 def method_withBadName_andParams(  # noqa: N802 - function name 'method_withBadName_andParams' should be lowercase (auto-generated noqa)
     my_normal_param,
     myBadlyNamedParam,  # noqa: N803 - argument name 'myBadlyNamedParam' should be lowercase (auto-generated noqa)
-    my_other_Bad_param,
+    my_other_Bad_param,  # noqa: N803 - argument name 'my_other_Bad_name' should be lowercase (auto-generated noqa)
 ):
     """Provide example where black will want to split out result."""
     return 5 + 7
@@ -114,7 +114,7 @@ def method_withBadName_andParams(  # noqa: N802 - function name 'method_withBadN
 def method_withBadName_and_bad_param_with_long_name(  # noqa: N802 - function name 'method_withBadName_and_bad_param_with_long_name' should be lowercase (auto-generated noqa)
     my_normal_param,
     myBadlyNamedParam,  # noqa: N803 - argument name 'myBadlyNamedParam' should be lowercase (auto-generated noqa)
-    my_other_Bad_param,
+    my_other_Bad_param,  # noqa: N803 - argument name 'my_other_Bad_name' should be lowercase (auto-generated noqa)
 ):
     """Provide example where black will want to split out result even more"""  # noqa: D415, W505 - First line should end with a period, question mark, or exclamation point (auto-generated noqa), doc line too long (188 > 100 characters) (auto-generated noqa)
     return 5 + 7
