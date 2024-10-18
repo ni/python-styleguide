@@ -26,6 +26,10 @@ pycodestyle = [
     {version = "^2.11", python = "^3.12"},
 ]
 black = ">=23.1"
+bandit = [
+    {version=">=1.5,<1.7", extras=["toml"], python="^3.7,<3.8"},
+    {version=">=1.7.9", extras=["toml"], python="^3.8"},
+]
 
 # Additional support libraries
 # These dependencies were selected because they are already used by black.
