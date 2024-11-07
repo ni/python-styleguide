@@ -81,3 +81,9 @@ extend_exclude = "*__snapshots/*/*input.py"
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
 
+
+[tool.bandit]
+# These are common dirs that are not part of the codebase.
+exclude_dirs = [
+  "*/tests/test_cli/acknowledge_existing_errors_test_cases__snapshots/**",
+]

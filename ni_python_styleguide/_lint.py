@@ -1,11 +1,23 @@
 """Linting methods."""
+
 import contextlib
+import copy
 import io
+import logging
+import pathlib
+import sys
+import typing
+import tempfile
 
+
+import bandit.cli.main
 import flake8.main.application
+import toml
 
-from ni_python_styleguide import _config_constants
-from ni_python_styleguide import _Flake8Error
+from ni_python_styleguide import _config_constants, _Flake8Error
+
+_logger = logging.getLogger(__name__)
+_logger.addHandler(logging.NullHandler())
 
 
 def lint(qs_or_vs, exclude, app_import_names, format, extend_ignore, file_or_dir):
@@ -41,3 +53,64 @@ def get_lint_output(qs_or_vs, exclude, app_import_names, format, extend_ignore, 
             pass
     capture.seek(0)
     return capture.read()
+
+
+@contextlib.contextmanager
+def _temp_sys_argv(args):
+    old = sys.argv
+    sys.argv = list(args)
+    try:
+        yield
+    finally:
+        sys.argv = old
+
+
+@contextlib.contextmanager
+def _temp_merged_config(base_config: dict, override_config_file: pathlib.Path):
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".toml", delete=False) as temp:
+        target = copy.deepcopy(base_config)
+        merged = {"tool": {"bandit": target}}
+        override_config = toml.load(override_config_file)["tool"]["bandit"]
+        for key, value in override_config.items():
+            if key in target and isinstance(value, list):
+                _logger.debug("Merging %s: %s", key, value)
+                target[key].extend(value)
+            elif key in target and isinstance(value, dict):
+                _logger.debug("Merging %s: %s", key, value)
+                target[key].update(value)
+            else:
+                _logger.debug("Overriding %s: %s", key, value)
+                target[key] = value
+        _logger.debug("Merged config: %s", merged)
+        toml.dump(merged, temp)
+        temp.flush()
+        yield pathlib.Path(temp.name)
+
+def _relative_to_cwd(path: str) -> pathlib.Path:
+    try:
+        return (pathlib.Path(path)).relative_to(pathlib.Path.cwd())
+    except ValueError:
+        return path
+
+def lint_bandit(qs_or_vs, file_or_dir: typing.Tuple[pathlib.Path], pyproject_config: dict):
+    """Run the bandit linter."""
+    with _temp_merged_config(
+        pyproject_config, _config_constants.BANDIT_CONFIG_FILE
+    ) as merged_config:
+        args_list = list(
+            filter(
+                None,
+                [
+                    "bandit",
+                    qs_or_vs,
+                    "-c",
+                    str(merged_config),
+                    "-r",
+                    *[str(_relative_to_cwd(p)) for p in file_or_dir],
+                ],
+            )
+        )
+        _logger.debug("Running bandit with args: %s", args_list)
+        with _temp_sys_argv(args_list):
+            # return
+            bandit.cli.main.main()
