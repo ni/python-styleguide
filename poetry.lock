@@ -570,6 +570,23 @@ click = ">=6.0"
 pytest = ">=5.0"
 
 [[package]]
+name = "pytest-mock"
+version = "3.11.1"
+description = "Thin-wrapper around the mock package for easier use with pytest"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "pytest-mock-3.11.1.tar.gz", hash = "sha256:7f6b125602ac6d743e523ae0bfa71e1a697a2f5534064528c6ff84c2f7c2fc7f"},
+    {file = "pytest_mock-3.11.1-py3-none-any.whl", hash = "sha256:21c279fff83d70763b05f8874cc9cfb3fcacd6d354247a976f9529d19f9acf39"},
+]
+
+[package.dependencies]
+pytest = ">=5.0"
+
+[package.extras]
+dev = ["pre-commit", "pytest-asyncio", "tox"]
+
+[[package]]
 name = "pytest-snapshot"
 version = "0.9.0"
 description = "A plugin for snapshot testing with pytest."
@@ -903,4 +920,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "fafa039ab9b4cfe18ca7359121ccab384d2fd041211c97d85cedb3edffd55ed7"
+content-hash = "c7331ec98fa4bff6f1dd79e4ef807fd6b0a36a4723aa6a3105f4dad158fce259"
