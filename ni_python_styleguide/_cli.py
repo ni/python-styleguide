@@ -194,6 +194,7 @@ def fix(obj, extend_ignore, file_or_dir, aggressive):
 @click.argument("file_or_dir", nargs=-1)
 @click.pass_obj
 def bandit(obj, file_or_dir):
+    """Run Bandit security linter on the file(s)/directory(s) given."""
     logging.basicConfig(level=logging.DEBUG)
     pyproj_bandit_config = obj.get("PYPROJECT", {}).get("tool", {}).get("bandit", {})
     _lint.lint_bandit(
