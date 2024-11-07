@@ -6,7 +6,6 @@ import io
 import logging
 import pathlib
 import sys
-import tempfile
 import typing
 
 import bandit.cli.main
