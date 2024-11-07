@@ -6,9 +6,8 @@ import io
 import logging
 import pathlib
 import sys
-import typing
 import tempfile
-
+import typing
 
 import bandit.cli.main
 import flake8.main.application
@@ -86,11 +85,13 @@ def _temp_merged_config(base_config: dict, override_config_file: pathlib.Path):
         temp.flush()
         yield pathlib.Path(temp.name)
 
+
 def _relative_to_cwd(path: str) -> pathlib.Path:
     try:
         return (pathlib.Path(path)).relative_to(pathlib.Path.cwd())
     except ValueError:
         return path
+
 
 def lint_bandit(qs_or_vs, file_or_dir: typing.Tuple[pathlib.Path], pyproject_config: dict):
     """Run the bandit linter."""
