@@ -84,7 +84,7 @@ build-backend = "poetry.masonry.api"
 
 
 [tool.bandit]
-# These are common dirs that are not part of the codebase.
+# These are nonsense files that exist solely for snapshots
 exclude_dirs = [
   "*/tests/test_cli/acknowledge_existing_errors_test_cases__snapshots/**",
 ]
