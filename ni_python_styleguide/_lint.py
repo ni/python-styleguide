@@ -66,7 +66,7 @@ def _temp_sys_argv(args):
 
 @contextlib.contextmanager
 def _temp_merged_config(base_config: dict, override_config_file: pathlib.Path):
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".toml", delete=False) as temp:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".toml") as temp:
         target = copy.deepcopy(base_config)
         merged = {"tool": {"bandit": target}}
         override_config = toml.load(override_config_file)["tool"]["bandit"]
