@@ -13,7 +13,7 @@ import bandit.cli.main
 import flake8.main.application
 import toml
 
-from ni_python_styleguide import _config_constants, _Flake8Error
+from ni_python_styleguide import _config_constants, _Flake8Error, _utils
 
 _logger = logging.getLogger(__name__)
 _logger.addHandler(logging.NullHandler())
@@ -66,7 +66,7 @@ def _temp_sys_argv(args):
 
 @contextlib.contextmanager
 def _temp_merged_config(base_config: dict, override_config_file: pathlib.Path):
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".toml") as temp:
+    with _utils.temp_file.multi_access_tempfile(suffix=".toml") as temp:
         target = copy.deepcopy(base_config)
         merged = {"tool": {"bandit": target}}
         override_config = toml.load(override_config_file)["tool"]["bandit"]
@@ -81,9 +81,11 @@ def _temp_merged_config(base_config: dict, override_config_file: pathlib.Path):
                 _logger.debug("Overriding %s: %s", key, value)
                 target[key] = value
         _logger.debug("Merged config: %s", merged)
-        toml.dump(merged, temp)
-        temp.flush()
-        yield pathlib.Path(temp.name)
+
+        with temp.open("w") as fout:
+            toml.dump(merged, fout)
+
+        yield temp
 
 
 def _relative_to_cwd(path: str) -> pathlib.Path:
