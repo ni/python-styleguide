@@ -76,6 +76,15 @@ def test_bandit_not_configured_gets_default_config(
     assert fake_bandit.config.get("tool", {}).get("bandit", {}).get("assert_used")
 
 
+def test_bandit_configured_in_pyproj_gets_unchanged_base_configs(
+    project_with_bandit_config, styleguide_bandit, fake_bandit
+):
+    styleguide_bandit()
+
+    fake_bandit.assert_called_once()
+    assert fake_bandit.config.get("tool", {}).get("bandit", {}).get("assert_used")
+
+
 def test_bandit_configured_in_pyproj_gets_custom_config(
     project_with_bandit_config, styleguide_bandit, fake_bandit
 ):
