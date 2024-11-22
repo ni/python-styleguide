@@ -75,4 +75,33 @@ line-length = 100
 
 ### Editor Integration
 
-(This section to come!)
+#### Vim/Neovim
+
+1. Install the [ALE](https://github.com/dense-analysis/ale) plugin. This is a
+   popular asynchronous lint engine for Vim and Neovim and already does most of
+   the heavy lifting for us. It supports many different ways to lint and fix
+   code. Check out the documentation (`:help ale`) for more information.
+2. Because `ni-python-styleguide` is a wrapper around `flake8`, you can add the
+   following vim configuration lines to wherever you configure your vim project
+   (you can do it in your `init.vim` or `vimrc` file, but then it will apply to
+   all Python code you edit):
+
+```vim
+let g:ale_python_flake8_executable = 'ni-python-styleguide'
+let g:ale_python_flake8_options = 'lint'
+let g:ale_linters = {'python': ['flake8']}
+let g:ale_python_black_executable = 'ni-python-styleguide'
+let g:ale_python_black_options = 'fix'
+let g:ale_fixers = {'python': ['isort', 'black']}
+```
+
+   Note: You can set all of these with `b:` as well.
+
+3. You can make ALE auto-fix issues, e.g., when hitting F8, or when saving:
+
+```vim
+let g:ale_fix_on_save = 1 " Fix on save
+nmap <F8> <Plug>(ale_fix) " Fix on F8
+```
+
+  Change all of these to your taste.
