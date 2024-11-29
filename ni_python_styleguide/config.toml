@@ -8,3 +8,18 @@ line-length = 100
 [tool.isort]
 profile = "black"
 combine_as_imports = true
+
+[tool.bandit]
+# Tests are expected to use assert, and are not shipped to users.
+assert_used = {skips = ["*/tests/**/test_*.py", "*/tests/test_*.py"]}
+# These are common dirs that are not part of the codebase.
+exclude_dirs = [
+  "__pycache__",
+  ".coverage",
+  ".git",
+  ".mypy_cache",
+  ".pytest_cache",
+  ".venv",
+  ".vs",
+  ".vscode",
+]

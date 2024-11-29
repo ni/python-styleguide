@@ -1,13 +1,11 @@
+import logging
 import pathlib
 import sys
 
 import click
 import toml
 
-from ni_python_styleguide import _acknowledge_existing_errors
-from ni_python_styleguide import _fix
-from ni_python_styleguide import _Flake8Error
-from ni_python_styleguide import _lint
+from ni_python_styleguide import _acknowledge_existing_errors, _fix, _Flake8Error, _lint
 
 
 def _qs_or_vs(verbosity):
@@ -189,4 +187,18 @@ def fix(obj, extend_ignore, file_or_dir, aggressive):
         extend_ignore=extend_ignore,
         file_or_dir=file_or_dir or [pathlib.Path.cwd()],
         aggressive=aggressive,
+    )
+
+
+@main.command()
+@click.argument("file_or_dir", nargs=-1)
+@click.pass_obj
+def bandit(obj, file_or_dir):
+    """Run Bandit security linter on the file(s)/directory(s) given."""
+    logging.basicConfig(level=logging.DEBUG)
+    pyproj_bandit_config = obj.get("PYPROJECT", {}).get("tool", {}).get("bandit", {})
+    _lint.lint_bandit(
+        qs_or_vs=_qs_or_vs(obj["VERBOSITY"]),
+        pyproject_config=pyproj_bandit_config,
+        file_or_dir=file_or_dir or [pathlib.Path.cwd()],
     )

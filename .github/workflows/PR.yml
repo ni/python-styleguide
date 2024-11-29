@@ -40,6 +40,8 @@ jobs:
         run: poetry install -vvv
       - name: Lint the Code
         run: poetry run ni-python-styleguide lint
+      - name: (bandit) Lint the Code
+        run: poetry run ni-python-styleguide bandit
 
   tests:
     runs-on: ${{ matrix.os }}
