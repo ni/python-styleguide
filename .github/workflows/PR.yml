@@ -53,6 +53,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Create a venv
+        run: python -m venv ~/venv/.cache
+      - name: Install the package
+        run: ~/venv/.cache/bin/pip install .
+      - name: Check that it runs
+        run: ~/venv/.cache/bin/nps lint
+
       - uses: Gr1N/setup-poetry@v8
         with:
           poetry-version: ${{ env.POETRY_VERSION }}
@@ -60,6 +67,10 @@ jobs:
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+      - uses: actions/cache@v2
+        with:
+          path: ~/venv/.cache
+          key: ${{ runner.os }}-venv-${{ hashFiles('poetry.lock') }}
       - name: Install the Package
         run: poetry install
       - name: Run tests
