@@ -2,13 +2,13 @@ name: Update Poetry lock on a regular basis
 
 on:
   schedule:
-    - cron: '0 4 * * 0' # weekly at 04:00 on Sunday -> https://crontab.guru/#0_4_*_*_0
+    - cron: "0 4 * * 0" # weekly at 04:00 on Sunday -> https://crontab.guru/#0_4_*_*_0
   workflow_dispatch:
 
 env:
   # Versions are also listed in PR.yml
   POETRY_VERSION: 1.2.2
-  PYTHON_VERSION: 3.9  # Use latest
+  PYTHON_VERSION: 3.9 # Use latest
 
 jobs:
   org-check:
@@ -56,7 +56,17 @@ jobs:
           git push --force --set-upstream origin ${{ steps.vars.outputs.branch_name }}
       # based on https://stackoverflow.com/a/73340290/8100990
       - name: Create Pull Request
-        run: | 
+        run: |
+          echo "Changed files:"
+          git diff --name-only HEAD origin/main --exit-code
+
+          if [[ $? ]]; then
+            echo "Changes detected, creating PR"
+          else
+            echo "No changes detected, exiting"
+            exit 0
+          fi
+
           gh pr create -B main -H ${{ steps.vars.outputs.branch_name }} --title 'Update poetry lock and reformat' --body '# Update Poetry Lock
 
           Ran:
