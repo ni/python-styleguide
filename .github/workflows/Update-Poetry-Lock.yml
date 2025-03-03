@@ -56,7 +56,17 @@ jobs:
           git push --force --set-upstream origin ${{ steps.vars.outputs.branch_name }}
       # based on https://stackoverflow.com/a/73340290/8100990
       - name: Create Pull Request
-        run: | 
+        run: |
+          echo "Changed files:"
+          git diff --name-only HEAD origin/main --exit-code
+
+          if [[ $? ]]; then
+            echo "Changes detected, creating PR"
+          else
+            echo "No changes detected, exiting"
+            exit 0
+          fi
+
           gh pr create -B main -H ${{ steps.vars.outputs.branch_name }} --title 'Update poetry lock and reformat' --body '# Update Poetry Lock
 
           Ran:
