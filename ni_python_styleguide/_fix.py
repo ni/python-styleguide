@@ -15,57 +15,7 @@ from ni_python_styleguide import (
 from ni_python_styleguide._utils import temp_file
 
 _module_logger = logging.getLogger(__name__)
-
-
-def _split_imports_line(lines: str, *_, **__):
-    r"""Splits multi-import lines to multiple lines.
-
-    >>> _split_imports_line("import os, collections\n")
-    'import os\nimport collections\n'
-
-    >>> _split_imports_line("import os\n")
-    'import os\n'
-
-    >>> _split_imports_line("from ni_python_styleguide import"
-    ... " _acknowledge_existing_errors, _format")
-    'from ni_python_styleguide import _acknowledge_existing_errors\nfrom ni_python_styleguide import _format\n'
-
-    >>> _split_imports_line("from ni_python_styleguide import _acknowledge_existing_errors")
-    'from ni_python_styleguide import _acknowledge_existing_errors\n'
-
-    >>> _split_imports_line("import os, collections\nimport pathlib")
-    'import os\nimport collections\nimport pathlib\n'
-
-    >>> _split_imports_line("import os, collections\nimport pathlib, os")
-    'import os\nimport collections\nimport pathlib\nimport os\n'
-
-    >>> _split_imports_line("\n")
-    '\n'
-    """  # noqa W505: long lines...
-    result_parts = []
-    for line in lines.splitlines(keepends=True):
-        code_portion_of_line, *non_code = line.split("#", maxsplit=1)
-        first, _, rest = code_portion_of_line.partition(",")
-        if not all(
-            [
-                rest,
-                "import " in code_portion_of_line,
-                code_portion_of_line.strip().startswith("import ")
-                or code_portion_of_line.strip().startswith("from "),
-            ]
-        ):
-            result_parts.append(code_portion_of_line)
-            continue
-        prefix, first = " ".join(first.split()[:-1]), first.split()[-1]
-        split_up = [first] + rest.split(",")
-        result_parts.extend([prefix + " " + part.strip() for part in split_up])
-    suffix = ""
-    if non_code:
-        suffix = "#" + "".join(non_code)
-    result = "\n".join(result_parts) + suffix
-    if result.strip():
-        return result.rstrip() + "\n"
-    return result
+_module_logger.addHandler(logging.NullHandler())
 
 
 def _sort_imports(file: pathlib.Path, app_import_names):
