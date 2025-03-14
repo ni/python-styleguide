@@ -1,22 +1,28 @@
-reformatted C:\Users\mshafer\AppData\Local\Temp\tmpblj3iadt.txt
+reformatted C:\Users\mshafer\AppData\Local\Temp\tmp_e5rf_f8.txt
 
 All done! ✨ 🍰 ✨
 1 file reformatted.
 All done! ✨ 🍰 ✨
 1 file left unchanged.
---- C:\Users\mshafer\AppData\Local\Temp\pytest-of-mshafer\pytest-300\test_given_input_file__produce5\input.py
+--- C:\Users\mshafer\AppData\Local\Temp\pytest-of-mshafer\pytest-18\test_given_input_file__produce5\input.py
 
-+++ C:\Users\mshafer\AppData\Local\Temp\tmpblj3iadt.txt
++++ C:\Users\mshafer\AppData\Local\Temp\tmp_e5rf_f8.txt
 
-@@ -1,6 +1,8 @@
+@@ -1,9 +1,12 @@
 
 +import logging
 +import os
+ from datetime import datetime
+-from typing import List, Dict, Any
++from typing import Any, Dict, List
++
++import click
 +
  import ni_python_styleguide
 -import os
 -import logging
+-import click
 +
  
+ @click.command()
  def _main():
-     logging.basicConfig(level=logging.INFO)

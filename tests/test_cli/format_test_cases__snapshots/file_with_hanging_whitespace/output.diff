@@ -1,17 +1,16 @@
-reformatted C:\Users\mshafer\AppData\Local\Temp\tmpcb98zihs.txt
+reformatted C:\Users\mshafer\AppData\Local\Temp\tmpfy8r68w2.txt
 
 All done! ✨ 🍰 ✨
 1 file reformatted.
 All done! ✨ 🍰 ✨
 1 file left unchanged.
---- C:\Users\mshafer\AppData\Local\Temp\pytest-of-mshafer\pytest-300\test_given_input_file__produce4\input.py
+--- C:\Users\mshafer\AppData\Local\Temp\pytest-of-mshafer\pytest-18\test_given_input_file__produce4\input.py
 
-+++ C:\Users\mshafer\AppData\Local\Temp\tmpcb98zihs.txt
++++ C:\Users\mshafer\AppData\Local\Temp\tmpfy8r68w2.txt
 
 @@ -1,7 +1,7 @@
 
--"""This is a bad comment."""" " 
-+"""This is a bad comment.""" " "
+ """This is a bad comment.""" " "
  
 -y = 3 
 ?     ^
