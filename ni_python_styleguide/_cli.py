@@ -5,13 +5,11 @@ import sys
 import click
 import toml
 
-from ni_python_styleguide import _acknowledge_existing_errors
-from ni_python_styleguide import _fix
-from ni_python_styleguide import _Flake8Error
-from ni_python_styleguide import _lint
+from ni_python_styleguide import _acknowledge_existing_errors, _fix, _Flake8Error, _lint
 
 _logger = logging.getLogger(__name__)
 _logger.addHandler(logging.NullHandler())
+
 
 def _qs_or_vs(verbosity):
     if verbosity != 0:
@@ -192,12 +190,12 @@ def fix(obj, extend_ignore, file_or_dir, aggressive):
     """Fix basic linter/formatting errors in file(s)/directory(s) given."""
     try:
         _fix.fix(
-        exclude=obj["EXCLUDE"],
-        app_import_names=obj["APP_IMPORT_NAMES"],
-        extend_ignore=extend_ignore,
-        file_or_dir=file_or_dir or [pathlib.Path.cwd()],
-        aggressive=aggressive,
-    )
+            exclude=obj["EXCLUDE"],
+            app_import_names=obj["APP_IMPORT_NAMES"],
+            extend_ignore=extend_ignore,
+            file_or_dir=file_or_dir or [pathlib.Path.cwd()],
+            aggressive=aggressive,
+        )
     except Exception as e:
         _logger.debug(e, exc_info=True)
         raise click.ClickException(f"Error occurred: {e}")
