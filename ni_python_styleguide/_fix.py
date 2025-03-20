@@ -33,7 +33,7 @@ def _sort_imports(file: pathlib.Path, app_import_names):
 
 def _format_imports(file: pathlib.Path, app_import_names: Iterable[str]) -> None:
     _sort_imports(file, app_import_names=app_import_names)
-    _format.format(file)
+    _format.format(file, "-q")
 
 
 def fix(
@@ -88,7 +88,7 @@ def fix(
     for bad_file, errors_in_file in lint_errors_by_file.items():
         try:
             if make_changes:
-                _format.format(bad_file)
+                _format.format(bad_file, "-q")
                 _format_imports(file=bad_file, app_import_names=app_import_names)
                 remaining_lint_errors_in_file = _utils.lint.get_errors_to_process(
                     exclude,
@@ -108,7 +108,7 @@ def fix(
             else:
                 with temp_file.multi_access_tempfile() as working_file:
                     working_file.write_text(bad_file.read_text())
-                    _format.format(working_file)
+                    _format.format(working_file, "-q")
                     _format_imports(file=working_file, app_import_names=app_import_names)
 
                     diff_lines = _utils.diff.diff(bad_file, working_file)
