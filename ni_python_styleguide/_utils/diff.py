@@ -5,13 +5,13 @@ import typing
 from ni_python_styleguide._utils import _constants
 
 
-def diff(file1: pathlib.Path, file2: pathlib.Path) -> typing.Iterable[str]:
+def diff(file1: pathlib.Path, file2: pathlib.Path, tofile=None) -> typing.Iterable[str]:
     """Return a diff between two files."""
     return _diff_lines(
         lines1=file1.read_text(encoding=_constants.DEFAULT_ENCODING).splitlines(),
         lines2=file2.read_text(encoding=_constants.DEFAULT_ENCODING).splitlines(),
         fromfile=str(file1),
-        tofile=str(file2),
+        tofile=tofile or str(file2),
     )
 
 

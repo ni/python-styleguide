@@ -1,12 +1,6 @@
-reformatted C:\Users\mshafer\AppData\Local\Temp\tmpfy8r68w2.txt
+--- file_with_hanging_whitespace/input.py
 
-All done! ✨ 🍰 ✨
-1 file reformatted.
-All done! ✨ 🍰 ✨
-1 file left unchanged.
---- C:\Users\mshafer\AppData\Local\Temp\pytest-of-mshafer\pytest-18\test_given_input_file__produce4\input.py
-
-+++ C:\Users\mshafer\AppData\Local\Temp\tmpfy8r68w2.txt
++++ input.py_formatted
 
 @@ -1,7 +1,7 @@
 

@@ -1,12 +1,6 @@
-reformatted C:\Users\mshafer\AppData\Local\Temp\tmp_e5rf_f8.txt
+--- file_with_malsorted_imports/input.py
 
-All done! ✨ 🍰 ✨
-1 file reformatted.
-All done! ✨ 🍰 ✨
-1 file left unchanged.
---- C:\Users\mshafer\AppData\Local\Temp\pytest-of-mshafer\pytest-18\test_given_input_file__produce5\input.py
-
-+++ C:\Users\mshafer\AppData\Local\Temp\tmp_e5rf_f8.txt
++++ input.py_formatted
 
 @@ -1,9 +1,12 @@
 
