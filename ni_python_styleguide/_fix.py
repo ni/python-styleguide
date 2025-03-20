@@ -35,12 +35,14 @@ def _format_imports(file: pathlib.Path, app_import_names: Iterable[str]) -> None
     _sort_imports(file, app_import_names=app_import_names)
     _format.format(file, "-q")
 
+
 def _posix_relative_if_under(file: pathlib.Path, base: pathlib.Path) -> str:
     file_resolved = file.resolve()
     base_resolved = base.resolve()
     if file_resolved.as_posix().startswith(base_resolved.as_posix()):
         return file_resolved.relative_to(base_resolved).as_posix()
     return file_resolved.as_posix()
+
 
 def fix(
     exclude: str,
@@ -117,13 +119,13 @@ def fix(
                     _format.format(working_file, "-q")
                     _format_imports(file=working_file, app_import_names=app_import_names)
 
-                    diff_lines = _utils.diff.diff(bad_file, working_file, tofile=f"{_posix_relative_if_under(bad_file, pathlib.Path.cwd())}_formatted")
+                    diff_lines = _utils.diff.diff(
+                        bad_file,
+                        working_file,
+                        tofile=f"{_posix_relative_if_under(bad_file, pathlib.Path.cwd())}_formatted",
+                    )
                     if diff:
-                        print(
-                            "\n".join(
-                                diff_lines
-                            )
-                        )
+                        print("\n".join(diff_lines))
                     if check and diff_lines:
                         print("Error: file would be changed:", str(bad_file))
                         failed_files.append((bad_file, "File would be changed."))

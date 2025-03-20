@@ -33,7 +33,7 @@ def test_given_input_file__produces_expected_output_simple(
     "test_dir", [x for x in TEST_CASE_DIR.iterdir() if x.is_dir()], ids=lambda o: o.name
 )
 def test_given_input_file__produces_expected_output_diff(
-    test_dir, snapshot: Snapshot, tmp_path: pathlib.Path, styleguide_command: callable,
+    test_dir, snapshot: Snapshot, tmp_path: pathlib.Path, styleguide_command: callable
 ):
     """Tests diff mode on file outputs expected."""
     in_file = test_dir / "input.py"
@@ -55,7 +55,7 @@ def test_given_input_file__produces_expected_output_diff(
 )
 @pytest.mark.parametrize("command_args", [["--check"], ["--check", "--diff"]])
 def test_given_bad_input_file__check_mode__fails(
-    test_dir, tmp_path: pathlib.Path, styleguide_command: callable, command_args: typing.List[str],
+    test_dir, tmp_path: pathlib.Path, styleguide_command: callable, command_args: typing.List[str]
 ):
     """Tests check mode fails on bad file."""
     in_file = test_dir / "input.py"
