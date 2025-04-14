@@ -12,7 +12,7 @@ on:
       - .github/workflows/PR.yml
 
 env:
-  POETRY_VERSION: 1.2.2
+  POETRY_VERSION: 1.8.1
 
 jobs:
   checks:
