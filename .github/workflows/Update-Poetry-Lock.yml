@@ -8,7 +8,7 @@ on:
 env:
   # Versions are also listed in PR.yml
   POETRY_VERSION: 1.8.1
-  PYTHON_VERSION: 3.9  # Use latest
+  PYTHON_VERSION: 3.11  # Use latest
 
 jobs:
   org-check:

@@ -18,7 +18,7 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     env:
-      PYTHON_VERSION: 3.9  # Use latest
+      PYTHON_VERSION: 3.11  # Use latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
