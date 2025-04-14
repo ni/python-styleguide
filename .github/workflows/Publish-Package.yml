@@ -6,8 +6,8 @@ on:
 
 env:
   # Versions are also listed in PR.yml
-  POETRY_VERSION: 1.2.2
-  PYTHON_VERSION: 3.9  # Use latest
+  POETRY_VERSION: 1.8.1
+  PYTHON_VERSION: 3.11  # Use latest
 
 jobs:
   publish_package:
@@ -31,7 +31,7 @@ jobs:
       - name: Check for lock changes
         run: |
           poetry lock --check
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
