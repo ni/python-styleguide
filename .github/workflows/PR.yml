@@ -32,7 +32,7 @@ jobs:
       - name: Check for lock changes
         run: |
           poetry lock --check
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
@@ -56,7 +56,7 @@ jobs:
       - uses: Gr1N/setup-poetry@v8
         with:
           poetry-version: ${{ env.POETRY_VERSION }}
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
