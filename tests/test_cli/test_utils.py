@@ -1,7 +1,5 @@
 """Test the _utils submodule."""
 import pathlib
-import sys
-import textwrap
 
 import pytest
 
@@ -53,49 +51,3 @@ def test_can_acurately_detect_if_in_multiline_string(lineno, expected_in_multili
     )
 
     assert result == expected_in_multiline
-
-
-@pytest.mark.parametrize(
-    ["str1", "str2", "expected"],
-    [
-        ["", "", ""],
-        ["a", "b", "-a\n+b"],
-        ["a", "", "-a"],
-        ["", "b", "+b"],
-        [
-            "a \nb",
-            "a\nb",
-            textwrap.dedent(
-                """\
-                -a 
-                ? ^
-                +a
-                 b"""
-            ),
-        ],
-        [
-            "a   \nb",
-            "a\nb",
-            textwrap.dedent(
-                """\
-                -a   
-                ? ^^^
-                +a
-                 b"""
-            ),
-        ],
-    ],
-)
-def test_diff_returns_expected(str1: str, str2: str, expected: str):
-    """Assert diff shows expected diff."""
-    result = _utils.diff._diff_lines(
-        lines1=str1.splitlines(),
-        lines2=str2.splitlines(),
-        fromfile="",
-        tofile="",
-    )
-
-    print(
-        "\n".join(result), file=sys.stderr
-    )  # let the raw output be captured and printed in event of failure.
-    assert "\n".join(result[3:]) == expected

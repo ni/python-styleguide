@@ -3,6 +3,7 @@ import pathlib
 from collections import defaultdict
 from typing import Iterable
 
+import better_diff.unified_plus
 import isort
 import pathspec
 
@@ -119,13 +120,13 @@ def fix(
                     _format.format(working_file, "-q")
                     _format_imports(file=working_file, app_import_names=app_import_names)
 
-                    diff_lines = _utils.diff.diff(
+                    diff_lines = better_diff.unified_plus.format_diff(
                         bad_file,
                         working_file,
                         tofile=f"{_posix_relative_if_under(bad_file, pathlib.Path.cwd())}_formatted",
                     )
                     if diff:
-                        print("\n".join(diff_lines))
+                        print(diff_lines)
                     if check and diff_lines:
                         print("Error: file would be changed:", str(bad_file))
                         failed_files.append((bad_file, "File would be changed."))
