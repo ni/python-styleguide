@@ -1,19 +1,17 @@
---- file_with_hanging_whitespace/input.py
-
+--- input.py
 +++ input.py_formatted
-
 @@ -1,7 +1,7 @@
-
  """This is a bad comment.""" " "
- 
--y = 3 
+
+-y = 3
 ?     ^
 +y = 3
- 
--#             "This is a bad comment.", 
+
+-#             "This is a bad comment.",
 ?                                       ^
 +#             "This is a bad comment.",
- 
--x = 5 
+
+-x = 5
 ?     ^
 +x = 5
+

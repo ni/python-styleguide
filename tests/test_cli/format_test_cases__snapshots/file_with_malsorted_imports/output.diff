@@ -1,9 +1,6 @@
---- file_with_malsorted_imports/input.py
-
+--- input.py
 +++ input.py_formatted
-
 @@ -1,9 +1,12 @@
-
 +import logging
 +import os
  from datetime import datetime
@@ -17,6 +14,7 @@
 -import logging
 -import click
 +
- 
+
  @click.command()
  def _main():
+
