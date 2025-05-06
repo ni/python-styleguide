@@ -1,5 +1,4 @@
 """Test the _utils submodule."""
-import pathlib
 
 import pytest
 
@@ -17,8 +16,6 @@ EXAMPLE_FILE_LINES = [
     '"""',
     "move_files()",
 ]
-
-MODULE_DIR = pathlib.Path(__file__).parent
 
 
 @pytest.mark.parametrize(
