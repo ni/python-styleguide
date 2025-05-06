@@ -48,10 +48,9 @@ However there are some situations you might need to configure the tool.
 
 ### Fix
 
-`ni-python-styleguide` has a subcommand `fix` which will run [black](https://pypi.org/project/black/) and [isort](https://pycqa.github.io/isort/).
+`ni-python-styleguide` has a subcommand `fix` which will run [black](https://pypi.org/project/black/) and [isort](https://pycqa.github.io/isort/) to apply basic formatting fixes.
 
-Additionally, you can run `fix` with the `--aggressive` option and it will add acknowledgements (# noqa) for the remaining linting errors
-it cannot fix, in addition to running black and isort. 
+When using the `--aggressive` option with `fix`, it will first run `black` and `isort` to fix what it can then add acknowledgements (`# noqa`) for any remaining linting errors that cannot be automatically fixed.
 
 #### When using `setup.py`
 
@@ -65,7 +64,7 @@ application-import-names = "<app_name>"
 
 ### Formatting
 
-`ni-python-styleguide` has a subcommand `format` which will run [black](https://pypi.org/project/black/) and [isort](https://pycqa.github.io/isort/).
+`ni-python-styleguide` has a subcommand `format` which will run [black](https://pypi.org/project/black/) and [isort](https://pycqa.github.io/isort/) with the correct settings to match the linting expectations.
 
 If you wish to be able to invoke black directly, you'll want to set the following to get `black` formatting as the styleguide expects.
 
