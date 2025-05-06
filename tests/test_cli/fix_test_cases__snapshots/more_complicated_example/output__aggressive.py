@@ -1,4 +1,5 @@
 """Provide a more complex example with some corner cases."""
+
 import fileinput
 import logging
 import pathlib

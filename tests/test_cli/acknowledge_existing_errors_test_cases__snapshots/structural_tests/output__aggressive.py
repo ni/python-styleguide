@@ -1,7 +1,6 @@
 """example of a python file with linter errors in flow and structure of code.
 """
 
-
 l = 5  # noqa: E741 - ambiguous variable name 'l' (auto-generated noqa)
 y = False
 
