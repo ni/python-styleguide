@@ -25,6 +25,8 @@ As a tool, `ni-python-styleguide` is installed like any other script:
 pip install ni-python-styleguide
 ```
 
+The script name `nps` is a short-name for `ni-python-styleguide`, and may be used in place of `ni-python-styleguide` in any CLI command.
+
 ### Linting
 
 To lint, just run the `lint` subcommand (from within the project root, or lower):
@@ -34,7 +36,7 @@ ni-python-styleguide lint
 # or
 ni-python-styleguide lint ./dir/
 # or
-ni-python-styleguide lint module.py
+nps lint module.py
 ```
 
 The rules enforced are all rules documented in the written convention, which are marked as enforced.
