@@ -716,6 +716,7 @@ Imports come _after_ module comments and docstrings and _before_ module globals 
 ```python
 # Bad
 """Module Docstring."""
+
 URL = "http://python.org"
 
 import ministry
