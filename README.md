@@ -107,3 +107,52 @@ nmap <F8> <Plug>(ale_fix) " Fix on F8
 ```
 
   Change all of these to your taste.
+
+#### VSCode
+
+
+One can configure VSCode either in the [User 'settings.json' file](https://code.visualstudio.com/docs/configure/settings#_settings-json-file), or in a local [`.vscode/settings.json`](https://code.visualstudio.com/docs/configure/settings#_workspace-settingsjson-location).
+
+
+1. Install the [Python extension by Microsoft](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+
+1. Because ni-python-styleguide is a wrapper around `flake8`, you can add the following configuration
+   to make it uses ni-python-styleguide's rules.
+
+   If using Poetry:
+   ```json
+   "flake8.path": [
+         "poetry",
+         "run",
+         "ni-python-styleguide",
+         "lint"
+      ],
+   ```
+   If ni-python-styleguide is directly installed
+   ```json
+   "flake8.path": [
+         "ni-python-styleguide",
+         "lint"
+      ],
+   ```
+
+   (alternatively, tell `flake8` to use the ni-python-styleguide config)
+   ```json
+   "flake8.args": [
+        "--config=.venv\\lib\\site-packages\\ni_python_styleguide\\config.ini"
+   ],
+   ```
+
+1. Telling the formatter to use ni-python-styleguide's settings
+
+   (telling VS Code to use `black` and telling `black` to use `ni-python-styleguide`'s settings file)
+   ```json
+   "[python]": {
+        "editor.formatOnType": true,
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+   "black-formatter.args": [
+      "--config=.venv\\lib\\site-packages\\ni_python_styleguide\\config.toml"
+   ],
+   ```
+
