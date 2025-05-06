@@ -1,4 +1,5 @@
 """Linting methods."""
+
 import contextlib
 from io import StringIO
 

@@ -1,11 +1,11 @@
 """Linting methods."""
+
 import contextlib
 import io
 
 import flake8.main.application
 
-from ni_python_styleguide import _config_constants
-from ni_python_styleguide import _Flake8Error
+from ni_python_styleguide import _config_constants, _Flake8Error
 
 
 def lint(qs_or_vs, exclude, app_import_names, format, extend_ignore, file_or_dir):
