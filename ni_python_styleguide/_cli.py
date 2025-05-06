@@ -213,7 +213,7 @@ def format(obj, file_or_dir, check: bool, diff: bool):
         _fix.fix(
             exclude=obj["EXCLUDE"],
             app_import_names=obj["APP_IMPORT_NAMES"],
-            extend_ignore=[],
+            extend_ignore=None,
             file_or_dir=file_or_dir or [pathlib.Path.cwd()],
             aggressive=False,
             check=check,

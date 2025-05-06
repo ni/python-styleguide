@@ -66,7 +66,7 @@ def fix(
             "gitwildmatch",
             ["*.py"]
             + [f"!{exclude_}" for exclude_ in exclude.split(",") if exclude_]
-            + [f"!{ignore_}" for ignore_ in extend_ignore if ignore_],
+            + [f"!{ignore_}" for ignore_ in (extend_ignore or "").split(",") if ignore_],
         )
         all_files = []
         for file_or_dir_ in file_or_dir:
