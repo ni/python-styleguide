@@ -1,13 +1,11 @@
 import pathlib
 import sys
+import typing
 
 import click
 import toml
 
-from ni_python_styleguide import _acknowledge_existing_errors
-from ni_python_styleguide import _fix
-from ni_python_styleguide import _Flake8Error
-from ni_python_styleguide import _lint
+from ni_python_styleguide import _acknowledge_existing_errors, _fix, _Flake8Error, _lint
 
 
 def _qs_or_vs(verbosity):
@@ -181,12 +179,30 @@ def acknowledge_existing_violations(obj, extend_ignore, file_or_dir, aggressive)
     help="Remove any existing acknowledgments, fix what can be fixed, and re-acknowledge remaining.",
 )
 @click.pass_obj
-def fix(obj, extend_ignore, file_or_dir, aggressive):
-    """Fix basic linter/formatting errors in file(s)/directory(s) given."""  # noqa: D4
+def fix(obj, extend_ignore: typing.Optional[str], file_or_dir, aggressive):
+    """Fix basic linter/formatting errors in file(s)/directory(s) given."""
     _fix.fix(
         exclude=obj["EXCLUDE"],
         app_import_names=obj["APP_IMPORT_NAMES"],
         extend_ignore=extend_ignore,
         file_or_dir=file_or_dir or [pathlib.Path.cwd()],
         aggressive=aggressive,
+    )
+
+
+@main.command()
+@click.option("--diff", is_flag=True, help="Show a diff of the changes that would be made")
+@click.option("--check", is_flag=True, help="Error if files would be changed")
+@click.argument("file_or_dir", nargs=-1)
+@click.pass_obj
+def format(obj, file_or_dir, check: bool, diff: bool):
+    """Format the file(s)/directory(s) given."""
+    _fix.fix(
+        exclude=obj["EXCLUDE"],
+        app_import_names=obj["APP_IMPORT_NAMES"],
+        extend_ignore=None,
+        file_or_dir=file_or_dir or [pathlib.Path.cwd()],
+        aggressive=False,
+        check=check,
+        diff=diff,
     )

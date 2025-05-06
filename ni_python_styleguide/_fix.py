@@ -1,8 +1,10 @@
 import logging
 import pathlib
+import typing
 from collections import defaultdict
 from typing import Iterable
 
+import better_diff.unified_plus
 import isort
 import pathspec
 
@@ -12,59 +14,10 @@ from ni_python_styleguide import (
     _format,
     _utils,
 )
+from ni_python_styleguide._utils import temp_file
 
 _module_logger = logging.getLogger(__name__)
-
-
-def _split_imports_line(lines: str, *_, **__):
-    r"""Splits multi-import lines to multiple lines.
-
-    >>> _split_imports_line("import os, collections\n")
-    'import os\nimport collections\n'
-
-    >>> _split_imports_line("import os\n")
-    'import os\n'
-
-    >>> _split_imports_line("from ni_python_styleguide import"
-    ... " _acknowledge_existing_errors, _format")
-    'from ni_python_styleguide import _acknowledge_existing_errors\nfrom ni_python_styleguide import _format\n'
-
-    >>> _split_imports_line("from ni_python_styleguide import _acknowledge_existing_errors")
-    'from ni_python_styleguide import _acknowledge_existing_errors\n'
-
-    >>> _split_imports_line("import os, collections\nimport pathlib")
-    'import os\nimport collections\nimport pathlib\n'
-
-    >>> _split_imports_line("import os, collections\nimport pathlib, os")
-    'import os\nimport collections\nimport pathlib\nimport os\n'
-
-    >>> _split_imports_line("\n")
-    '\n'
-    """  # noqa W505: long lines...
-    result_parts = []
-    for line in lines.splitlines(keepends=True):
-        code_portion_of_line, *non_code = line.split("#", maxsplit=1)
-        first, _, rest = code_portion_of_line.partition(",")
-        if not all(
-            [
-                rest,
-                "import " in code_portion_of_line,
-                code_portion_of_line.strip().startswith("import ")
-                or code_portion_of_line.strip().startswith("from "),
-            ]
-        ):
-            result_parts.append(code_portion_of_line)
-            continue
-        prefix, first = " ".join(first.split()[:-1]), first.split()[-1]
-        split_up = [first] + rest.split(",")
-        result_parts.extend([prefix + " " + part.strip() for part in split_up])
-    suffix = ""
-    if non_code:
-        suffix = "#" + "".join(non_code)
-    result = "\n".join(result_parts) + suffix
-    if result.strip():
-        return result.rstrip() + "\n"
-    return result
+_module_logger.addHandler(logging.NullHandler())
 
 
 def _sort_imports(file: pathlib.Path, app_import_names):
@@ -82,27 +35,38 @@ def _sort_imports(file: pathlib.Path, app_import_names):
 
 def _format_imports(file: pathlib.Path, app_import_names: Iterable[str]) -> None:
     _sort_imports(file, app_import_names=app_import_names)
-    _format.format(file)
+    _format.format(file, "-q")
+
+
+def _posix_relative_if_under(file: pathlib.Path, base: pathlib.Path) -> str:
+    file_resolved = file.resolve()
+    base_resolved = base.resolve()
+    if file_resolved.as_posix().startswith(base_resolved.as_posix()):
+        return file_resolved.relative_to(base_resolved).as_posix()
+    return file_resolved.as_posix()
 
 
 def fix(
     exclude: str,
     app_import_names: str,
-    extend_ignore,
+    extend_ignore: typing.Optional[str],
     file_or_dir,
     *_,
     aggressive=False,
+    diff=False,
+    check=False,
 ):
     """Fix basic linter errors and format."""
     file_or_dir = file_or_dir or ["."]
-    extend_ignore = extend_ignore or ""
-    exclude = exclude or ""
+    if diff or check:
+        if aggressive:
+            raise Exception("Cannot use --aggressive with --diff or --check")
     if aggressive:
         glob_spec = pathspec.PathSpec.from_lines(
             "gitwildmatch",
             ["*.py"]
             + [f"!{exclude_}" for exclude_ in exclude.split(",") if exclude_]
-            + [f"!{ignore_}" for ignore_ in extend_ignore.split(",") if ignore_],
+            + [f"!{ignore_}" for ignore_ in (extend_ignore or "").split(",") if ignore_],
         )
         all_files = []
         for file_or_dir_ in file_or_dir:
@@ -130,25 +94,45 @@ def fix(
         lint_errors_by_file[pathlib.Path(error.file)].append(error)
 
     failed_files = []
+    make_changes = not (diff or check)
     for bad_file, errors_in_file in lint_errors_by_file.items():
         try:
-            _format.format(bad_file)
-            _format_imports(file=bad_file, app_import_names=app_import_names)
-            remaining_lint_errors_in_file = _utils.lint.get_errors_to_process(
-                exclude,
-                app_import_names,
-                extend_ignore,
-                [bad_file],
-                excluded_errors=[],
-            )
-            if remaining_lint_errors_in_file and aggressive:
-                _acknowledge_existing_errors.acknowledge_lint_errors(
-                    exclude=exclude,
-                    app_import_names=app_import_names,
-                    extend_ignore=extend_ignore,
-                    aggressive=aggressive,
-                    file_or_dir=[bad_file],
+            if make_changes:
+                _format.format(bad_file, "-q")
+                _format_imports(file=bad_file, app_import_names=app_import_names)
+                remaining_lint_errors_in_file = _utils.lint.get_errors_to_process(
+                    exclude,
+                    app_import_names,
+                    extend_ignore,
+                    [bad_file],
+                    excluded_errors=[],
                 )
+                if remaining_lint_errors_in_file and aggressive:
+                    _acknowledge_existing_errors.acknowledge_lint_errors(
+                        exclude=exclude,
+                        app_import_names=app_import_names,
+                        extend_ignore=extend_ignore,
+                        aggressive=aggressive,
+                        file_or_dir=[bad_file],
+                    )
+            else:
+                with temp_file.multi_access_tempfile(suffix="__" + bad_file.name) as working_file:
+                    working_file.write_text(bad_file.read_text())
+                    _format.format(working_file, "-q")
+                    _format_imports(file=working_file, app_import_names=app_import_names)
+
+                    diff_lines = better_diff.unified_plus.format_diff(
+                        bad_file.read_text(),
+                        working_file.read_text(),
+                        fromfile=f"{_posix_relative_if_under(bad_file, pathlib.Path.cwd())}",
+                        tofile=f"{_posix_relative_if_under(bad_file, pathlib.Path.cwd())}_formatted",
+                    )
+                    if diff:
+                        print(diff_lines)
+                    if check and diff_lines:
+                        print("Error: file would be changed:", str(bad_file))
+                        failed_files.append((bad_file, "File would be changed."))
+
         except Exception as e:
             failed_files.append((bad_file, e))
     if failed_files:

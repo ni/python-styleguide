@@ -1,0 +1,20 @@
+--- input.py
++++ input.py_formatted
+@@ -1,9 +1,12 @@
++import logging
++import os
+ from datetime import datetime
+-from typing import List, Dict, Any
++from typing import Any, Dict, List
++
++import click
++
+ import ni_python_styleguide
+-import os
+-import logging
+-import click
++
+
+ @click.command()
+ def _main():
+
