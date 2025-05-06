@@ -1,8 +1,8 @@
 import logging
 import pathlib
 import re
-from collections import defaultdict
 import typing
+from collections import defaultdict
 
 from ni_python_styleguide import _format, _utils
 
@@ -42,7 +42,12 @@ def _filter_suppresion_from_line(line: str):
 
 
 def acknowledge_lint_errors(
-    exclude, app_import_names, extend_ignore: typing.Optional[str], file_or_dir, *_, aggressive=False
+    exclude,
+    app_import_names,
+    extend_ignore: typing.Optional[str],
+    file_or_dir,
+    *_,
+    aggressive=False,
 ):
     """Adds a "noqa" comment for each of existing errors (unless excluded).
 

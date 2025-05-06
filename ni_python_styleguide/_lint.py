@@ -9,7 +9,9 @@ import flake8.main.application
 from ni_python_styleguide import _config_constants, _Flake8Error
 
 
-def lint(qs_or_vs, exclude, app_import_names, format, extend_ignore: typing.Optional[str], file_or_dir):
+def lint(
+    qs_or_vs, exclude, app_import_names, format, extend_ignore: typing.Optional[str], file_or_dir
+):
     """Run the linter."""
     app = flake8.main.application.Application()
     args = [
@@ -32,7 +34,9 @@ def lint(qs_or_vs, exclude, app_import_names, format, extend_ignore: typing.Opti
 
 # Note: tried to use functools.wraps
 #  - but VSCode did not properly identify the wrapped method's signature :(
-def get_lint_output(qs_or_vs, exclude, app_import_names, format, extend_ignore: typing.Optional[str], file_or_dir) -> str:
+def get_lint_output(
+    qs_or_vs, exclude, app_import_names, format, extend_ignore: typing.Optional[str], file_or_dir
+) -> str:
     "Return the output from running the linter."
     capture = io.TextIOWrapper(io.BytesIO())
     with contextlib.redirect_stdout(capture):

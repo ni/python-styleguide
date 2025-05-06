@@ -1,8 +1,8 @@
 import logging
 import pathlib
-from collections import defaultdict
-from typing import Iterable, Tuple
 import typing
+from collections import defaultdict
+from typing import Iterable
 
 import better_diff.unified_plus
 import isort
