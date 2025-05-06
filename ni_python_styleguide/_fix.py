@@ -1,7 +1,7 @@
 import logging
 import pathlib
 from collections import defaultdict
-from typing import Iterable
+from typing import Iterable, Tuple
 
 import better_diff.unified_plus
 import isort
@@ -48,7 +48,7 @@ def _posix_relative_if_under(file: pathlib.Path, base: pathlib.Path) -> str:
 def fix(
     exclude: str,
     app_import_names: str,
-    extend_ignore,
+    extend_ignore: Tuple[str, ...],
     file_or_dir,
     *_,
     aggressive=False,
@@ -65,7 +65,7 @@ def fix(
             "gitwildmatch",
             ["*.py"]
             + [f"!{exclude_}" for exclude_ in exclude.split(",") if exclude_]
-            + [f"!{ignore_}" for ignore_ in extend_ignore.split(",") if ignore_],
+            + [f"!{ignore_}" for ignore_ in extend_ignore if ignore_],
         )
         all_files = []
         for file_or_dir_ in file_or_dir:
@@ -123,6 +123,7 @@ def fix(
                     diff_lines = better_diff.unified_plus.format_diff(
                         bad_file.read_text(),
                         working_file.read_text(),
+                        fromfile=f"{_posix_relative_if_under(bad_file, pathlib.Path.cwd())}",
                         tofile=f"{_posix_relative_if_under(bad_file, pathlib.Path.cwd())}_formatted",
                     )
                     if diff:
