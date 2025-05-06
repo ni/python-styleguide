@@ -121,8 +121,8 @@ def fix(
                     _format_imports(file=working_file, app_import_names=app_import_names)
 
                     diff_lines = better_diff.unified_plus.format_diff(
-                        bad_file,
-                        working_file,
+                        bad_file.read_text(),
+                        working_file.read_text(),
                         tofile=f"{_posix_relative_if_under(bad_file, pathlib.Path.cwd())}_formatted",
                     )
                     if diff:
