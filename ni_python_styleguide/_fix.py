@@ -2,6 +2,7 @@ import logging
 import pathlib
 from collections import defaultdict
 from typing import Iterable, Tuple
+import typing
 
 import better_diff.unified_plus
 import isort
@@ -48,7 +49,7 @@ def _posix_relative_if_under(file: pathlib.Path, base: pathlib.Path) -> str:
 def fix(
     exclude: str,
     app_import_names: str,
-    extend_ignore: Tuple[str, ...],
+    extend_ignore: typing.Optional[str],
     file_or_dir,
     *_,
     aggressive=False,

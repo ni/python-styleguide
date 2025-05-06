@@ -1,6 +1,7 @@
 import logging
 import pathlib
 import sys
+import typing
 
 import click
 import toml
@@ -186,7 +187,7 @@ def acknowledge_existing_violations(obj, extend_ignore, file_or_dir, aggressive)
     help="Remove any existing acknowledgments, fix what can be fixed, and re-acknowledge remaining.",
 )
 @click.pass_obj
-def fix(obj, extend_ignore, file_or_dir, aggressive):
+def fix(obj, extend_ignore: typing.Optional[str], file_or_dir, aggressive):
     """Fix basic linter/formatting errors in file(s)/directory(s) given."""
     try:
         _fix.fix(
