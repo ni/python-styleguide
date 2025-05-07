@@ -25,6 +25,8 @@ As a tool, `ni-python-styleguide` is installed like any other script:
 pip install ni-python-styleguide
 ```
 
+The script name `nps` is a short-name for `ni-python-styleguide`, and may be used in place of `ni-python-styleguide` in any CLI command.
+
 ### Linting
 
 To lint, just run the `lint` subcommand (from within the project root, or lower):
@@ -34,7 +36,7 @@ ni-python-styleguide lint
 # or
 ni-python-styleguide lint ./dir/
 # or
-ni-python-styleguide lint module.py
+nps lint module.py
 ```
 
 The rules enforced are all rules documented in the written convention, which are marked as enforced.
@@ -46,10 +48,9 @@ However there are some situations you might need to configure the tool.
 
 ### Fix
 
-`ni-python-styleguide` has a subcommand `fix` which will run [black](https://pypi.org/project/black/) and [isort](https://pycqa.github.io/isort/).
+`ni-python-styleguide` has a subcommand `fix` which will run [black](https://pypi.org/project/black/) and [isort](https://pycqa.github.io/isort/) to apply basic formatting fixes.
 
-Additionally, you can run `fix` with the `--aggressive` option and it will add acknowledgements (# noqa) for the remaining linting errors
-it cannot fix, in addition to running black and isort. 
+When using the `--aggressive` option with `fix`, it will first run `black` and `isort` to fix what it can then add acknowledgements (`# noqa`) for any remaining linting errors that cannot be automatically fixed.
 
 #### When using `setup.py`
 
@@ -63,7 +64,7 @@ application-import-names = "<app_name>"
 
 ### Formatting
 
-`ni-python-styleguide` has a subcommand `format` which will run [black](https://pypi.org/project/black/) and [isort](https://pycqa.github.io/isort/).
+`ni-python-styleguide` has a subcommand `format` which will run [black](https://pypi.org/project/black/) and [isort](https://pycqa.github.io/isort/) with the correct settings to match the linting expectations.
 
 If you wish to be able to invoke black directly, you'll want to set the following to get `black` formatting as the styleguide expects.
 
@@ -105,3 +106,52 @@ nmap <F8> <Plug>(ale_fix) " Fix on F8
 ```
 
   Change all of these to your taste.
+
+#### VSCode
+
+
+One can configure VSCode either in the [User 'settings.json' file](https://code.visualstudio.com/docs/configure/settings#_settings-json-file), or in a local [`.vscode/settings.json`](https://code.visualstudio.com/docs/configure/settings#_workspace-settingsjson-location).
+
+
+1. Install the [Python extension by Microsoft](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+
+1. Because ni-python-styleguide is a wrapper around `flake8`, you can add the following configuration
+   to make it uses ni-python-styleguide's rules.
+
+   If using Poetry:
+   ```json
+   "flake8.path": [
+         "poetry",
+         "run",
+         "ni-python-styleguide",
+         "lint"
+      ],
+   ```
+   If ni-python-styleguide is directly installed
+   ```json
+   "flake8.path": [
+         "ni-python-styleguide",
+         "lint"
+      ],
+   ```
+
+   (alternatively, tell `flake8` to use the ni-python-styleguide config)
+   ```json
+   "flake8.args": [
+        "--config=.venv\\lib\\site-packages\\ni_python_styleguide\\config.ini"
+   ],
+   ```
+
+1. Telling the formatter to use ni-python-styleguide's settings
+
+   (telling VS Code to use `black` and telling `black` to use `ni-python-styleguide`'s settings file)
+   ```json
+   "[python]": {
+        "editor.formatOnType": true,
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+   "black-formatter.args": [
+      "--config=.venv\\lib\\site-packages\\ni_python_styleguide\\config.toml"
+   ],
+   ```
+
