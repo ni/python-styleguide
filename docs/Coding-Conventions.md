@@ -818,6 +818,7 @@ from .sibling import rivalry
 
 ```python
 # Good
+import my_app.relationships.parents
 from my_app.relationships.sibling import rivalry
 ```
 
