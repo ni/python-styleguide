@@ -802,20 +802,23 @@ from collections import defaultdict
 from contextlib import contextmanager
 ```
 
-### [O.1.5] ✔️ **DO** Use absolute imports
+### [O.1.5] ✔️ **DO** Use absolute imports 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
+
+> 💻 This rule is enforced by error code I252
 
 ℹ️ An exception can be made for `__init__.py` files republishing child module declarations
 
 ```python
-# Bad
+# Bad - will produce I252
 from . import sibling
 from .sibling import rivalry
 ```
 
 ```python
 # Good
+import my_app.relationships.parents
 from my_app.relationships.sibling import rivalry
 ```
 
@@ -869,8 +872,8 @@ import os  # Assuming os is never used
 ```
 
 ```python
-# Good - assuming we are in a __init__.py file
-from .mysubmodule import spam, eggs  # OK even if neither are used in this module
+# Good - assuming we are in a monty/__init__.py file
+from monty.mysubmodule import spam, eggs  # OK even if neither are used in this module
 ```
 
 
