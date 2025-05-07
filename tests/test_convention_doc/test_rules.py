@@ -53,4 +53,6 @@ def test_rule_documents_enforcement_codes(rule):
     if rule.is_automatically_enforced:
         assert rule.error_codes is not None
     else:
-        assert rule.error_codes is None, f"Rule ({rule.identifier}) is not marked as automatically enforced, but lists an error code {rule.error_codes}"
+        assert (
+            rule.error_codes is None
+        ), f"Rule ({rule.identifier}) is not marked as automatically enforced, but lists an error code {rule.error_codes}"
