@@ -871,6 +871,7 @@ import os  # Assuming os is never used
 
 ```python
 # Good - assuming we are in a monty/__init__.py file
+from monty import sandwich_shop
 from monty.mysubmodule import spam, eggs  # OK even if neither are used in this module
 ```
 
