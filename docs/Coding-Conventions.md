@@ -808,8 +808,6 @@ from contextlib import contextmanager
 
 > 💻 This rule is enforced by error code I252
 
-ℹ️ An exception can be made for `__init__.py` files republishing child module declarations
-
 ```python
 # Bad - will produce I252
 from . import sibling
