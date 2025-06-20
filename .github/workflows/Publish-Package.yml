@@ -49,7 +49,7 @@ jobs:
           poetry version patch
 
       - name: Build Python package and publish to PyPI
-        if: ${{ github.event.release.target_commitish == 'main' }}
+        if: ${{ github.event.release.target_commitish == 'main' || startsWith(github.event.release.target_commitish, 'releases/')}}
         run: |
           poetry publish --build --username __token__ --password ${{ secrets.PYPI_TOKEN}}
 
