@@ -20,12 +20,20 @@ jobs:
           persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
-      - uses: actions/setup-python@v2
+      - name: Set up Python
+        uses: ni/python-actions/setup-python@97860b52be87c788fb6df812bd8d1ca68c7aa885 # v0.3.0
+      - name: Set up Poetry
+        uses: ni/python-actions/setup-poetry@97860b52be87c788fb6df812bd8d1ca68c7aa885 # v0.3.0
+      - name: Check project version
+        if: github.event_name == 'release'
+        uses: ni/python-actions/check-project-version@97860b52be87c788fb6df812bd8d1ca68c7aa885 # v0.3.0
+      - name: Build distribution packages
+        run: poetry build
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - uses: Gr1N/setup-poetry@v8
-        with:
-          poetry-version: ${{ env.POETRY_VERSION }}
+          name: ${{ env.dist-artifact-name }}
+          path: dist/*
       # @TODO: This is a workaround for there not being a way to check the lock file
       #   See: https://github.com/python-poetry/poetry/issues/453
       - name: Check for lock changes
@@ -45,30 +53,25 @@ jobs:
 
       # If the version is 0.1.0-alpha.0, this will set the version to 0.1.0
       - name: Promote package version to release
-        run: |
-          poetry version patch
-
-      - name: Build Python package and publish to PyPI
-        if: ${{ github.event.release.target_commitish == 'main' }}
-        run: |
-          poetry publish --build --username __token__ --password ${{ secrets.PYPI_TOKEN}}
-
-      - name: Bump poetry version to next alpha version
-        run: |
-          poetry version prepatch
-
-      - name: Commit files
-        if: ${{ github.event.release.target_commitish == 'main' }}
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git pull --tags -f
-          git commit -m "Bump package version" -a
-
-      - name: Push changes
-        if: ${{ github.event.release.target_commitish == 'main' }}
-        uses: CasperWA/push-protected@v2
+        uses: ni/python-actions/update-project-version@97860b52be87c788fb6df812bd8d1ca68c7aa885 # v0.3.0
         with:
-          token: ${{ secrets.ADMIN_PAT }}
-          branch: ${{ github.event.release.target_commitish }}
-          unprotect_reviews: true
+          create-pull-request: false
+          commit-message: "Bump package version to minor release version"
+          version-rule: "minor"
+      - name: Build Python package
+        if: ${{ github.event.release.target_commitish == 'main' || startsWith(github.event.release.target_commitish, 'releases/')}}
+        run: |
+          poetry build
+
+      - name: Upload Python package
+        if: ${{ github.event.release.target_commitish == 'main' || startsWith(github.event.release.target_commitish, 'releases/')}}
+        uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc # v1.12.4
+        with:
+          packages-dir: dist/
+        
+      - name: Bump poetry version to next alpha version
+        uses: ni/python-actions/update-project-version@97860b52be87c788fb6df812bd8d1ca68c7aa885 # v0.3.0
+        with:
+          create-pull-request: true
+          commit-message: "Bump package version"
+          version-rule: "prepatch"
