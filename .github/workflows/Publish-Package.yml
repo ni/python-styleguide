@@ -45,6 +45,9 @@ jobs:
         uses: ni/python-actions/setup-python@5286c12d65d90b2ea738bd57d452dc4366497581 # v0.4.1
       - name: Set up Poetry
         uses: ni/python-actions/setup-poetry@5286c12d65d90b2ea738bd57d452dc4366497581 # v0.4.1
+      # If the version is 0.1.0-alpha.0, this will set the version to 0.1.0
+      - name: Promote package version to release
+        run: poetry version patch
       - name: Check project version
         if: github.event_name == 'release'
         uses: ni/python-actions/check-project-version@5286c12d65d90b2ea738bd57d452dc4366497581 # v0.4.1
@@ -78,7 +81,7 @@ jobs:
       with:
         repository-url: ${{ fromJson(env.environment-info)[env.environment].upload-url }} 
   update_version:
-    name: Update package version
+    name: Update package version to next alpha version
     runs-on: ubuntu-latest
     needs: [build_package]
     permissions:
@@ -94,4 +97,7 @@ jobs:
       - name: Update project version
         uses: ni/python-actions/update-project-version@5286c12d65d90b2ea738bd57d452dc4366497581 # v0.4.1
         with:
+          # The default GITHUB_TOKEN cannot trigger PR workflows.
           token: ${{ secrets.ADMIN_PAT }}
+          version-rule: "prepatch"
+          use-dev-suffix: false
