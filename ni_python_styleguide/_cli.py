@@ -39,14 +39,22 @@ def _read_pyproject_toml(ctx, param, value):
 
 def _get_application_import_names(pyproject):
     """Returns the application package name the config."""
-    # Otherwise override with what was specified
+    # Use the tool-specific import names if specified
     app_name = (
         pyproject.get("tool", {})
         .get("ni-python-styleguide", {})
         .get("application-import-names", "")
     )
 
-    # Allow the poetry name as a fallback
+    # Next fall back to project.import-names
+    if not app_name:
+        app_name = pyproject.get("project", {}).get("import-names", "")
+
+    # Next fall back to project.name (replace hyphens)
+    if not app_name:
+        app_name = pyproject.get("project", {}).get("name", "").replace("-", "_")
+
+    # Next fall back to tool.poetry.name (replace hyphens)
     if not app_name:
         app_name = pyproject.get("tool", {}).get("poetry", {}).get("name", "").replace("-", "_")
 
