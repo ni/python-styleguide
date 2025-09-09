@@ -48,7 +48,8 @@ def _get_application_import_names(pyproject):
 
     # Next fall back to project.import-names
     if not app_name:
-        app_name = pyproject.get("project", {}).get("import-names", "")
+        import_names = pyproject.get("project", {}).get("import-names", [])
+        app_name = ",".join(import_names)
 
     # Next fall back to project.name (replace hyphens)
     if not app_name:
