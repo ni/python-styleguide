@@ -11,57 +11,31 @@ from ni_python_styleguide._cli import _get_application_import_names
         (
             {
                 "tool": {
-                    "ni-python-styleguide": {
-                        "application-import-names": "ain1,ain2"
-                    },
-                    "poetry": {
-                        "name": "tool.poetry.name"
-                    }
+                    "ni-python-styleguide": {"application-import-names": "ain1,ain2"},
+                    "poetry": {"name": "tool.poetry.name"},
                 },
                 "project": {
                     "import-names": ["import-names1", "import-names2"],
-                    "name": "project.name"
-                }
+                    "name": "project.name",
+                },
             },
-            "ain1,ain2,tests"
+            "ain1,ain2,tests",
         ),
         (
             {
-                "tool": {
-                    "poetry": {
-                        "name": "tool.poetry.name"
-                    }
-                },
+                "tool": {"poetry": {"name": "tool.poetry.name"}},
                 "project": {
                     "import-names": ["import-names1", "import-names2"],
-                    "name": "project.name"
-                }
-            },
-            "import-names1,import-names2,tests"
-        ),
-        (
-            {
-                "tool": {
-                    "poetry": {
-                        "name": "tool.poetry.name"
-                    }
+                    "name": "project.name",
                 },
-                "project": {
-                    "name": "project.name"
-                }
             },
-            "project.name,tests"
+            "import-names1,import-names2,tests",
         ),
         (
-            {
-                "tool": {
-                    "poetry": {
-                        "name": "tool.poetry.name"
-                    }
-                }
-            },
-            "tool.poetry.name,tests"
-        )
+            {"tool": {"poetry": {"name": "tool.poetry.name"}}, "project": {"name": "project.name"}},
+            "project.name,tests",
+        ),
+        ({"tool": {"poetry": {"name": "tool.poetry.name"}}}, "tool.poetry.name,tests"),
     ],
 )
 def test_get_application_import_names_returns_valid_data(pyproject_obj, expected_names):
