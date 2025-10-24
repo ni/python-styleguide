@@ -1,0 +1,26 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "local>ni/python-renovate-config:recommended"
+    ],
+    "packageRules": [
+        {
+            "description": "Update Ruby packages early Monday mornings.",
+            "matchCategories": [
+                "ruby"
+            ],
+            "matchUpdateTypes": [
+                "major",
+                "minor",
+                "patch",
+                "rollback",
+                "replacement"
+            ],
+            "groupName": "Ruby packages",
+            "groupSlug": "ruby",
+            "extends": [
+                "schedule:weekly"
+            ]
+        }
+    ]
+}
