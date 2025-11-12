@@ -11,7 +11,6 @@ import pytest
 
 from ni_python_styleguide.__main__ import main as styleguide_main
 
-
 def pytest_collection_modifyitems(items):
     """Ignores deprecation warnings in all tests."""
     for item in items:
@@ -64,47 +63,43 @@ def chdir():
     yield os.chdir
     os.chdir(cwd)
 
+
 @pytest.fixture(autouse=True)
-def fake_open(mocker):
-    """Mock open to prevent actual file system writes during tests."""
+def force_ascii_encoding(monkeypatch):
+    """Force ASCII encoding as default for all file operations to catch missing encoding args."""
+    import locale
+    
+    # Patch locale.getpreferredencoding to return 'ascii'
+    # This affects Path.read_text() and Path.write_text() default encoding
+    monkeypatch.setattr(locale, 'getpreferredencoding', lambda do_setlocale=True: 'ascii')
+    
+    # Patch builtins.open to use ASCII when encoding not specified
     original_open = builtins.open
-    # original_path_write = pathlib.Path.write_text
-
-    def open_with_default_ascii(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            if len(args) > 1:
-                mode = args[1]
-            else:
-                mode = kwargs.get('mode', 'r')
-            if 'b' not in mode and 'encoding' not in kwargs:
+    
+    def ascii_open(*args, **kwargs):
+        if 'encoding' not in kwargs:
+            mode = args[1] if len(args) > 1 else kwargs.get('mode', 'r')
+            if 'b' not in mode:
                 kwargs['encoding'] = 'ascii'
-            return func(*args, **kwargs)
+        return original_open(*args, **kwargs)
+    
+    monkeypatch.setattr(builtins, 'open', ascii_open)
+    
+    # Patch pathlib.Path.read_text and write_text to use ASCII when encoding not specified
+    original_read_text = pathlib.Path.read_text
+    original_write_text = pathlib.Path.write_text
+    
+    def ascii_read_text(self, encoding=None, errors=None):
+        if encoding is None:
+            encoding = 'ascii'
+        return original_read_text(self, encoding=encoding, errors=errors)
+    
+    def ascii_write_text(self, data, encoding=None, errors=None, newline=None):
+        if encoding is None:
+            encoding = 'ascii'
+        return original_write_text(self, data, encoding=encoding, errors=errors, newline=newline)
+    
+    monkeypatch.setattr(pathlib.Path, 'read_text', ascii_read_text)
+    monkeypatch.setattr(pathlib.Path, 'write_text', ascii_write_text)
 
-        return wrapper
-
-    original_io_open = io.open
-
-    def io_open_with_default_encoding(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            # check for encoding in args
-            # self, mode, buffering, encoding, errors, newline
-            mode = kwargs.get('mode', 'r')
-            if len(args) > 1:
-                mode = args[1]
-
-            if len(args) > 3:
-                encoding = args[3]
-                args = list(args[:3])
-                for name, value in zip(['errors', 'newline'], args[4:]):
-                    kwargs[name] = value
-            if 'encoding' not in kwargs and 'b' not in mode:
-                kwargs['encoding'] = 'ascii'
-            return func(*args, **kwargs)
-
-        return wrapper
-
-    _mock_open = mocker.patch("builtins.open", side_effect=open_with_default_ascii(original_open))
-    _mock_path_write = mocker.patch("io.open", side_effect=io_open_with_default_encoding(original_io_open))
     yield None
