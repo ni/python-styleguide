@@ -18,7 +18,9 @@ def method_withBadName_andParams(my_normal_param, myBadlyNamedParam, my_other_Ba
     """Provide example where black will want to split out result."""
     return 5 + 7
 
-data =   ("device_name, supported_encodings",
+
+data = (
+    "device_name, supported_encodings",
     [
         ("Gerät", ["1252", "iso-8859-1", "utf-8"]),
         ("l' appareil", ["1252", "iso-8859-1", "utf-8"]),

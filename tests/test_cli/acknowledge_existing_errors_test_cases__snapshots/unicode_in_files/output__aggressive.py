@@ -21,3 +21,15 @@ def method_withBadName_andParams(  # noqa: N802 - function name 'method_withBadN
 ):
     """Provide example where black will want to split out result."""
     return 5 + 7
+
+
+data = (
+    "device_name, supported_encodings",
+    [
+        ("Gerät", ["1252", "iso-8859-1", "utf-8"]),
+        ("l' appareil", ["1252", "iso-8859-1", "utf-8"]),
+        ("デバイス", ["932", "shift-jis", "utf-8"]),
+        ("장치", ["utf-8", "euc-kr"]),
+        ("设备", ["utf-8", "gbk"]),
+    ],
+)
