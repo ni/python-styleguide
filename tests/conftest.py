@@ -8,6 +8,7 @@ import pytest
 
 from ni_python_styleguide.__main__ import main as styleguide_main
 
+
 def pytest_collection_modifyitems(items):
     """Ignores deprecation warnings in all tests."""
     for item in items:
@@ -67,18 +68,18 @@ def force_ascii_encoding(monkeypatch):
     # Patch pathlib.Path.read_text and write_text to use ASCII when encoding not specified
     original_read_text = pathlib.Path.read_text
     original_write_text = pathlib.Path.write_text
-    
+
     def ascii_read_text(self, encoding=None, errors=None):
         if encoding is None:
-            encoding = 'ascii'
+            encoding = "ascii"
         return original_read_text(self, encoding=encoding, errors=errors)
-    
+
     def ascii_write_text(self, data, encoding=None, errors=None, newline=None):
         if encoding is None:
-            encoding = 'ascii'
+            encoding = "ascii"
         return original_write_text(self, data, encoding=encoding, errors=errors, newline=newline)
-    
-    monkeypatch.setattr(pathlib.Path, 'read_text', ascii_read_text)
-    monkeypatch.setattr(pathlib.Path, 'write_text', ascii_write_text)
+
+    monkeypatch.setattr(pathlib.Path, "read_text", ascii_read_text)
+    monkeypatch.setattr(pathlib.Path, "write_text", ascii_write_text)
 
     yield None
