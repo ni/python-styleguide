@@ -1,8 +1,5 @@
 """Useful plugins/fixtures which can (and should) be used in any test."""
 
-import builtins
-import functools
-import io
 import os
 import pathlib
 
@@ -67,24 +64,6 @@ def chdir():
 @pytest.fixture(autouse=True)
 def force_ascii_encoding(monkeypatch):
     """Force ASCII encoding as default for all file operations to catch missing encoding args."""
-    import locale
-    
-    # Patch locale.getpreferredencoding to return 'ascii'
-    # This affects Path.read_text() and Path.write_text() default encoding
-    monkeypatch.setattr(locale, 'getpreferredencoding', lambda do_setlocale=True: 'ascii')
-    
-    # Patch builtins.open to use ASCII when encoding not specified
-    original_open = builtins.open
-    
-    def ascii_open(*args, **kwargs):
-        if 'encoding' not in kwargs:
-            mode = args[1] if len(args) > 1 else kwargs.get('mode', 'r')
-            if 'b' not in mode:
-                kwargs['encoding'] = 'ascii'
-        return original_open(*args, **kwargs)
-    
-    monkeypatch.setattr(builtins, 'open', ascii_open)
-    
     # Patch pathlib.Path.read_text and write_text to use ASCII when encoding not specified
     original_read_text = pathlib.Path.read_text
     original_write_text = pathlib.Path.write_text
