@@ -1,6 +1,10 @@
 """Useful plugins/fixtures which can (and should) be used in any test."""
 
+import builtins
+import functools
+import io
 import os
+import pathlib
 
 import click.testing
 import pytest
@@ -59,3 +63,48 @@ def chdir():
     cwd = os.getcwd()
     yield os.chdir
     os.chdir(cwd)
+
+@pytest.fixture(autouse=True)
+def fake_open(mocker):
+    """Mock open to prevent actual file system writes during tests."""
+    original_open = builtins.open
+    # original_path_write = pathlib.Path.write_text
+
+    def open_with_default_ascii(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            if len(args) > 1:
+                mode = args[1]
+            else:
+                mode = kwargs.get('mode', 'r')
+            if 'b' not in mode and 'encoding' not in kwargs:
+                kwargs['encoding'] = 'ascii'
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    original_io_open = io.open
+
+    def io_open_with_default_encoding(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            # check for encoding in args
+            # self, mode, buffering, encoding, errors, newline
+            mode = kwargs.get('mode', 'r')
+            if len(args) > 1:
+                mode = args[1]
+
+            if len(args) > 3:
+                encoding = args[3]
+                args = list(args[:3])
+                for name, value in zip(['errors', 'newline'], args[4:]):
+                    kwargs[name] = value
+            if 'encoding' not in kwargs and 'b' not in mode:
+                kwargs['encoding'] = 'ascii'
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    _mock_open = mocker.patch("builtins.open", side_effect=open_with_default_ascii(original_open))
+    _mock_path_write = mocker.patch("io.open", side_effect=io_open_with_default_encoding(original_io_open))
+    yield None
