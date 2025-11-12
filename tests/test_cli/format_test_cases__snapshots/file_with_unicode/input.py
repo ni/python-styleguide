@@ -14,8 +14,8 @@ class Foo:
         return self._problem_chars
 
 
-def method_withBadName_andParams(my_normal_param, myBadlyNamedParam, my_other_Bad_param):
-    """Provide example where black will want to split out result."""
+def method_with_valid_name(my_normal_param):
+    """Provide with a short, valid name."""
     return 5 + 7
 
 data =   ("device_name, supported_encodings",
