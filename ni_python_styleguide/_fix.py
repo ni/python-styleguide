@@ -21,7 +21,7 @@ _module_logger.addHandler(logging.NullHandler())
 
 
 def _sort_imports(file: pathlib.Path, app_import_names):
-    raw = file.read_text()
+    raw = file.read_text(encoding="utf-8")
     isort_config = isort.Config(
         settings_file=str(_config_constants.ISORT_CONFIG_FILE),
         known_first_party=filter(None, app_import_names.split(",")),
@@ -30,7 +30,7 @@ def _sort_imports(file: pathlib.Path, app_import_names):
         raw,
         config=isort_config,
     )
-    file.write_text(output)
+    file.write_text(output, encoding="utf-8")
 
 
 def _format_imports(file: pathlib.Path, app_import_names: Iterable[str]) -> None:
@@ -117,13 +117,13 @@ def fix(
                     )
             else:
                 with temp_file.multi_access_tempfile(suffix="__" + bad_file.name) as working_file:
-                    working_file.write_text(bad_file.read_text())
+                    working_file.write_text(bad_file.read_text(encoding="utf-8"), encoding="utf-8")
                     _format.format(working_file, "-q")
                     _format_imports(file=working_file, app_import_names=app_import_names)
 
                     diff_lines = better_diff.unified_plus.format_diff(
-                        bad_file.read_text(),
-                        working_file.read_text(),
+                        bad_file.read_text(encoding="utf-8"),
+                        working_file.read_text(encoding="utf-8"),
                         fromfile=f"{_posix_relative_if_under(bad_file, pathlib.Path.cwd())}",
                         tofile=f"{_posix_relative_if_under(bad_file, pathlib.Path.cwd())}_formatted",
                     )
