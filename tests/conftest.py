@@ -74,10 +74,10 @@ def force_ascii_encoding(monkeypatch):
             encoding = "ascii"
         return original_read_text(self, encoding=encoding, errors=errors)
 
-    def ascii_write_text(self, data, encoding=None, errors=None, newline=None):
+    def ascii_write_text(self, data, encoding=None, errors=None, **kwargs):
         if encoding is None:
             encoding = "ascii"
-        return original_write_text(self, data, encoding=encoding, errors=errors, newline=newline)
+        return original_write_text(self, data, encoding=encoding, errors=errors, **kwargs)
 
     monkeypatch.setattr(pathlib.Path, "read_text", ascii_read_text)
     monkeypatch.setattr(pathlib.Path, "write_text", ascii_write_text)
