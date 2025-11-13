@@ -24,7 +24,7 @@ def test_given_input_file__produces_expected_output_simple(
     output = styleguide_command(command="format")
 
     assert output.exit_code in (True, 0), f"Error in running:\n{output}"
-    result = test_file.read_text()
+    result = test_file.read_text(encoding="utf-8")
     snapshot.snapshot_dir = test_dir
     snapshot.assert_match(result, "output.py")
 

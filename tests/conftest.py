@@ -1,6 +1,7 @@
 """Useful plugins/fixtures which can (and should) be used in any test."""
 
 import os
+import pathlib
 
 import click.testing
 import pytest
@@ -59,3 +60,26 @@ def chdir():
     cwd = os.getcwd()
     yield os.chdir
     os.chdir(cwd)
+
+
+@pytest.fixture(autouse=True)
+def force_ascii_encoding(monkeypatch):
+    """Force ASCII encoding as default for all file operations to catch missing encoding args."""
+    # Patch pathlib.Path.read_text and write_text to use ASCII when encoding not specified
+    original_read_text = pathlib.Path.read_text
+    original_write_text = pathlib.Path.write_text
+
+    def ascii_read_text(self, encoding=None, errors=None):
+        if encoding is None:
+            encoding = "ascii"
+        return original_read_text(self, encoding=encoding, errors=errors)
+
+    def ascii_write_text(self, data, encoding=None, errors=None, **kwargs):
+        if encoding is None:
+            encoding = "ascii"
+        return original_write_text(self, data, encoding=encoding, errors=errors, **kwargs)
+
+    monkeypatch.setattr(pathlib.Path, "read_text", ascii_read_text)
+    monkeypatch.setattr(pathlib.Path, "write_text", ascii_write_text)
+
+    yield None

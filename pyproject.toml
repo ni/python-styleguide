@@ -57,7 +57,6 @@ pytest = ">=6.0.1"
 pytest_click = ">=1.0.2"
 pytest-snapshot = ">=0.6.3"
 
-
 [tool.poetry.scripts]
 ni-python-styleguide = 'ni_python_styleguide._cli:main'
 nps = 'ni_python_styleguide._cli:main'

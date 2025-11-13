@@ -11,7 +11,9 @@ def find_import_region(file: pathlib.Path) -> Tuple[int, int]:
     file: pathlib.Path path to file to evaluate
     Return: Tuple[int, int] the start and ending lines (0 based) of the module level imports
     """
-    file_contents = file.read_text()
+    file_contents = file.read_text(
+        encoding="utf-8"
+    )  # can't use DEFAULT_ENCODING here due to possible circular imports
     tree = ast.parse(file_contents)
     end = start = 0
     for node in tree.body:  # only walk top level items
