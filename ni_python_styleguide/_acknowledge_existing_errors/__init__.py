@@ -89,7 +89,7 @@ def acknowledge_lint_errors(
                     exclude=exclude,
                     app_import_names=app_import_names,
                     extend_ignore=extend_ignore,
-                    file_or_dir=file_or_dir,
+                    file_or_dir=[bad_file],
                     excluded_errors=EXCLUDED_ERRORS,
                 )
 
@@ -128,7 +128,7 @@ def _handle_emergent_violations(exclude, app_import_names, extend_ignore, file_o
             exclude=exclude,
             app_import_names=app_import_names,
             extend_ignore=extend_ignore,
-            file_or_dir=file_or_dir,
+            file_or_dir=[bad_file],
             excluded_errors=EXCLUDED_ERRORS,
         )
     )
