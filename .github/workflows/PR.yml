@@ -25,6 +25,10 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - uses: ni/python-actions/setup-poetry@9768589f3e50672173dad75a6fc181e4a85d33fa # v0.7.0
+      - name: List path and contents
+        run: |
+          pwd
+          ls -la
       - uses: ni/python-actions/analyze-project@9768589f3e50672173dad75a6fc181e4a85d33fa # v0.7.0
         with:
           project-directory: ${{ github.workspace }}
