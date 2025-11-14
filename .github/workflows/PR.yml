@@ -13,18 +13,14 @@ on:
   workflow_call:
   workflow_dispatch:
 
-env:
-  POETRY_VERSION: 1.8.1
-
 jobs:
   checks:
     runs-on: ubuntu-latest
-    env:
-      PYTHON_VERSION: 3.11  # Use latest
     steps:
       - name: Check out repo
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Set up Python
+        id: setup-python
         uses: ni/python-actions/setup-python@5286c12d65d90b2ea738bd57d452dc4366497581 # v0.4.1
       - name: Set up Poetry
         uses: ni/python-actions/setup-poetry@5286c12d65d90b2ea738bd57d452dc4366497581 # v0.4.1
@@ -51,6 +47,7 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Set up Python
+        id: setup-python
         uses: ni/python-actions/setup-python@5286c12d65d90b2ea738bd57d452dc4366497581 # v0.4.1
       - name: Set up Poetry
         uses: ni/python-actions/setup-poetry@5286c12d65d90b2ea738bd57d452dc4366497581 # v0.4.1
