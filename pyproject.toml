@@ -68,11 +68,11 @@ line-length = 100
 
 [tool.pytest.ini_options]
 addopts = "--doctest-modules"
-norecursedirs = "*__snapshots"
+norecursedirs = "*__snapshots tests/*/input/*"
 
 
 [tool.ni-python-styleguide]
-extend_exclude = "*__snapshots/*/*input.py"
+extend_exclude = "*__snapshots/*/*input.py,tests/*/input/*.py"
 
 
 [build-system]
