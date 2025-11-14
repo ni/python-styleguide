@@ -21,17 +21,13 @@ jobs:
         os: [macos-latest, windows-latest, ubuntu-latest]
         python-version: [3.9, 3.14] # oldest supported and latest tested
     steps:
+      - name: Check out repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ni/python-actions/setup-python@9768589f3e50672173dad75a6fc181e4a85d33fa # v0.7.0
         with:
           python-version: ${{ matrix.python-version }}
       - uses: ni/python-actions/setup-poetry@9768589f3e50672173dad75a6fc181e4a85d33fa # v0.7.0
-      - name: List path and contents
-        run: |
-          pwd
-          ls -la
       - uses: ni/python-actions/analyze-project@9768589f3e50672173dad75a6fc181e4a85d33fa # v0.7.0
-        with:
-          project-directory: ${{ github.workspace }}
 
   tests:
     runs-on: ${{ matrix.os }}
