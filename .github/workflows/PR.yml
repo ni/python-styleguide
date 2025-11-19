@@ -13,56 +13,44 @@ on:
   workflow_call:
   workflow_dispatch:
 
-env:
-  POETRY_VERSION: 1.8.1
-
 jobs:
   checks:
-    runs-on: ubuntu-latest
-    env:
-      PYTHON_VERSION: 3.11  # Use latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        python-version: [3.9, 3.14] # oldest supported and latest tested
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - name: Check out repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: ni/python-actions/setup-python@9768589f3e50672173dad75a6fc181e4a85d33fa # v0.7.0
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - uses: Gr1N/setup-poetry@v8
-        with:
-          poetry-version: ${{ env.POETRY_VERSION }}
-      # @TODO: This is a workaround for there not being a way to check the lock file
-      #   See: https://github.com/python-poetry/poetry/issues/453
-      - name: Check for lock changes
-        run: |
-          poetry lock --check
-      - uses: actions/cache@v4
-        with:
-          path: ~/.cache/pypoetry/virtualenvs
-          key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
-      - name: Install the Package
-        run: poetry install -vvv
-      - name: Lint the Code
-        run: poetry run ni-python-styleguide lint
+          python-version: ${{ matrix.python-version }}
+      - uses: ni/python-actions/setup-poetry@9768589f3e50672173dad75a6fc181e4a85d33fa # v0.7.0
+      - uses: ni/python-actions/analyze-project@9768589f3e50672173dad75a6fc181e4a85d33fa # v0.7.0
 
   tests:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        python-version: [3.8, 3.9, '3.10', 3.11, 3.12, 3.13]
+        python-version: [3.9, '3.10', 3.11, 3.12, 3.13, 3.14, 3.14t]
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - name: Check out repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Set up Python
+        id: setup-python
+        uses: ni/python-actions/setup-python@9768589f3e50672173dad75a6fc181e4a85d33fa # v0.7.0
         with:
           python-version: ${{ matrix.python-version }}
-
-      - uses: Gr1N/setup-poetry@v8
+      - name: Set up Poetry
+        uses: ni/python-actions/setup-poetry@9768589f3e50672173dad75a6fc181e4a85d33fa # v0.7.0
+      - name: Cache virtualenv
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
-          poetry-version: ${{ env.POETRY_VERSION }}
-      - uses: actions/cache@v4
-        with:
-          path: ~/.cache/pypoetry/virtualenvs
-          key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+          path: .venv
+          key: nps-${{ runner.os }}-py${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('poetry.lock') }}
       - name: Install the Package
-        run: poetry install
+        run: poetry install -v
       - name: Run tests
         run: poetry run pytest -v
