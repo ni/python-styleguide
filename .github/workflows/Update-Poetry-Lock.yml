@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: org-check
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
         with:
           ref: main # This is the branch the PR is to be created from
           persist-credentials: true # make the token that is used the GITHUB_TOKEN, instead of your personal token
@@ -33,7 +33,7 @@ jobs:
           echo "branch_name=automated-updates/update-poetry-lock" >> $GITHUB_OUTPUT
       - name: Create branch
         run: git checkout -b ${{ steps.vars.outputs.branch_name }}
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@e9aba2c848f5ebd159c070c61ea2c4e2b122355e # v2.3.4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - uses: Gr1N/setup-poetry@v8
