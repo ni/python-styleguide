@@ -76,5 +76,4 @@ jobs:
         shell: bash
         run: |
           pwd
-          ls
-          ${DOG_FOOD_VENV_BIN}/nps -vv lint .
+          ${DOG_FOOD_VENV_BIN}/nps lint .
