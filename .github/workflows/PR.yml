@@ -62,12 +62,16 @@ jobs:
       - name: Install package into separate venv
         shell: bash
         run: |
-          python3 -m venv test_venv
-          find -type f test_venv
-          source test_venv/bin/activate || call test_venv\Scripts\activate
-          pip install .
+          venv_dir="$RUNNER_TEMP/dog_food_venv"
+          python3 -m venv "${venv_dir}"
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            binary_folder_name="Scripts"
+          else
+            binary_folder_name="bin"
+          fi
+          echo "DOG_FOOD_VENV_BIN=${venv_dir}/${binary_folder_name}" >> "$GITHUB_ENV"
+          ${DOG_FOOD_VENV_BIN}/pip install .
       - name: Lint our own pakage
         shell: bash
         run: |
-          source test_venv/bin/activate || call test_venv\Scripts\activate
-          nps lint .
+          ${DOG_FOOD_VENV_BIN}/nps lint .
