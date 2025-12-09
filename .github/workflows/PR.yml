@@ -57,9 +57,9 @@ jobs:
       - name: Install package into separate venv
         run: |
           python3 -m venv test_venv
-          source test_venv/bin/activate || test_venv\Scripts\activate
+          . test_venv/bin/activate || call test_venv\Scripts\activate
           pip install .
       - name: Lint our own pakage
         run: |
-          source test_venv/bin/activate || test_venv\Scripts\activate
+          . test_venv/bin/activate || call test_venv\Scripts\activate
           nps lint .
