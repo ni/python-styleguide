@@ -69,6 +69,7 @@ jobs:
           else
             binary_folder_name="bin"
           fi
+          DOG_FOOD_VENV_BIN="${venv_dir}/${binary_folder_name}"
           echo "DOG_FOOD_VENV_BIN=${venv_dir}/${binary_folder_name}" >> "$GITHUB_ENV"
           ${DOG_FOOD_VENV_BIN}/pip install .
       - name: Lint our own package
