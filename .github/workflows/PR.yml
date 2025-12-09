@@ -33,13 +33,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: 
-          - windows-latest
-        python-version: [
-          # 3.9, '3.10', 3.11, 3.12, 3.13, 
-          3.14,
-          #  3.14t
-           ]
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        python-version: [3.9, '3.10', 3.11, 3.12, 3.13, 3.14, 3.14t]
     steps:
       - name: Check out repo
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
