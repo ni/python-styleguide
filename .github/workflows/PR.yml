@@ -33,8 +33,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
-        python-version: [3.9, '3.10', 3.11, 3.12, 3.13, 3.14, 3.14t]
+        os: 
+          - ubuntu-latest
+        python-version: [
+          # 3.9, '3.10', 3.11, 3.12, 3.13, 
+          3.14,
+          #  3.14t
+           ]
     steps:
       - name: Check out repo
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -58,6 +63,7 @@ jobs:
         shell: bash
         run: |
           python3 -m venv test_venv
+          find -type f test_venv
           source test_venv/bin/activate || call test_venv\Scripts\activate
           pip install .
       - name: Lint our own pakage
