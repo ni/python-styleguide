@@ -58,10 +58,10 @@ jobs:
         shell: bash
         run: |
           python3 -m venv test_venv
-          . test_venv/bin/activate || call test_venv\Scripts\activate
+          source test_venv/bin/activate || call test_venv\Scripts\activate
           pip install .
       - name: Lint our own pakage
         shell: bash
         run: |
-          . test_venv/bin/activate || call test_venv\Scripts\activate
+          source test_venv/bin/activate || call test_venv\Scripts\activate
           nps lint .
