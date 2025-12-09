@@ -75,4 +75,6 @@ jobs:
       - name: Lint our own package
         shell: bash
         run: |
-          ${DOG_FOOD_VENV_BIN}/nps lint .
+          pwd
+          ls
+          ${DOG_FOOD_VENV_BIN}/nps -vv lint .
