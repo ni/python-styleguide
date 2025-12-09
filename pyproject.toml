@@ -60,7 +60,7 @@ nps = 'ni_python_styleguide._cli:main'
 
 
 [tool.black]
-extend-exclude = ".*__snapshots/.*\\.py"
+extend-exclude = ".*__snapshots/.*/input\\.py"
 line-length = 100
 
 
