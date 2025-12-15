@@ -1,5 +1,4 @@
-"""example of a python file with linter errors.
-"""
+"""example of a python file with linter errors."""
 
 import os
 
