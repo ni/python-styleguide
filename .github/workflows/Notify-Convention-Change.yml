@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - name: Comment on PR
-        uses: thollander/actions-comment-pull-request@8a3fad13c20088e9eb0805666b9fe49509d2fec8 # v1.6.0
+        uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3.0.1
         with:
           message: |
             Thank you for contributing! :wave:
