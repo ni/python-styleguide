@@ -8,7 +8,9 @@ from typing import (  # noqa: F401 - un-used import comment that is actually use
 from typing import (  # noqa F401: un-used import comment that is actually used, should get removed in --aggressive, used to test transition of comment. (auto-generated noqa)
     List,
 )
-from typing import Iterable
+from typing import (
+    Iterable,
+)
 
 import pytest
 

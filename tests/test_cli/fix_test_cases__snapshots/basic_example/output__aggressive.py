@@ -2,7 +2,11 @@
 
 import pathlib
 from os import access, path
-from typing import Hashable, Iterable, List
+from typing import (
+    Hashable,
+    Iterable,
+    List,
+)
 
 import pytest
 

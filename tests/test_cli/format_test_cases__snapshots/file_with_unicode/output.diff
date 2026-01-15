@@ -11,4 +11,8 @@
      [
          ("Gerät", ["1252", "iso-8859-1", "utf-8"]),
          ("l' appareil", ["1252", "iso-8859-1", "utf-8"]),
-\ No newline at end of file (input.py)
+@@ -27,3 +29,4 @@
+         ("设备", ["utf-8", "gbk"]),
+     ],
+ )
++\ Newline at end of file
