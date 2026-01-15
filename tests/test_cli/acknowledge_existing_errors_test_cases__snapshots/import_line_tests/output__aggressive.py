@@ -1,4 +1,5 @@
-"""example of a python file with linter errors."""
+"""example of a python file with linter errors.
+"""
 
 import pathlib, glob  # noqa: E401, F401 - multiple imports on one line (auto-generated noqa), 'glob' imported but unused (auto-generated noqa)
 import os  # noqa: I100 - Import statements are in the wrong order. 'import os' should be before 'import pathlib, glob' (auto-generated noqa)
@@ -23,7 +24,7 @@ os.listdir()
 
 def _test_os_name():
     for (
-        os  # noqa: F402 - import 'os' from line 4 shadowed by loop variable (auto-generated noqa)
+        os  # noqa: F402 - import 'os' from line 5 shadowed by loop variable (auto-generated noqa)
     ) in range(3):
         print(os)
 
