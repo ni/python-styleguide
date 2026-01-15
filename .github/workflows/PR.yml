@@ -70,4 +70,6 @@ jobs:
       - name: Lint our own package
         shell: bash
         run: |
+          echo "We expect to have to format before linting passes."
+          ${DOG_FOOD_VENV_BIN}/nps format .
           ${DOG_FOOD_VENV_BIN}/nps lint .
