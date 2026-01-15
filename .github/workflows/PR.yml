@@ -54,3 +54,22 @@ jobs:
         run: poetry install -v
       - name: Run tests
         run: poetry run pytest -v
+      - name: Install package into separate venv
+        shell: bash
+        run: |
+          venv_dir="$RUNNER_TEMP/dog_food_venv"
+          python3 -m venv "${venv_dir}"
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            binary_folder_name="Scripts"
+          else
+            binary_folder_name="bin"
+          fi
+          DOG_FOOD_VENV_BIN="${venv_dir}/${binary_folder_name}"
+          echo "DOG_FOOD_VENV_BIN=${venv_dir}/${binary_folder_name}" >> "$GITHUB_ENV"
+          ${DOG_FOOD_VENV_BIN}/pip install .
+      - name: Lint our own package
+        shell: bash
+        run: |
+          echo "We expect to have to format before linting passes."
+          ${DOG_FOOD_VENV_BIN}/nps format .
+          ${DOG_FOOD_VENV_BIN}/nps lint .
