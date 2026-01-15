@@ -290,12 +290,14 @@ class CheeseShop:
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
-### [N.2.5] ✔️ **DO** Use `CamelCase` for type variable names
+### [N.2.5] ✔️ **DO** Use `CamelCase` for type variable names 💻
 
 > 🐍 This rule stems from [PEP 8](https://www.python.org/dev/peps/pep-0008)
 
+> 💻 This rule is enforced by error code N808
+
 ```python
-# Bad
+# Bad - will produce N808
 from typing import TypeVar
 
 flying_circus = TypeVar("flying_circus")
