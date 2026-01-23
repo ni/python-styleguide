@@ -25,7 +25,7 @@ pycodestyle = [
     {version = "^2.9", python = ">=3.7,<3.12"},
     {version = "^2.11", python = "^3.12"},
 ]
-black = ">=23.1"
+black = ">=23.1,<26.0" # 26.0 introduces formatting changes, but drops support for Python < 3.10, so pin to version that has consistent formatting across 3.9-3.14
 
 # Additional support libraries
 # These dependencies were selected because they are already used by black.
