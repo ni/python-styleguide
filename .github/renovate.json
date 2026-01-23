@@ -23,7 +23,7 @@
             ]
         },
         {
-            "matchPackageNames": ["/flake8-import-order/"], // we're not compatible with 0.19.0 yet due to #226
+            "matchPackageNames": ["flake8-import-order"], // we're not compatible with 0.19.0 yet due to #226
             "matchManagers": ["poetry"],
             "enabled": false
         }
