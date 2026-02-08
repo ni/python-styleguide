@@ -45,6 +45,7 @@ pep8-naming = ">=0.11.1"
 # Also describe why it is rejected and/or add a link
 # flake8-commas: Already handled by flake8-black
 # flake8-isort: Already covered by flake8-import-order
+# flake8-spellcheck: Project appears to be abandoned as of 2026. No changes in 2 years, open issues from 6-4 years ago.
 # hacking: Most rules are either covered by other plugins or would be turned off.
 
 
