@@ -38,6 +38,7 @@ isort = ">=5.10"
 flake8-black = ">=0.2.1"
 flake8-docstrings = ">=1.5.0"
 flake8-import-order = ">=0.18.1,<0.19.0" # we're not compatible with 0.19.0 yet due to #226
+setuptools = "<82" # flake8-import-order 0.18.x needs pkg_resources which was removed in setuptools v82
 flake8-tidy-imports = ">=4.11.0"
 pep8-naming = ">=0.11.1"
 
