@@ -142,7 +142,8 @@ No changes documented for this release.
 
 ## [0.1.17] - 2023-10-12
 
-Testing release pipeline
+### Changed
+- Testing release pipeline
 
 ## [0.1.15] - 2023-10-10
 
