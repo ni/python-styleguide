@@ -239,13 +239,15 @@ Release pipeline was broken, retrigger push to pypi.org
 ### Fixed
 - Fix auto-suppression handling blank files (#66)
 
+### Added
+- Add hacking to rejected plugins (#50)
+- Reject flake8-commas (#51)
+- Reject flake8-isort (#52)
+
 ## [0.1.5.0] - 2021-02-12
 
 ### Added
 - Add flake8-import-order to rules being evaluated (#49)
-- Add hacking to rejected plugins (#50)
-- Reject flake8-commas (#51)
-- Reject flake8-isort (#52)
 
 ## [0.1.4] - 2021-02-02
 
