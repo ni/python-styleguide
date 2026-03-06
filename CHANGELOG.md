@@ -1,9 +1,50 @@
+[[_TOC_]]
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Added
+- Add vim/neovim integration instructions to README (#205)
+- Adopt flake8-tidy-imports to enforce O.1.5 (#223)
+- Add fallbacks to `_get_application_import_names` (#234)
+
+### Changed
+- Drop Python 3.7 support (#218)
+- Bump black from 23.3.0 to 24.3.0 (#220)
+- Bump setuptools from 68.0.0 to 70.0.0 (#219)
+- Update poetry lock file and poetry and python versions in pipelines (#216)
+- Update publishing flow to use ni/python-actions (#227)
+- Adopt ni/python-actions for PR builds (#235)
+- Make format command improvements (#221)
+- Update README (#222)
+- Poetry-lock-update - skip PR if no changes (#213)
+- Pin to 0.18 because 0.19 is broken (#225)
+- GitHub: Upgrade from ubuntu-20.04 to ubuntu-latest (#238)
+- Configure Renovate (#239)
+- Remove scheduled cron job from workflow
+- Add self to code owners (#243)
+- Update poetry lock files (multiple PRs: #177, #186, #188, #189, #190, #191, #193, #194, #195, #197, #198, #199, #200, #201, #202, #206, #207, #208, #209, #210, #211)
+
+### Fixed
+- Fix formatting files with unicode (#242)
+- Fix acknowledge when run on multiple files (#244)
+
+### Security
+- Bump rexml from 3.2.8 to 3.3.3 in /docs (#192)
+- Bump rexml from 3.3.3 to 3.3.6 in /docs (#196)
+- Bump rexml from 3.3.6 to 3.3.9 in /docs (#203)
+- Bump rexml from 3.3.9 to 3.4.2 in /docs (#237)
+- Bump nokogiri from 1.16.5 to 1.18.3 in /docs (#212)
+- Bump nokogiri from 1.18.3 to 1.18.4 in /docs (#214)
+- Bump nokogiri from 1.18.4 to 1.18.8 in /docs (#217)
+- Bump nokogiri from 1.18.8 to 1.18.9 in /docs (#231)
+- Update ruby packages (multiple PRs: #245, #246)
 
 ## [0.4.9] - 2025-02-03
 
