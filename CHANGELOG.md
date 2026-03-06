@@ -23,12 +23,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix formatting files with unicode (#242)
 - Fix acknowledge when run on multiple files (#244)
 
-## [0.4.9] - 2025-02-03
+## [0.4.9] - 2026-02-03
 
 ### Fixed
 - Work around "No module named 'pkg_resources'" by pinning setuptools to <82 (#275)
 
-## [0.4.8] - 2025-01-23
+## [0.4.8] - 2026-01-23
 
 ### Fixed
 - Pin black to version that supports Python < 3.10 still (#262)
