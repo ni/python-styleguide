@@ -11,6 +11,10 @@ repository = "https://github.com/ni/python-styleguide"
 license = "MIT"
 include = ["ni_python_styleguide/config.toml"]
 
+[tool.poetry.urls]
+"Changelog" = "https://github.com/ni/python-styleguide/blob/main/CHANGELOG.md"
+
+
 
 [tool.poetry.dependencies]
 python = "^3.9"
