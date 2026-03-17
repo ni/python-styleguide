@@ -19,8 +19,9 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     needs: org-check
+    permissions:
+      pull-requests: write
     steps:
-      - uses: actions/checkout@main
       - name: Comment on PR
         uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3.0.1
         with:
@@ -43,4 +44,3 @@ jobs:
             @Adithyak1998
             @innagarc
             @ShibaniRout
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
