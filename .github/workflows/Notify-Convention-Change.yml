@@ -43,4 +43,3 @@ jobs:
             @Adithyak1998
             @innagarc
             @ShibaniRout
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
