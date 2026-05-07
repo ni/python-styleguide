@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Drop Python 3.7 support (#218)
+- Drop Python 3.8 support (#235)
 
 ### Fixed
 - Fix formatting files with unicode (#242)
