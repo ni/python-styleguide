@@ -135,7 +135,7 @@ One can configure VSCode either in the [User 'settings.json' file](https://code.
       ],
    ```
 
-   (alternatively, tell `flake8` to use the ni-python-styleguide config)
+   (alternatively, tell `flake8` to use the ni-python-styleguide config - although this method does not evaluate what the module's application-import-names are)
    ```json
    "flake8.args": [
         "--config=.venv\\lib\\site-packages\\ni_python_styleguide\\config.ini"
