@@ -42,15 +42,15 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Set up Python
-        uses: ni/python-actions/setup-python@a2894c635a2cba635a1086c1f89796fec2c52f74 # v0.7.2
+        uses: ni/python-actions/setup-python@a2554c7e5680982d3355677b2290e48b60678744 # v0.8.0
       - name: Set up Poetry
-        uses: ni/python-actions/setup-poetry@a2894c635a2cba635a1086c1f89796fec2c52f74 # v0.7.2
+        uses: ni/python-actions/setup-poetry@a2554c7e5680982d3355677b2290e48b60678744 # v0.8.0
       # If the version is 0.1.0-alpha.0, this will set the version to 0.1.0
       - name: Promote package version to release
         run: poetry version patch
       - name: Check project version
         if: github.event_name == 'release'
-        uses: ni/python-actions/check-project-version@a2894c635a2cba635a1086c1f89796fec2c52f74 # v0.7.2
+        uses: ni/python-actions/check-project-version@a2554c7e5680982d3355677b2290e48b60678744 # v0.8.0
       - name: Build distribution packages
         run: poetry build
       - name: Upload build artifacts
@@ -91,14 +91,14 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Set up Python
-        uses: ni/python-actions/setup-python@a2894c635a2cba635a1086c1f89796fec2c52f74 # v0.7.2
+        uses: ni/python-actions/setup-python@a2554c7e5680982d3355677b2290e48b60678744 # v0.8.0
       - name: Set up Poetry
-        uses: ni/python-actions/setup-poetry@a2894c635a2cba635a1086c1f89796fec2c52f74 # v0.7.2
+        uses: ni/python-actions/setup-poetry@a2554c7e5680982d3355677b2290e48b60678744 # v0.8.0
       # If the version is 0.1.0-alpha.0, this will set the version to 0.1.0
       - name: Promote package version to release
         run: poetry version patch
       - name: Update project version
-        uses: ni/python-actions/update-project-version@a2894c635a2cba635a1086c1f89796fec2c52f74 # v0.7.2
+        uses: ni/python-actions/update-project-version@a2554c7e5680982d3355677b2290e48b60678744 # v0.8.0
         with:
           # The default GITHUB_TOKEN cannot trigger PR workflows.
           token: ${{ secrets.ADMIN_PAT }}
