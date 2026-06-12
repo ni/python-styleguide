@@ -5,8 +5,8 @@ def test_no_args_prints_help(styleguide):
     """Tests that running the styleguide without any arguments prints the help info."""
     result = styleguide()
 
-    assert result
-    assert result.output.startswith("Usage:")
+    assert result.exit_code != 0
+    assert "Usage:" in result.output
 
 
 def test_help_prints_help(styleguide):
