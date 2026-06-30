@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Update flake8-import-order to remove warnings from output (#305)
+
+## [0.5.0] - 2026-05-14
+
 ### Added
 - Add vim/neovim integration instructions to README (#205)
 - Add VSCode integration instructions to README (#222)
@@ -275,7 +281,8 @@ Release pipeline was broken, retrigger push to pypi.org
 ### Added
 - Initial Release 🚀
 
-[Unreleased]: https://github.com/ni/python-styleguide/compare/v0.4.9...main
+[Unreleased]: https://github.com/ni/python-styleguide/compare/v0.5.0...main
+[0.5.0]: https://github.com/ni/python-styleguide/compare/v0.4.9...v0.5.0
 [0.4.9]: https://github.com/ni/python-styleguide/compare/v0.4.8...v0.4.9
 [0.4.8]: https://github.com/ni/python-styleguide/compare/v0.4.7...v0.4.8
 [0.4.7]: https://github.com/ni/python-styleguide/compare/v0.4.6...v0.4.7
