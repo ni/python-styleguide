@@ -104,3 +104,40 @@ jobs:
           token: ${{ secrets.ADMIN_PAT }}
           version-rule: "prepatch"
           use-dev-suffix: false
+  update_changelog:
+    name: Update changelog
+    runs-on: ubuntu-latest
+    needs: [build_package]
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Set up Python
+        uses: ni/python-actions/setup-python@a2554c7e5680982d3355677b2290e48b60678744 # v0.8.0
+      - name: Set up Poetry
+        uses: ni/python-actions/setup-poetry@a2554c7e5680982d3355677b2290e48b60678744 # v0.8.0
+      - name: Get package version
+        id: get-version
+        run: echo "version=$(poetry version -s)" >> "$GITHUB_OUTPUT"
+      - name: Update changelog
+        run: |
+          CHANGELOG_FILE="CHANGELOG.md"
+          VERSION="${{ steps.get-version.outputs.version }}"
+          TODAY=$(date +"%Y-%m-%d")
+
+          # Create the new changelog entry
+          sed \
+            -e "s/^## \[Unreleased\]/## [Unreleased]\n\n## [$VERSION] - $TODAY/" \
+            -e "s;\[Unreleased\]: \(\(.*/compare/\).*\)\.\.\.main;[Unreleased]: \2v${VERSION}...main\n[${VERSION}]: \1...${VERSION};" \
+            -i "${CHANGELOG_FILE}"
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          token: ${{ secrets.ADMIN_PAT }}
+          commit-message: 'docs: update changelog for ${{ steps.get-version.outputs.version }}'
+          title: 'docs: update changelog for ${{ steps.get-version.outputs.version }}'
+          body: 'Automatically generated changelog update for release ${{ steps.get-version.outputs.version }}'
+          branch: changelog-update-${{ steps.get-version.outputs.version }}
+          delete-branch: true
