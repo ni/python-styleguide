@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Ignore I300 and I301 in favor of BLK100 (#327)
+
 ## [0.5.1] - 2026-07-17
 
 ### Changed
