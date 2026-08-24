@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+## [0.5.2] - 2026-08-24
+
+### Changed
+
 - Ignore I300 and I301 in favor of BLK100 (#327)
 
 ## [0.5.1] - 2026-07-17
@@ -287,7 +291,8 @@ Release pipeline was broken, retrigger push to pypi.org
 ### Added
 - Initial Release 🚀
 
-[Unreleased]: https://github.com/ni/python-styleguide/compare/v0.5.1...main
+[Unreleased]: https://github.com/ni/python-styleguide/compare/v0.5.2...main
+[0.5.2]: https://github.com/ni/python-styleguide/compare/v0.5.1...v0.5.2
 [0.5.1]: https://github.com/ni/python-styleguide/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/ni/python-styleguide/compare/v0.4.9...v0.5.0
 [0.4.9]: https://github.com/ni/python-styleguide/compare/v0.4.8...v0.4.9
